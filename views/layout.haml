@@ -1,0 +1,17 @@
+!!! 5
+
+%html
+  %head
+    %title Skellington
+    = css :main
+    = js :main
+
+    // favicon
+    %link{ :href => '/images/favicon.png', :rel => 'shortcut icon' }
+
+%body
+
+  = haml :_topbar
+
+  %div.container
+    = yield
