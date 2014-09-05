@@ -5,6 +5,14 @@
 - RSpec
 - Bootstrap + HAML + AssetPack
 
+## Requirements
+
+- Ruby 2.1.2
+
+### Bioinformatics Software
+
+- Prodigal
+
 ## Quickstart
 
 Using Ruby 2.1.2 and PostgreSQL 9.3
