@@ -1,3 +1,18 @@
 body {
-    margin-top: 60px;
+  margin-top: 60px;
+  background: #eee;
+}
+
+.navbar {
+  background-color: #ffee33;
+}
+
+.navbar a {
+  color: #000;
+}
+
+.logo span {
+  display: block;
+  background-color #000;
+  border-radius: 50%;
 }

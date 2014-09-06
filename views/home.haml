@@ -1,7 +1,11 @@
 %header{class: 'hero-unit'}
   %div.inner
-    %h1 Database Statistics
-    %p="#{User.count} users."
+    %h2 Database Statistics
     %p="#{Genome.count} genomes."
-    %p="#{Feature.count} features."
     %p="#{Scaffold.count} scaffolds."
+    %p="#{Feature.count} features."
+
+    %h2 Genomes:
+    %ul
+      - Genome.each do |genome|
+        %li="#{genome.name} - #{genome.annotations.size} annotation(s) - #{genome.scaffolds.size} scaffold(s)"

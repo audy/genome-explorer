@@ -13,4 +13,12 @@ describe Scaffold do
   it 'belongs to a genome' do
     scaffold.genome.should_not be_nil
   end
+
+  it 'has a size property' do
+    scaffold.size.should_not be_nil
+  end
+
+  it 'can be wrapped' do
+    scaffold.wrap(10).should_not be_nil
+  end
 end

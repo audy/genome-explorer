@@ -6,8 +6,12 @@ gem 'sinatra'
 gem 'haml'
 gem 'encrypted_cookie'
 gem 'dm-postgres-adapter'
+gem 'dm-noisy-failures', git: 'https://github.com/dtao/dm-noisy-failures'
 gem 'data_mapper'
 gem 'thin'
+gem 'pry'
+
+# bioinformatics
 gem 'dna'
 
 gem 'sinatra-assetpack', :require => 'sinatra/assetpack', :git => 'git://github.com/rstacruz/sinatra-assetpack.git'

@@ -3,35 +3,18 @@ class Genome
 
   property :id, Serial
 
-  property :tax_id, Integer # NCBI taxonomy database
+  property :file_path, String, required: true, length: 255
+  validates_uniqueness_of :file_path
 
+  has n, :annotations
   has n, :scaffolds
-end
 
-class Scaffold
-  include DataMapper::Resource
-
-  property :id, Serial
-
-  property :nucleotides_file, String
-
-  belongs_to :genome
-  has n, :features
-
-  def sequences
-    Dna.new(File.readlines(self.nucleotides_file), format: :fasta).to_a
+  def predict_features!
+    features = predict_features(self)
+    features.map &:save
   end
-end
 
-class Feature
-  include DataMapper::Resource
-  belongs_to :scaffold
-
-  property :id, Serial
-
-  property :start, Integer
-  property :stop, Integer
-  property :score, Float
-  property :strand, Enum[:forward, :reverse]
-  property :type, Enum[:CDS]
+  def name
+    File.basename(self.file_path).tr('_', ' ')
+  end
 end
