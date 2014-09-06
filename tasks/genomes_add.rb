@@ -36,7 +36,6 @@ namespace :genomes do
             end
           end
         end
-        print "\n"
 
       end
 
@@ -54,10 +53,12 @@ def parse_gff_line(line)
   stop = line[4].to_i
   score = line[5].to_f
   strand = line[6] == '+' ? :forward : :reverse 
+  info = line[8]
 
   { start: start,
     stop: stop,
     strand: strand,
     score: score,
-    type: type }
+    type: type,
+    info: info }
 end
