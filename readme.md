@@ -8,6 +8,7 @@ LICENSE: MIT
 
 - Ruby 2.1.2
 - Postgres
+- The desire to explore the world of bacterial genomes
 - A computer
 
 ## Quickstart
