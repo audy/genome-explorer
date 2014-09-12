@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/rstacruz/sinatra-assetpack.git
-  revision: 279853a16884579f31a213d9ea64b06c1e427955
+  revision: e1ed758bf9de40082c86619e1d39006dfefaae3b
   specs:
     sinatra-assetpack (0.3.3)
       jsmin
@@ -49,6 +49,18 @@ GEM
       dm-core (~> 1.2.0)
     dm-migrations (1.2.0)
       dm-core (~> 1.2.0)
+    dm-pg-types (0.8.2)
+      data_mapper (~> 1.2.0)
+      data_objects (~> 0.10.6)
+      dm-core (~> 1.2.0)
+      dm-do-adapter (~> 1.2.0)
+      dm-migrations (~> 1.2.0)
+      dm-postgres-adapter (~> 1.2.0)
+      dm-postgres-adapter (~> 1.2.0)
+      dm-types (~> 1.2.0)
+      dm-validations (~> 1.2.0)
+      do_postgres (~> 0.10.6)
+      rake (~> 0.9.2)
     dm-postgres-adapter (1.2.0)
       dm-do-adapter (~> 1.2.0)
       do_postgres (~> 0.10.6)
@@ -77,7 +89,7 @@ GEM
       data_objects (= 0.10.14)
     encrypted_cookie (0.0.4)
     eventmachine (1.0.3)
-    execjs (2.1.0)
+    execjs (2.2.1)
     fastercsv (1.5.5)
     haml (4.0.5)
       tilt
@@ -86,7 +98,7 @@ GEM
     json_pure (1.8.1)
     method_source (0.8.2)
     multi_json (1.10.1)
-    pry (0.10.0)
+    pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
@@ -95,15 +107,19 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rake (10.3.2)
-    rspec (2.14.1)
-      rspec-core (~> 2.14.0)
-      rspec-expectations (~> 2.14.0)
-      rspec-mocks (~> 2.14.0)
-    rspec-core (2.14.8)
-    rspec-expectations (2.14.5)
-      diff-lcs (>= 1.1.3, < 2.0)
-    rspec-mocks (2.14.6)
+    rake (0.9.6)
+    rspec (3.1.0)
+      rspec-core (~> 3.1.0)
+      rspec-expectations (~> 3.1.0)
+      rspec-mocks (~> 3.1.0)
+    rspec-core (3.1.2)
+      rspec-support (~> 3.1.0)
+    rspec-expectations (3.1.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.1.0)
+    rspec-mocks (3.1.0)
+      rspec-support (~> 3.1.0)
+    rspec-support (3.1.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -117,17 +133,17 @@ GEM
       tilt (~> 1.3)
     sinatra-reloader (1.0)
       sinatra-contrib
-    slop (3.5.0)
+    slop (3.6.0)
     stringex (1.5.1)
     thin (1.6.2)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
       rack (>= 1.0.0)
     tilt (1.4.1)
-    uglifier (2.5.0)
+    uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
-    uuidtools (2.1.4)
+    uuidtools (2.1.5)
 
 PLATFORMS
   ruby
@@ -135,6 +151,7 @@ PLATFORMS
 DEPENDENCIES
   data_mapper
   dm-noisy-failures!
+  dm-pg-types
   dm-postgres-adapter
   dna
   encrypted_cookie

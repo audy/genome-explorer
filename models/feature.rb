@@ -13,6 +13,8 @@ class Feature
                        :tRNA, :STS, :ncRNA, :gap, :transcript, :binding_site,
                        :promoter, :tmRNA]
 
+  property :info, HStore
+
   def sequence
     self.scaffold.sequences
   end

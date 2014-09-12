@@ -53,7 +53,7 @@ def parse_gff_line(line)
   stop = line[4].to_i
   score = line[5].to_f
   strand = line[6] == '+' ? :forward : :reverse 
-  info = line[8]
+  info = Hash[line[8].split(';').map { |x| k, v = x.split('=') }]
 
   { start: start,
     stop: stop,
