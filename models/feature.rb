@@ -1,6 +1,5 @@
 class Feature
   include DataMapper::Resource
-  belongs_to :annotation
 
   property :id, Serial
 
@@ -14,6 +13,8 @@ class Feature
                        :promoter, :tmRNA]
 
   property :info, HStore
+
+  belongs_to :scaffold
 
   def sequence
     self.scaffold.sequences

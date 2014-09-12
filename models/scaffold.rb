@@ -5,7 +5,7 @@ class Scaffold
   property :sequence, Text, length: 10_000_000 # 10 megabases
 
   belongs_to :genome
-  has n, :annotations
+  has n, :features
 
   def size
     self.sequence.size

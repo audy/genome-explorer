@@ -1,48 +1,42 @@
 namespace :genomes do
+
   desc 'add NCBI genomes in data/'
   task :add do
-    Dir['data/*'].shuffle.each do |genome_directory|
-      glob = File.join(genome_directory, '*')
+    files = Dir['data/*'].group_by { |x| File.basename(x).split('.')[0] }
 
-      puts "adding #{genome_directory}"
-      @genome = Genome.first_or_create file_path: genome_directory
-      @annotation = Annotation.new source: 'ncbi', genome: @genome
+    files.each_pair do |_, bf|
+      bf = bf.group_by { |x| File.extname(x) }
 
-      grouped = Dir[glob].group_by { |x| File.basename(x).split('.')[0] }
-      grouped.each_pair do |scaffold, files|
-        fs = files.group_by { |x| File.extname(x) }
+      # there can only be one
+      gff = bf['.gff'].first
+      fna = bf['.fna'].first
 
-        scaffold = fs['.fna'].first
-        annotation = fs['.gff'].first
-
-        File.open(scaffold) do |handle|
-          records = Dna.new(handle)
-          @scaffold = Scaffold.create sequence: records.to_a.first.sequence,
-            genome: @genome,
-            annotations: [ @annotation ]
+      File.open(fna) do |handle|
+        records = Dna.new(handle)
+        records.each do |record|
+          @genome = Genome.first_or_create( name: get_genome(record.name) )
+          @scaffold = Scaffold.create genome: @genome,
+                                      sequence: record.sequence
         end
-
-        File.open(annotation) do |handle|
-          handle.each do |line|
-            if line[0] != '#'
-              feature = parse_gff_line(line)
-              feature[:annotation] = @annotation
-              f = Feature.new(feature)
-              begin
-                f.save
-              rescue
-                puts "weird feature: #{f.inspect}"
-              end
-            end
-          end
-        end
-
       end
 
-      @annotation.save
+      puts @genome.name
 
+      File.open(gff) do |handle|
+        handle.each do |line|
+          next if line[0] == '#'
+          gff = parse_gff_line(line)
+          gff[:scaffold] = @scaffold
+          feature = Feature.create(gff)
+          print '.'
+        end
+      end
     end
   end
+end
+
+def get_genome(s)
+  s.split[1..4].join(' ')
 end
 
 def parse_gff_line(line)
