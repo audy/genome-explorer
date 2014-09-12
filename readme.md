@@ -4,6 +4,9 @@
 
 LICENSE: MIT
 
+There are those who wish to view genomes (bo-RING!) and then those who wish to
+_explore_ them.
+
 ## Requirements
 
 - Ruby 2.1.2
