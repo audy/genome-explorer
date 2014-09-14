@@ -31,6 +31,13 @@ namespace :genomes do
           feature = Feature.create(gff_data)
         end
       end
+
+      # remove files when done
+      if ENV['UNLINK_FILES']
+        puts "removing #{gff} and #{fna}"
+        File.unlink gff
+        File.unlink fna
+      end
     end
   end
 end
