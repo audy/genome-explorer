@@ -20,15 +20,15 @@ namespace :genomes do
         end
       end
 
-      puts @genome.name
+      puts "adding genome: #{@genome.name}"
 
       File.open(gff) do |handle|
         handle.each do |line|
           next if line[0] == '#'
-          gff = parse_gff_line(line)
-          gff[:scaffold] = @scaffold
-          feature = Feature.create(gff)
           print '.'
+          gff_data = parse_gff_line(line)
+          gff_data[:scaffold] = @scaffold
+          feature = Feature.create(gff_data)
         end
       end
     end
