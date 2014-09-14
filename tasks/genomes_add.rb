@@ -25,7 +25,6 @@ namespace :genomes do
       File.open(gff) do |handle|
         handle.each do |line|
           next if line[0] == '#'
-          print '.'
           gff_data = parse_gff_line(line)
           gff_data[:scaffold] = @scaffold
           feature = Feature.create(gff_data)
