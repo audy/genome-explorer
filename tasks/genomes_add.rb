@@ -42,7 +42,7 @@ namespace :genomes do
 end
 
 def get_genome(s)
-  s.split[1..4].join(' ')
+  s.split[1..3].join(' ')
 end
 
 def parse_gff_line(line)
