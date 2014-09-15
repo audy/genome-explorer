@@ -5,8 +5,8 @@ describe 'models' do
   let (:genome) { Genome.new assembly_id: 1 }
   let (:scaffold) { Scaffold.new sequence: 'GATCGATCGATCGATC', genome_id:
                     genome.id }
-  let (:feature) { Feature.new start: 1, stop: 10, source: 'test-source', score:
-                   0.9, info: 'test-info', type: 'test-type' }
+  let (:feature) { Feature.new start: 0, stop: scaffold.sequence.size, source: 'test-source', score:
+                   0.9, info: 'test-info', type: 'test-type', scaffold: scaffold.save}
 
 describe Genome do
 
@@ -88,10 +88,10 @@ describe Feature do
   end
 
   it '.start .stop' do
-    expect(feature.start).to eq(1)
+    expect(feature.start).to eq(0)
     expect(feature.start).to be_a(Integer)
 
-    expect(feature.stop).to eq(10)
+    expect(feature.stop).to eq(scaffold.sequence.size)
     expect(feature.stop).to be_a(Integer)
   end
 
@@ -116,6 +116,13 @@ describe Feature do
     feature.scaffold = scaffold
     expect(feature.save).not_to eq(nil)
     expect(feature.scaffold).to be(scaffold)
+  end
+
+  it '.sequence' do
+    expect(feature.sequence).to_not be(nil)
+    expect(feature.sequence).to be_a(String)
+    expect(feature.sequence).to eq(scaffold.sequence)
+    expect(feature.sequence.size).to eq((feature.stop - feature.start).abs)
   end
 
 end

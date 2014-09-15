@@ -3,6 +3,6 @@ class Feature < Sequel::Model
   many_to_one :genome
 
   def sequence
-    self.scaffold.sequences
+    self.scaffold.sequence[self.start..self.stop-1]
   end
 end
