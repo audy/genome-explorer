@@ -1,9 +1,9 @@
 require 'zlib'
 
-namespace :genomes do
+namespace :seed do
 
   desc 'add NCBI genomes in data/'
-  task :add do
+  task :genomes do
     genomes = Dir['data/*/']
 
     genomes.each do |genome|
@@ -32,13 +32,10 @@ namespace :genomes do
       Zlib::GzipReader.open(gff) do |handle|
         handle.each do |line|
           next if line[0] == '#'
-          gff_data = parse_gff_line(line).merge(scaffold: @scaffold,
-                                                genome: @genome)
+          gff_data = parse_gff_line(line).merge(scaffold: @scaffold)
           feature = Feature.create(gff_data)
         end
       end
-
-      puts "- #{@genome.features.count} features."
 
     end
   end
