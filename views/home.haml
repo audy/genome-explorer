@@ -1,3 +1,7 @@
 %header{class: 'hero-unit'}
   %div.inner
     %h2 Database Statistics
+
+  %ol
+    - Genome.each do |genome|
+      %li="#{genome.assembly_id} #{Feature.where(genome: genome).count} features."
