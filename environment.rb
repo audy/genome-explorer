@@ -23,7 +23,6 @@ class App < Sinatra::Base
 
   configure :test do
     DB = Sequel.sqlite
-    DB.loggers << Logger.new($stderr)
     Sequel.extension :migration
     Sequel::Migrator.run(App::DB, 'migrations')
   end
