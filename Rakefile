@@ -1,4 +1,4 @@
-require './environment.rb'
+require './application.rb'
 
 Dir[File.join(File.dirname(__FILE__), 'tasks', '*.rb')].each { |f| require f }
 
@@ -9,24 +9,31 @@ task :console do
   IRB.start
 end
 
-desc 'run specs'
-task :spec do
-  sh 'rspec'
-end
-
 namespace :db do
-  desc 'seed the database with information'
-  task :seed do
-  end
-  
-  desc 'auto-migrate the database (deletes data)'
-  task :migrate do
-    fail 'never auto_migrate! on the production server!' if $ENVIRONMENT == :production
-    DataMapper.auto_migrate!
+  desc 'run migrations'
+  task :migrate, [:version] do |t, args|
+    Sequel.extension :migration
+    if args[:version]
+      puts "Migrating to version #{args[:version]}"
+      Sequel::Migrator.run(DB,
+                           'migrations',
+                           target: args[:version].to_i)
+    else
+      puts "Migrating to latest"
+      Sequel::Migrator.run(DB, 'migrations')
+    end
   end
 
-  desc 'auto-upgrade the database schema (data safe)'
-  task :upgrade do
-    DataMapper.auto_upgrade!
+  desc 'drop tables'
+  task :drop do
+    DB.tables.each do |table|
+      puts "dropping #{table}"
+      DB.drop_table(table, cascade: true)
+    end
+  end
+
+  desc 'rollback'
+  task :rollback, :env do |cmd, args|
+
   end
 end

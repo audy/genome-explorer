@@ -1,53 +1,53 @@
+require 'zlib'
+
 namespace :genomes do
 
   desc 'add NCBI genomes in data/'
   task :add do
-    files = Dir['data/*'].group_by { |x| File.basename(x).split('.')[0] }
+    genomes = Dir['data/*/']
 
-    files.each_pair do |_, bf|
-      bf = bf.group_by { |x| File.extname(x) }
+    genomes.each do |genome|
 
-      # there can only be one
-      gff = bf['.gff'].first
-      fna = bf['.fna'].first
+      # list files in genome directory and group by extension
+      bf = Dir[File.join(genome, '*')].group_by { |x| x[-6..-1] }
 
-      File.open(fna) do |handle|
-        records = Dna.new(handle)
+      # XXX assumes there is only one gff and fna file per directory
+      gff = bf['gff.gz'].first
+      fna = bf['fna.gz'].first
+
+      @genome = Genome.create assembly_id: File.basename(genome)
+      puts "adding genome: #{@genome.assembly_id}."
+
+      Zlib::GzipReader.open(fna) do |handle|
+        records = Dna.new(handle, format: :fasta)
         records.each do |record|
-          @genome = Genome.first_or_create( name: get_genome(record.name) )
           @scaffold = Scaffold.create genome: @genome,
                                       sequence: record.sequence
         end
       end
 
-      puts "adding genome: #{@genome.name}"
+      puts "- #{@genome.scaffolds.count} scaffolds."
 
-      File.open(gff) do |handle|
+      # todo: get taxid from assembly id or from GFF file
+      Zlib::GzipReader.open(gff) do |handle|
         handle.each do |line|
           next if line[0] == '#'
-          gff_data = parse_gff_line(line)
-          gff_data[:scaffold] = @scaffold
+          gff_data = parse_gff_line(line).merge(scaffold: @scaffold,
+                                                genome: @genome)
           feature = Feature.create(gff_data)
         end
       end
 
-      # remove files when done
-      if ENV['UNLINK_FILES']
-        puts "removing #{gff} and #{fna}"
-        File.unlink gff
-        File.unlink fna
-      end
+      puts "- #{@genome.features.count} features."
+
     end
   end
-end
-
-def get_genome(s)
-  s.split[1..3].join(' ')
 end
 
 def parse_gff_line(line)
   line = line.strip.split("\t")
   scaffold_id = line[0].to_i
+  source = line[1]
   type = line[2].to_sym
   start = line[3].to_i
   stop = line[4].to_i
@@ -56,6 +56,7 @@ def parse_gff_line(line)
   info = Hash[line[8].split(';').map { |x| k, v = x.split('=') }]
 
   { start: start,
+    source: source,
     stop: stop,
     strand: strand,
     score: score,

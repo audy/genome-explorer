@@ -1,17 +1,4 @@
-class Scaffold
-  include DataMapper::Resource
-
-  property :id, Serial
-  property :sequence, Text, length: 10_000_000 # 10 megabases
-
-  belongs_to :genome
-  has n, :features
-
-  def size
-    self.sequence.size
-  end
-
-  def wrap c
-    self.sequence.split('').each_slice(c).map(&:join).to_a.join("\n")
-  end
+class Scaffold < Sequel::Model
+  many_to_one :genome
+  one_to_many :features
 end

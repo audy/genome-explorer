@@ -19,18 +19,6 @@ class Skellington < Sinatra::Base
     js_compression :uglify
   end
 
-  helpers do
-
-    def authenticate!
-      redirect '/' unless @user
-    end
-
-  end
-
-  before do
-    @user = User.get(session[:user_id])
-  end
-
   get '/' do
     haml :home
   end

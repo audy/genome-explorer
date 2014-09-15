@@ -8,96 +8,21 @@ GIT
       sinatra
       tilt (>= 1.3.0, < 2.0)
 
-GIT
-  remote: https://github.com/dtao/dm-noisy-failures
-  revision: b02e4e8c95b25d1e85777ee4a49471b83efc8791
-  specs:
-    dm-noisy-failures (0.2.3)
-      data_mapper
-
 GEM
   remote: http://rubygems.org/
   specs:
-    addressable (2.3.6)
     backports (3.6.0)
-    bcrypt (3.1.7)
-    bcrypt-ruby (3.1.5)
-      bcrypt (>= 3.1.3)
     coderay (1.1.0)
-    daemons (1.1.9)
-    data_mapper (1.2.0)
-      dm-aggregates (~> 1.2.0)
-      dm-constraints (~> 1.2.0)
-      dm-core (~> 1.2.0)
-      dm-migrations (~> 1.2.0)
-      dm-serializer (~> 1.2.0)
-      dm-timestamps (~> 1.2.0)
-      dm-transactions (~> 1.2.0)
-      dm-types (~> 1.2.0)
-      dm-validations (~> 1.2.0)
-    data_objects (0.10.14)
-      addressable (~> 2.1)
     diff-lcs (1.2.5)
-    dm-aggregates (1.2.0)
-      dm-core (~> 1.2.0)
-    dm-constraints (1.2.0)
-      dm-core (~> 1.2.0)
-    dm-core (1.2.1)
-      addressable (~> 2.3)
-    dm-do-adapter (1.2.0)
-      data_objects (~> 0.10.6)
-      dm-core (~> 1.2.0)
-    dm-migrations (1.2.0)
-      dm-core (~> 1.2.0)
-    dm-pg-types (0.8.2)
-      data_mapper (~> 1.2.0)
-      data_objects (~> 0.10.6)
-      dm-core (~> 1.2.0)
-      dm-do-adapter (~> 1.2.0)
-      dm-migrations (~> 1.2.0)
-      dm-postgres-adapter (~> 1.2.0)
-      dm-postgres-adapter (~> 1.2.0)
-      dm-types (~> 1.2.0)
-      dm-validations (~> 1.2.0)
-      do_postgres (~> 0.10.6)
-      rake (~> 0.9.2)
-    dm-postgres-adapter (1.2.0)
-      dm-do-adapter (~> 1.2.0)
-      do_postgres (~> 0.10.6)
-    dm-serializer (1.2.2)
-      dm-core (~> 1.2.0)
-      fastercsv (~> 1.5)
-      json (~> 1.6)
-      json_pure (~> 1.6)
-      multi_json (~> 1.0)
-    dm-timestamps (1.2.0)
-      dm-core (~> 1.2.0)
-    dm-transactions (1.2.0)
-      dm-core (~> 1.2.0)
-    dm-types (1.2.2)
-      bcrypt-ruby (~> 3.0)
-      dm-core (~> 1.2.0)
-      fastercsv (~> 1.5)
-      json (~> 1.6)
-      multi_json (~> 1.0)
-      stringex (~> 1.4)
-      uuidtools (~> 2.1)
-    dm-validations (1.2.0)
-      dm-core (~> 1.2.0)
     dna (0.3.0)
-    do_postgres (0.10.14)
-      data_objects (= 0.10.14)
-    encrypted_cookie (0.0.4)
-    eventmachine (1.0.3)
     execjs (2.2.1)
-    fastercsv (1.5.5)
     haml (4.0.5)
       tilt
     jsmin (1.0.1)
     json (1.8.1)
-    json_pure (1.8.1)
     method_source (0.8.2)
     multi_json (1.10.1)
+    pg (0.17.1)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -120,6 +45,7 @@ GEM
     rspec-mocks (3.1.0)
       rspec-support (~> 3.1.0)
     rspec-support (3.1.0)
+    sequel (4.6.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -134,34 +60,26 @@ GEM
     sinatra-reloader (1.0)
       sinatra-contrib
     slop (3.6.0)
-    stringex (1.5.1)
-    thin (1.6.2)
-      daemons (>= 1.0.9)
-      eventmachine (>= 1.0.0)
-      rack (>= 1.0.0)
+    sqlite3 (1.3.8)
     tilt (1.4.1)
     uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
-    uuidtools (2.1.5)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  data_mapper
-  dm-noisy-failures!
-  dm-pg-types
-  dm-postgres-adapter
   dna
-  encrypted_cookie
   haml
+  pg
   pry
   rack-test
   rake
   rspec
+  sequel
   sinatra
   sinatra-assetpack!
   sinatra-reloader
-  thin
+  sqlite3
   uglifier
