@@ -32,6 +32,13 @@ describe Scaffold do
   it '.save' do
     expect(scaffold.save).not_to be(nil)
   end
+
+  it '.genome .genome=' do
+    genome.save
+    scaffold.genome = genome
+    expect(scaffold.save).not_to eq(nil)
+    expect(scaffold.genome).to be(genome)
+  end
 end
 
 describe Feature do
@@ -74,4 +81,10 @@ describe Feature do
     expect(feature.info).to be_a(String)
   end
 
+  it '.scaffold .scaffold=' do
+    scaffold.save
+    feature.scaffold = scaffold
+    expect(feature.save).not_to eq(nil)
+    expect(feature.scaffold).to be(scaffold)
+  end
 end
