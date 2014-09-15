@@ -1,0 +1,5 @@
+%h2 Genome #{@genome.id}
+%ul
+  %li #{@genome.feature_count} Features
+  %li #{Scaffold.where(genome: @genome).count} Scaffolds
+  %li #{'%.2g' % (Scaffold.where(genome: @genome).map{ |x| x.sequence.size }.inject(:+)/1e6)} Mb

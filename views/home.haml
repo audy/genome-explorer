@@ -6,8 +6,10 @@
       %li #{'%.2g' % Scaffold.count} Scaffolds
       %li #{'%.2g' % Feature.count} Features
 
-  %div.inner
-    %h2 Genomes
-    %ol
-      - @genomes.each do |g|
-        %li="NCBI Assembly ID: #{g.assembly_id} with #{g.feature_count} features."
+%div.inner
+  %h2 Genomes
+  %ol
+    - @genomes.each do |g|
+      %li
+        %a{href: "/genome/#{g.id}"}
+          NCBI Assembly ID: #{g.assembly_id} with #{g.feature_count} features.

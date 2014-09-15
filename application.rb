@@ -24,4 +24,9 @@ class App < Sinatra::Base
     haml :home
   end
 
+  get '/genome/:id' do
+    @genome = Genome[params[:id]]
+    haml :'genome/view'
+  end
+
 end
