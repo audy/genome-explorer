@@ -6,6 +6,9 @@ namespace :seed do
   task :genomes do
     genomes = Dir['data/*/']
 
+    # clear loggers b/c this is too noisy
+    App::DB.loggers = []
+
     genomes.each do |genome|
 
       # list files in genome directory and group by extension
