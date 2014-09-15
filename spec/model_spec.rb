@@ -1,8 +1,9 @@
 require 'spec_helper'
 
-describe Genome do
+let(:genome) { Genome.new assembly_id: 1 }
+let (:scaffold) { Scaffold.new sequence: 'GATC', genome_id: genome.id }
 
-  let(:genome) { Genome.new assembly_id: 1 }
+describe Genome do
 
   it '.new' do
     expect(genome).not_to be(nil)
@@ -21,7 +22,6 @@ end
 describe Scaffold do
 
   let (:genome) { Genome.new assembly_id: 1 }
-  let (:scaffold) { Scaffold.new sequence: 'GATC', genome_id: genome.id }
 
   it '.new' do
     expect(scaffold).not_to be(nil)
@@ -30,4 +30,7 @@ describe Scaffold do
   it '.save' do
     expect(scaffold.save).not_to be(nil)
   end
+end
+
+describe Feature do
 end
