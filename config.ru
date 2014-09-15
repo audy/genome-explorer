@@ -1,3 +1,2 @@
 require './application'
-Skellington.run!
-
+App.run!
