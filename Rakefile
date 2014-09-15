@@ -27,7 +27,7 @@ namespace :db do
   task :drop do
     App::DB.tables.each do |table|
       puts "dropping #{table}"
-      DB.drop_table(table, cascade: true)
+      App::DB.drop_table(table)
     end
   end
 
