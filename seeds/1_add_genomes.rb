@@ -31,7 +31,7 @@ namespace :seed do
 
       puts "- #{@genome.scaffolds.count} scaffolds."
 
-      # todo: get taxid from assembly id or from GFF file
+      puts 'adding features'
       Zlib::GzipReader.open(gff) do |handle|
         App::DB.transaction do
           handle.each do |line|
