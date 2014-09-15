@@ -1,3 +1,5 @@
+require 'logger'
+
 require 'bundler'
 
 Bundler.require
@@ -11,6 +13,7 @@ class App < Sinatra::Base
     require 'sinatra/reloader'
     register Sinatra::Reloader
     DB = Sequel.connect('sqlite://development.sqlite')
+    DB.loggers << Logger.new($stderr)
   end
 
   configure :production do
@@ -20,6 +23,7 @@ class App < Sinatra::Base
 
   configure :test do
     DB = Sequel.sqlite
+    DB.loggers << Logger.new($stderr)
     Sequel.extension :migration
     Sequel::Migrator.run(App::DB, 'migrations')
   end
