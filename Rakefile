@@ -1,12 +1,11 @@
 require './application.rb'
 
-Dir[File.join(File.dirname(__FILE__), 'tasks', '*.rb')].each { |f| require f }
+Dir[File.join(File.dirname(__FILE__), 'seeds', '*.rb')].each { |f| require f }
 
 desc 'start application console'
 task :console do
-  require 'irb'
   ARGV.clear
-  IRB.start
+  Pry.start
 end
 
 namespace :db do
