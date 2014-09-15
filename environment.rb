@@ -31,5 +31,3 @@ class App < Sinatra::Base
   # require models after calling Sequel.connect
   Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each { |f| require f }
 end
-
-App::DB
