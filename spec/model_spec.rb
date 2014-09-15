@@ -36,6 +36,13 @@ describe Genome do
     expect(genome.scaffolds[0]).to eq(scaffold)
   end
 
+  it '.feature_count' do
+    feature.save
+    genome.features << feature
+    genome.save
+    expect(genome.feature_count).to eq(1)
+  end
+
 end
 
 describe Scaffold do

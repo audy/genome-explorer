@@ -5,6 +5,7 @@ Sequel.migration do
     create_table :genomes do
       primary_key :id
       Integer :assembly_id, null: false
+      Integer :feature_count, default: 0
     end
 
     create_table :scaffolds do

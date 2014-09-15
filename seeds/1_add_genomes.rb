@@ -40,7 +40,9 @@ namespace :seed do
         end
       end
 
-      puts "- #{@genome.features.count} features."
+      @genome.save # force updating of counter cache
+
+      puts "- #{@genome.feature_count} features."
 
     end
   end
