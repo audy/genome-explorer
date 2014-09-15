@@ -33,7 +33,7 @@ describe Genome do
     genome.save
     scaffold.genome = genome
     scaffold.save
-    expect(genome.scaffolds[0].id).to eq(scaffold.id)
+    expect(genome.scaffolds[0]).to eq(scaffold)
   end
 
 end

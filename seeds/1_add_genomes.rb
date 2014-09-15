@@ -30,12 +30,17 @@ namespace :seed do
 
       # todo: get taxid from assembly id or from GFF file
       Zlib::GzipReader.open(gff) do |handle|
-        handle.each do |line|
-          next if line[0] == '#'
-          gff_data = parse_gff_line(line).merge(scaffold: @scaffold)
-          feature = Feature.create(gff_data)
+        App::DB.transaction do
+          handle.each do |line|
+            next if line[0] == '#'
+            gff_data = parse_gff_line(line).merge(scaffold: @scaffold,
+                                                  genome: @genome)
+            feature = Feature.create(gff_data)
+          end
         end
       end
+
+      puts "- #{@genome.features.count} features."
 
     end
   end

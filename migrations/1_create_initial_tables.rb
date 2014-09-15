@@ -9,14 +9,17 @@ Sequel.migration do
 
     create_table :scaffolds do
       primary_key :id
-      Integer :genome_id
+
+      foreign_key :genome_id, :genomes
+
       String :sequence
     end
 
     create_table :features do
       primary_key :id
 
-      Integer :scaffold_id
+      foreign_key :genome_id, :genomes
+      foreign_key :scaffold_id, :scaffolds
 
       Integer :start
       Integer :stop
