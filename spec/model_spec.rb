@@ -1,9 +1,14 @@
 require 'spec_helper'
 
+describe 'models' do
+
+  let (:genome) { Genome.new assembly_id: 1 }
+  let (:scaffold) { Scaffold.new sequence: 'GATCGATCGATCGATC', genome_id:
+                    genome.id }
+  let (:feature) { Feature.new start: 1, stop: 10, source: 'test-source', score:
+                   0.9, info: 'test-info', type: 'test-type' }
 
 describe Genome do
-
-  let(:genome) { Genome.new assembly_id: 1 }
 
   it '.new' do
     expect(genome).not_to be(nil)
@@ -17,13 +22,23 @@ describe Genome do
     expect(genome.assembly_id).to_not be(nil)
   end
 
+  it '.scaffolds <<' do
+    scaffold.save
+    genome.scaffolds << scaffold
+    genome.save
+    expect(genome.scaffolds[0]).to be(scaffold)
+  end
+
+  it '.scaffolds (added by scaffold.genome =)' do
+    genome.save
+    scaffold.genome = genome
+    scaffold.save
+    expect(genome.scaffolds[0].id).to eq(scaffold.id)
+  end
+
 end
 
 describe Scaffold do
-
-  let (:genome) { Genome.new assembly_id: 1 }
-  let (:scaffold) { Scaffold.new sequence: 'GATCGATCGATCGATC', genome_id:
-                    genome.id }
 
   it '.new' do
     expect(scaffold).not_to be(nil)
@@ -39,15 +54,23 @@ describe Scaffold do
     expect(scaffold.save).not_to eq(nil)
     expect(scaffold.genome).to be(genome)
   end
+
+  it '.features <<' do
+    scaffold.save
+    genome.scaffolds << scaffold
+    genome.save
+    expect(genome.scaffolds[0]).to be(scaffold)
+  end
+
+  it '.features = (added by features)' do
+    scaffold.save
+    feature.scaffold = scaffold
+    feature.save
+    expect(scaffold.features[0]).to eq(feature)
+  end
 end
 
 describe Feature do
-
-  let (:genome) { Genome.new assembly_id: 1 }
-  let (:scaffold) { Scaffold.new sequence: 'GATCGATCGATCGATC', genome_id:
-                    genome.id }
-  let (:feature) { Feature.new start: 1, stop: 10, source: 'test-source', score:
-                   0.9, info: 'test-info', type: 'test-type' }
 
   it '.new' do
     expect(feature).to_not eq(nil)
@@ -87,4 +110,7 @@ describe Feature do
     expect(feature.save).not_to eq(nil)
     expect(feature.scaffold).to be(scaffold)
   end
+
+end
+
 end
