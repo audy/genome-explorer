@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
-describe Skellington do
+describe App do
 
   include Rack::Test::Methods
 

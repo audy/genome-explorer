@@ -16,7 +16,7 @@ RSpec.configure do |config|
   end
 
   def app
-    Skellington
+    App
   end
 
 end

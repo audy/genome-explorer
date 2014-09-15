@@ -1,7 +1,7 @@
 require './environment.rb'
 require 'sinatra'
 
-class Skellington < Sinatra::Base
+class App < Sinatra::Base
 
   enable :sessions
 
