@@ -20,6 +20,7 @@ class App < Sinatra::Base
   end
 
   get '/' do
+    @genomes = Genome.all
     haml :home
   end
 

@@ -3,5 +3,5 @@
     %h2 Database Statistics
 
   %ol
-    - Genome.each do |genome|
-      %li="#{genome.assembly_id} #{Feature.where(genome: genome).count} features."
+    - @genomes.each do |g|
+      %li="NCBI Assembly ID: #{g.assembly_id} with #{g.feature_count} features."
