@@ -11,8 +11,12 @@ require File.join(File.dirname(__FILE__), '..', 'application')
 
 RSpec.configure do |config|
 
-
-  config.before :all do
+  # run tests in their own transaction, rolling back afterwards this ensures
+  # that tests are isolated.
+  config.around(:each) do |example|
+    App::DB.transaction rollback: :always, auto_savepoint: true do 
+      example.run
+    end
   end
 
   def app
