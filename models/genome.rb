@@ -6,8 +6,9 @@ class Genome < Sequel::Model
     resp = `bionode-ncbi search assembly #{self.assembly_id}`
     JSON.parse(resp)
   end
+
   def before_save
-    self.feature_count = self.features.size
+    self.feature_count = Feature.where(genome: self).count
     super
   end
 end
