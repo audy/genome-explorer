@@ -13,7 +13,7 @@ class App < Sinatra::Base
   configure :development do
     require 'sinatra/reloader'
     register Sinatra::Reloader
-    DB = Sequel.connect(ENV['DATABASE_URL'] || 'sqlite://development.sqlite')
+    DB = Sequel.connect(ENV['DATABASE_URL'] || "postgres://#{ENV['USER']}@127.0.0.1/genome")
     DB.loggers << Logger.new($stderr)
   end
 
