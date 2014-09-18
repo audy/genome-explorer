@@ -39,7 +39,7 @@ describe Genome do
   it '.feature_count' do
     feature.save
     genome.features << feature
-    genome.save
+    expect{genome.save}.not_to raise_error
     expect(genome.feature_count).to eq(1)
   end
 
