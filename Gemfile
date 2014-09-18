@@ -7,20 +7,21 @@ gem 'rake'
 gem 'haml'
 gem 'pry'
 
+gem 'sinatra-assetpack',
+  require: 'sinatra/assetpack',
+  git: 'git://github.com/rstacruz/sinatra-assetpack.git'
+
+gem 'uglifier'
+
 gem 'sequel'
 gem 'pg'
 
 # bioinformatics
 gem 'dna'
 
-gem 'sinatra-assetpack', :require => 'sinatra/assetpack', :git => 'git://github.com/rstacruz/sinatra-assetpack.git'
-gem 'uglifier'
-
-group :development, :test do
-  gem 'sqlite3'
-end
 
 group :test do
+  gem 'sqlite3'
   gem 'rspec'
   gem 'rack-test', :require => 'rack/test'
 end
