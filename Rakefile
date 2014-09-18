@@ -36,3 +36,13 @@ namespace :db do
 
   end
 end
+
+namespace :dump do
+  desc 'dump gene products to fasta (nucleotide)'
+  task :gene_products do
+    App::DB.loggers = []
+    Feature.where(type: 'CDS').each do |feat|
+      puts ">#{feat.id} #{feat.genome_id} #{feat.info}\n#{feat.sequence}"
+    end
+  end
+end
