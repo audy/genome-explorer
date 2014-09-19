@@ -4,7 +4,7 @@ describe 'models' do
 
   let (:genome) { Genome.new assembly_id: 1 }
   let (:scaffold) { Scaffold.new sequence: 'GATCGATCGATCGATC', genome_id:
-                    genome.id }
+                    genome.id, name: 'test scaffold' }
   let (:feature) { Feature.new start: 0, stop: scaffold.sequence.size, source: 'test-source', score:
                    0.9, info: 'test-info', type: 'test-type', scaffold: scaffold.save}
 
@@ -74,6 +74,11 @@ describe Scaffold do
     feature.scaffold = scaffold
     feature.save
     expect(scaffold.features[0]).to eq(feature)
+  end
+
+  it 'can be found by name' do
+    scaffold.save
+    expect(Scaffold.first(name: 'test scaffold')).to eq(scaffold)
   end
 end
 

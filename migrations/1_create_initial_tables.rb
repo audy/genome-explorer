@@ -14,6 +14,7 @@ Sequel.migration do
       foreign_key :genome_id, :genomes
 
       String :sequence
+      String :name, null: false, index: true
     end
 
     create_table :features do
@@ -24,6 +25,7 @@ Sequel.migration do
 
       Integer :start
       Integer :stop
+      Integer :frame
       String :source
       Float :score
       String :strand 

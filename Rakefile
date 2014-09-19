@@ -1,5 +1,9 @@
 require './application.rb'
 
+require 'yaml'
+
+App::DB.loggers = []
+
 Dir[File.join(File.dirname(__FILE__), 'seeds', '*.rb')].each { |f| require f }
 
 desc 'start application console'
@@ -40,9 +44,24 @@ end
 namespace :dump do
   desc 'dump gene products to fasta (nucleotide)'
   task :gene_products do
-    App::DB.loggers = []
-    Feature.where(type: 'CDS').each do |feat|
-      puts ">#{feat.id} #{feat.genome_id} #{feat.info}\n#{feat.sequence}"
+    Feature.where(type: 'CDS', strand: '.').each do |feat|
+      unless feat.sequence =~ /^ATG/
+        puts ">#{feat.id} #{feat.strand} #{feat.frame} #{feat.genome_id} #{feat.info}\n#{feat.sequence}"
+      end
     end
+  end
+end
+
+namespace :stat do
+  desc 'print start codon usage statistics'
+  task :codons do
+    counts = Hash.new { |h,k| h[k] = 0 }
+    pbar = ProgressBar.new 'counting', 5_000
+    Feature.first(5_000).each do |feat|
+      pbar.inc
+      counts[feat.sequence[0..2]] += 1
+    end
+    pbar.finish
+    puts counts.to_yaml
   end
 end

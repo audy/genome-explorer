@@ -25,11 +25,15 @@ namespace :seed do
         records = Dna.new(handle, format: :fasta)
         records.each do |record|
           @scaffold = Scaffold.create genome: @genome,
-                                      sequence: record.sequence
+                                      sequence: record.sequence,
+                                      name: record.name.split.first
         end
       end
 
       puts "- #{@genome.scaffolds.count} scaffolds."
+
+      # lookup scaffold by name, memoize in a hash to speed things up
+      scaffolds = Hash.new { |h,k| h[k] = Scaffold.first(name: k) }
 
       puts 'adding features'
       columns = %w{start stop source strand score type info scaffold_id genome_id}.map &:to_sym
@@ -40,8 +44,10 @@ namespace :seed do
           handle.each_slice(1000) do |chunk|
 
             dat = chunk.reject { |x| x[0] == '#' }.map do |x|
-              parse_gff_line(x).merge(scaffold_id: @scaffold.id,
-                                   genome_id: @genome.id).values_at(*columns)
+              dat = parse_gff_line(x)
+              dat[:scaffold_id] = scaffolds[dat.delete(:scaffold_name)].id
+              dat[:genome_id] = @genome.id
+              dat.values_at(*columns)
             end
 
             App::DB[:features].import(columns, dat)
@@ -59,21 +65,26 @@ namespace :seed do
 end
 
 def parse_gff_line(line)
-  line = line.strip.split("\t")
-  scaffold_id = line[0].to_i
-  source = line[1]
-  type = line[2]
-  start = line[3].to_i
-  stop = line[4].to_i
-  score = line[5].to_f
-  strand = line[6] == '+' ? 'forward' : 'reverse'
-  info = line[8]
 
-  { start: start,
+  fields = line.strip.split("\t")
+
+  scaffold_name = fields[0]
+  source        = fields[1]
+  type          = fields[2]
+  start         = Integer fields[3] rescue nil
+  stop          = Integer fields[4] rescue nil
+  score         = Float fields[5] rescue nil
+  strand        = fields[6]
+  frame         = Integer fields[7] rescue nil
+  info          = fields[8]
+
+  { scaffold_name: scaffold_name,
+    start: start,
     source: source,
     stop: stop,
     strand: strand,
     score: score,
     type: type,
     info: info }
+
 end
