@@ -44,11 +44,19 @@ end
 namespace :dump do
   desc 'dump gene products to fasta (nucleotide)'
   task :gene_products do
-    Feature.where(type: 'CDS', strand: '.').each do |feat|
-      unless feat.sequence =~ /^ATG/
-        puts ">#{feat.id} #{feat.strand} #{feat.frame} #{feat.genome_id} #{feat.info}\n#{feat.sequence}"
-      end
+    Feature.where(type: 'CDS').each do |feat|
+      puts ">#{feat.id}\n#{feat.sequence}"
     end
+  end
+
+  desc 'dump amino acid sequences'
+  task :proteins do
+    pbar = ProgressBar.new 'dumping', Feature.where(type: 'CDS').count
+    Feature.where(type: 'CDS').each do |feat|
+      pbar.inc
+      puts ">#{feat.id}\n#{feat.protein_sequence}"
+    end
+    pbar.finish
   end
 end
 

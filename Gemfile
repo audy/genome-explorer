@@ -18,9 +18,9 @@ gem 'pg'
 
 # bioinformatics
 gem 'dna'
+gem 'bio'
 
 gem 'progressbar'
-
 
 group :test do
   gem 'sqlite3'

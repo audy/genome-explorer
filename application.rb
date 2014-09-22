@@ -32,4 +32,9 @@ class App < Sinatra::Base
     haml :'genome/view'
   end
 
+  get '/feature/:id' do
+    @feature = Feature[params[:id]]
+    haml :'feature/view'
+  end
+
 end

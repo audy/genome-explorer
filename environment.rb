@@ -5,6 +5,8 @@ require 'bundler'
 
 Bundler.require
 
+require './helpers.rb'
+
 class App < Sinatra::Base
 
   # construct default :public_folder and :views

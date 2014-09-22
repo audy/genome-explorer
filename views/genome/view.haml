@@ -3,3 +3,13 @@
   %li #{@genome.feature_count} Features
   %li #{Scaffold.where(genome: @genome).count} Scaffolds
   %li #{'%.2g' % (Scaffold.where(genome: @genome).map{ |x| x.sequence.size }.inject(:+)/1e6)} Mb
+
+%h3 CDS Features
+
+%ul
+  - Feature.where(genome_id: @genome.id, type: 'CDS').order_by(:start).each do |feature|
+    %li
+      %code
+        #{feature.start} - #{feature.stop}
+      %a{href: "/feature/#{feature.id}"}
+        #{feature.product}

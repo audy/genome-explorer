@@ -17,4 +17,17 @@ class Feature < Sequel::Model
     end
     seq
   end
+
+  def protein_sequence
+    Bio::Sequence.auto(self.sequence).translate
+  end
+
+  def product
+    self.info.match(/product=(.*);/)[1] rescue 'NA'
+  end
+
+  def from_gff_line line
+    self.new(parse_gff_line(line))
+  end
+
 end
