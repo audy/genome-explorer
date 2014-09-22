@@ -1,6 +1,9 @@
 require './environment.rb'
 require 'sinatra'
 
+# models must be required *after* calling Sequel.connect
+Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each { |f| require f }
+
 class App < Sinatra::Base
 
   enable :sessions

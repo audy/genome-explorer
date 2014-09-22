@@ -28,6 +28,4 @@ class App < Sinatra::Base
     Sequel::Migrator.run(App::DB, 'migrations')
   end
 
-  # models must be required *after* calling Sequel.connect
-  Dir[File.join(File.dirname(__FILE__), 'models', '*.rb')].each { |f| require f }
 end
