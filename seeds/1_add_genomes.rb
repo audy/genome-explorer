@@ -29,7 +29,7 @@ namespace :seed do
       @genome = Genome.create assembly_id: File.basename(genome),
                               organism: organism
 
-      puts "adding genome: #{@genome}."
+      puts "adding genome: #{@genome.organism}."
 
       Zlib::GzipReader.open(fna) do |handle|
         records = Dna.new(handle, format: :fasta)
