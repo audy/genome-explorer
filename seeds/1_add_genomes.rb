@@ -11,26 +11,19 @@ namespace :seed do
 
     App::DB.transaction {
 
-    genomes.each do |genome|
+    genomes.each do |genome_dir|
 
-      # list files in genome directory and group by extension
-      bf = Dir[File.join(genome, '*')].group_by { |x| x[-6..-1] }
+      files = get_genome_files(genome_dir)
+      gff, fna = files[:gff], files[:fna]
 
-      # XXX assumes there is only one gff and fna file per directory
-      gff = bf['gff.gz'].first
-      fna = bf['fna.gz'].first
+      assembly_id = File.basename(genome)
 
-      # parse taxonomy from first line in fasta file
-      accession = Zlib::GzipReader.open(fna).gets.split[0][1..-1]
-
-      dat = JSON.parse(`bionode-ncbi search nucleotide #{accession}`)
-      organism = dat['organism']
-
-      @genome = Genome.create assembly_id: File.basename(genome),
-                              organism: organism
-
+      @genome = Genome.new assembly_id: assembly_id
+      @genome.update_info_from_ncbi! # triggers save
+      
       puts "adding genome: #{@genome.organism}."
 
+      # create scaffolds
       Zlib::GzipReader.open(fna) do |handle|
         records = Dna.new(handle, format: :fasta)
         records.each do |record|
@@ -45,6 +38,9 @@ namespace :seed do
       # lookup scaffold by name, memoize in a hash to speed things up
       scaffolds = Hash.new { |h,k| h[k] = Scaffold.first(name: k) }
 
+      # create features
+      # this code is highly optimized and therefore real ugly
+      # but I was able to get loading time down to 5 minutes from 100
       puts 'adding features'
       columns = %w{start stop source strand score type info scaffold_id genome_id}.map &:to_sym
       Zlib::GzipReader.open(gff) do |handle|
@@ -76,27 +72,13 @@ namespace :seed do
   end
 end
 
-def parse_gff_line(line)
 
-  fields = line.strip.split("\t")
+# return fna and gff file paths given a path to an NCBI assembly download
+# directory
+def get_genome_files path
+  # list files in genome path and group by extension
+  bf = Dir[File.join(directory, '*')].group_by { |x| x[-6..-1] }
 
-  scaffold_name = String fields[0]
-  source        = String fields[1]
-  type          = String fields[2]
-  start         = Integer fields[3] rescue nil
-  stop          = Integer fields[4] rescue nil
-  score         = Float fields[5] rescue nil
-  strand        = String fields[6]
-  frame         = Integer fields[7] rescue nil
-  info          = String fields[8]
-
-  { scaffold_name: scaffold_name,
-    start: start,
-    source: source,
-    stop: stop,
-    strand: strand,
-    score: score,
-    type: type,
-    info: info }
-
+  # XXX assumes there is only one gff and fna file per directory
+  { fna: bf['fna.gz'].first, gff: bf['gff.gz'].first }
 end
