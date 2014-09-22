@@ -16,7 +16,7 @@ namespace :seed do
       files = get_genome_files(genome_dir)
       gff, fna = files[:gff], files[:fna]
 
-      assembly_id = File.basename(genome)
+      assembly_id = File.basename(genome_dir)
 
       @genome = Genome.new assembly_id: assembly_id
       @genome.update_info_from_ncbi! # triggers save
@@ -77,7 +77,7 @@ end
 # directory
 def get_genome_files path
   # list files in genome path and group by extension
-  bf = Dir[File.join(directory, '*')].group_by { |x| x[-6..-1] }
+  bf = Dir[File.join(path, '*')].group_by { |x| x[-6..-1] }
 
   # XXX assumes there is only one gff and fna file per directory
   { fna: bf['fna.gz'].first, gff: bf['gff.gz'].first }
