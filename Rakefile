@@ -56,8 +56,8 @@ namespace :stat do
   desc 'print start codon usage statistics'
   task :codons do
     counts = Hash.new { |h,k| h[k] = 0 }
-    pbar = ProgressBar.new 'counting', 5_000
-    Feature.first(5_000).each do |feat|
+    pbar = ProgressBar.new 'counting', 1_000
+    Feature.where(Sequel.~(strand: '.')).first(1_000).each do |feat|
       pbar.inc
       counts[feat.sequence[0..2]] += 1
     end
