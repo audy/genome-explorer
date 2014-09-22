@@ -9,6 +9,8 @@ namespace :seed do
     # clear loggers b/c this is too noisy
     App::DB.loggers = []
 
+    App::DB.transaction {
+
     genomes.each do |genome|
 
       # list files in genome directory and group by extension
@@ -69,6 +71,8 @@ namespace :seed do
       puts "- #{@genome.feature_count} features."
 
     end
+
+    }
   end
 end
 
