@@ -12,4 +12,6 @@
     - @genomes.each do |g|
       %li
         %a{href: "/genome/#{g.id}"}
-          NCBI Assembly ID: #{g.assembly_id} with #{g.feature_count} features.
+          #{g.organism}
+        %span
+          [ #{g.feature_count} features on #{g.scaffolds.size} scaffolds ]

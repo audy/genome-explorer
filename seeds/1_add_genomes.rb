@@ -18,8 +18,16 @@ namespace :seed do
       gff = bf['gff.gz'].first
       fna = bf['fna.gz'].first
 
-      @genome = Genome.create assembly_id: File.basename(genome)
-      puts "adding genome: #{@genome.assembly_id}."
+      # parse taxonomy from first line in fasta file
+      accession = Zlib::GzipReader.open(fna).gets.split[0][1..-1]
+
+      dat = JSON.parse(`bionode-ncbi search nucleotide #{accession}`)
+      organism = dat['organism']
+
+      @genome = Genome.create assembly_id: File.basename(genome),
+                              organism: organism
+
+      puts "adding genome: #{@genome}."
 
       Zlib::GzipReader.open(fna) do |handle|
         records = Dna.new(handle, format: :fasta)

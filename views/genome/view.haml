@@ -1,4 +1,4 @@
-%h2 Genome #{@genome.id}
+%h2 #{@genome.organism}
 %ul
   %li #{@genome.feature_count} Features
   %li #{Scaffold.where(genome: @genome).count} Scaffolds
