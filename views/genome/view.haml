@@ -24,11 +24,29 @@
           %th
             Gene Product
       %tbody
-        - Feature.where(genome_id: @genome.id, type: 'CDS').order_by(:start).each do |feature|
+        - @features.each do |feature|
           %tr
             %td
               %code
-                #{feature.start} - #{feature.stop}
+                #{feature[:start]} - #{feature[:stop]}
             %td
-              %a{href: "/feature/#{feature.id}"}
-                #{feature.product}
+              %a{href: "/feature/#{feature[:id]}"}
+                #{feature[:info].match(/product=(.*);/)[1] rescue 'NA'}
+
+
+%div.row
+  %div.span-lg-12
+    %ul.pagination
+      %li
+        %a
+          &laquo;
+      - (@page..@page+20).each do |page_no|
+        - if @page == page_no
+          %li.active
+            %a.active #{page_no}
+        - else
+          %li
+            %a{ href: "?page=#{page_no}" } #{page_no}
+      %li
+        %a
+          &raquo;

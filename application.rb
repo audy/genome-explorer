@@ -32,6 +32,12 @@ class App < Sinatra::Base
 
   get '/genome/:id' do
     @genome = Genome[params[:id]]
+
+    @page = (params[:page] || 1).to_i
+    paginated = Feature.dataset.where(type: 'CDS').order(:id).paginate(@page, 25)
+    @total_pages = paginated.page_count
+    @features = paginated.all
+
     haml :'genome/view'
   end
 
