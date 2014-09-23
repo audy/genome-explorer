@@ -19,7 +19,7 @@ namespace :db do
     if args[:version]
       puts "Migrating to version #{args[:version]}"
       Sequel::Migrator.run(App::DB,
-                           'migrations',
+                           File.expand_path('migrations/'),
                            target: args[:version].to_i)
     else
       puts "Migrating to latest"

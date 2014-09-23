@@ -30,4 +30,11 @@ class Feature < Sequel::Model
     self.new(parse_gff_line(line))
   end
 
+  def similar
+    hits = App::DB[:similarities].where(source_id: self.id)
+    hits.map do |hit|
+      Feature[hit[:target_id]]
+    end
+  end
+
 end
