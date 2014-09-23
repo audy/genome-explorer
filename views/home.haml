@@ -6,12 +6,25 @@
       %li #{'%.2g' % Scaffold.count} Scaffolds
       %li #{'%.2g' % Feature.count} Features
 
-%div.inner
-  %h2 Genomes
-  %ol
-    - @genomes.each do |g|
-      %li
-        %a{href: "/genome/#{g.id}"}
-          #{g.organism}
-        %span
-          [ #{g.feature_count} features ]
+%div.row
+  %div.span-lg-12
+    %h2 Genomes
+    %table.table.table-striped.table-bordered.table-condensed
+      %thead
+        %tr
+          %th
+            \#
+          %th
+            Name
+          %th
+            Features
+      %tbody
+        - @genomes.each do |g|
+          %tr
+            %td
+              #{g.id}
+            %td
+              %a{href: "/genome/#{g.id}"}
+                #{g.organism}
+            %td
+              #{g.feature_count} features

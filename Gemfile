@@ -15,6 +15,7 @@ gem 'uglifier'
 
 gem 'sequel'
 gem 'pg'
+gem 'monsterid'
 
 # bioinformatics
 gem 'dna'

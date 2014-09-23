@@ -1,6 +1,6 @@
 body {
   margin-top: 60px;
-  background: #eee;
+  background: #fefefe;
 }
 
 .navbar {
@@ -15,4 +15,8 @@ body {
   display: block;
   background-color #000;
   border-radius: 50%;
+}
+
+.img-profile {
+  border: 5px solid #efefef;
 }

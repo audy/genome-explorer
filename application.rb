@@ -37,4 +37,9 @@ class App < Sinatra::Base
     haml :'feature/view'
   end
 
+  get '/genome/pic/:id.png' do
+    response.headers['content_type'] = 'image/png'
+    response.write(MonsterID.new(Digest::MD5.hexdigest(params[:id])).to_datastream)
+  end
+
 end
