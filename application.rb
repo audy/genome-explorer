@@ -23,7 +23,7 @@ class App < Sinatra::Base
   end
 
   get '/' do
-    @page = params[:page] || 1
+    @page = (params[:page] || 1).to_i
     paginated = DB[:genomes].order(:id).paginate(@page, 25)
     @total_pages = paginated.page_count
     @genomes = paginated.all

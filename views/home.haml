@@ -6,24 +6,6 @@
       %li #{'%.2g' % Scaffold.count} Scaffolds
       %li #{'%.2g' % Feature.count} Features
 
-
-%div.row
-  %div.span-lg-12
-    %ul.pagination
-      %li
-        %a
-          &laquo;
-      - (1..@total_pages).each do |page_no|
-        - if @page == page_no
-          %li.active
-            %a.active #{page_no}
-        - else
-          %li
-            %a #{page_no}
-      %li
-        %a
-          &raquo;
-
 %div.row
   %div.span-lg-12
     %h2.page-header Genomes
@@ -46,3 +28,20 @@
                 #{g[:organism]}
             %td
               #{g[:feature_count]} features
+
+%div.row
+  %div.span-lg-12
+    %ul.pagination
+      %li
+        %a
+          &laquo;
+      - (1..@total_pages).each do |page_no|
+        - if @page == page_no
+          %li.active
+            %a.active #{page_no}
+        - else
+          %li
+            %a{ href: "/?page=#{page_no}" } #{page_no}
+      %li
+        %a
+          &raquo;
