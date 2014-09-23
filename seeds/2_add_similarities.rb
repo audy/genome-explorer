@@ -10,11 +10,13 @@ namespace :seed do
 
     App::DB.transaction {
 
-      File.open('similarities.txt') do |handle|
+      # delete current relations!
+      @neighbors.delete
         handle.each do |line|
           dat = JSON.parse(line)
           query = dat["query"]
           dat["hits"].each do |hit|
+            
             @neighbors.insert(source_id: query, target_id: hit)
           end
         end
