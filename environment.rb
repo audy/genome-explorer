@@ -30,4 +30,6 @@ class App < Sinatra::Base
     Sequel::Migrator.run(App::DB, 'migrations')
   end
 
+  DB.extension(:pagination)
+
 end

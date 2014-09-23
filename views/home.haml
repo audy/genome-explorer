@@ -6,9 +6,27 @@
       %li #{'%.2g' % Scaffold.count} Scaffolds
       %li #{'%.2g' % Feature.count} Features
 
+
 %div.row
   %div.span-lg-12
-    %h2 Genomes
+    %ul.pagination
+      %li
+        %a
+          &laquo;
+      - (1..@total_pages).each do |page_no|
+        - if @page == page_no
+          %li.active
+            %a.active #{page_no}
+        - else
+          %li
+            %a #{page_no}
+      %li
+        %a
+          &raquo;
+
+%div.row
+  %div.span-lg-12
+    %h2.page-header Genomes
     %table.table.table-striped.table-bordered.table-condensed
       %thead
         %tr
@@ -22,9 +40,9 @@
         - @genomes.each do |g|
           %tr
             %td
-              #{g.id}
+              #{g[:id]}
             %td
-              %a{href: "/genome/#{g.id}"}
-                #{g.organism}
+              %a{href: "/genome/#{g[:id]}"}
+                #{g[:organism]}
             %td
-              #{g.feature_count} features
+              #{g[:feature_count]} features
