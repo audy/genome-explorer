@@ -1,28 +1,54 @@
-%h2 Feature #{@feature.id}
-%ul
-  %li
-    Organism:
-    %code
-      %a{href: "/genome/#{@feature.genome_id}"}
-        #{@feature.genome.organism}
-  %li
-    Type:
-    %code #{@feature.type}
-  %li
-    Coords:
-    %code #{@feature.start} - #{@feature.stop}
-  %li
-    Frame:
-    %code #{@feature.frame || 'NA'}
-  %li
-    Strand:
-    %code #{@feature.strand || 'NA'}
-  %li
-    Score:
-    %code #{@feature.score}
-  %li
-    Info:
-    %code #{@feature.info}
+
+%div.row
+  %div.col-lg-12
+    %h2 Feature #{@feature.id}
+    %ul.list-group
+      %li.list-group-item
+        Organism:
+        %code
+          %a{href: "/genome/#{@feature.genome_id}"}
+            #{@feature.genome.organism}
+      %li.list-group-item
+        Type:
+        %code #{@feature.type}
+      %li.list-group-item
+        Coords:
+        %code #{@feature.start} - #{@feature.stop}
+      %li.list-group-item
+        Frame:
+        %code #{@feature.frame || 'NA'}
+      %li.list-group-item
+        Strand:
+        %code #{@feature.strand || 'NA'}
+      %li.list-group-item
+        Score:
+        %code #{@feature.score || 'NA' }
+      %li.list-group-item
+        Info:
+        %pre #{@feature.info}
+
+%div.row
+  %div.col-lg-12
+  - if @feature.type == 'CDS'
+    %h3 Similar Proteins
+    %div
+      %table.table.table-bordered.table-striped.table-compressed
+        %thead
+          %tr
+            %th Organism
+            %th Product
+        %tbody
+          - @feature.similar.each do |sim|
+            %tr
+              %td
+                %a{href: "/genome/#{sim.genome.id}" }
+                  #{sim.genome.organism}
+              %td
+                %a{href: "/feature/#{sim.id}" }
+                  #{sim.product}
+
+
+%hr
 
 %h3 Sequence
 
@@ -33,13 +59,3 @@
   %h3 Translate Amino Acid Sequence
   %pre
     #{@feature.protein_sequence}
-
-
-- if @feature.type == 'CDS'
-  %h3 Similar Proteins
-  %ul
-    - @feature.similar.each do |sim|
-      %li
-        #{sim.genome.organism} - 
-        %a{href: "/feature/#{sim.id}" }
-          #{sim.product}
