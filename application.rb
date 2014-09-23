@@ -34,7 +34,7 @@ class App < Sinatra::Base
     @genome = Genome[params[:id]]
 
     @page = (params[:page] || 1).to_i
-    paginated = Feature.dataset.where(type: 'CDS').order(:id).paginate(@page, 25)
+    paginated = Feature.dataset.where(type: 'CDS', genome_id: @genome.id).order(:id).paginate(@page, 25)
     @total_pages = paginated.page_count
     @features = paginated.all
 
