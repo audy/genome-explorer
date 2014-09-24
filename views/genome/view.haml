@@ -7,6 +7,10 @@
       %li #{@genome.feature_count} Features
       %li #{Scaffold.where(genome: @genome).count} Scaffolds
       %li #{'%.2g' % (Scaffold.where(genome: @genome).map{ |x| x.sequence.size }.inject(:+)/1e6)} Mb
+      %li
+        NCBI Assembly:
+        %a{ href: "http://www.ncbi.nlm.nih.gov/assembly/#{@genome.assembly_id}"}
+          #{@genome.assembly_id}
 
 %hr
 
