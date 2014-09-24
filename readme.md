@@ -4,8 +4,8 @@
 
 LICENSE: MIT
 
-There are those who wish to view genomes (bo-RING!) and then those who wish to
-_explore_ them.
+There are those who wish to view genomes (bo-RING!) and then there are those who
+wish to _explore_ them.
 
 ## Requirements
 
