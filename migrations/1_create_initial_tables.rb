@@ -4,7 +4,9 @@ Sequel.migration do
     
     create_table :genomes do
       primary_key :id
-      Integer :assembly_id, null: false
+
+      Integer :assembly_id, null: false, unique: true
+
       Integer :feature_count, default: 0
       String :organism, null: false
     end

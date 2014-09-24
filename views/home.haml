@@ -1,14 +1,16 @@
-%header{class: 'hero-unit'}
-  %div.inner
+%div.row
+  %div.col-lg-12
     %h2 Database Statistics
     %ul
       %li #{'%2d' % Genome.count} Genomes
       %li #{'%.2g' % Scaffold.count} Scaffolds
       %li #{'%.2g' % Feature.count} Features
 
+%hr
+
 %div.row
-  %div.span-lg-12
-    %h2.page-header Genomes
+  %div.col-lg-12
+    %h2 Genomes
     %table.table.table-striped.table-bordered.table-condensed
       %thead
         %tr

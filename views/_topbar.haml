@@ -1,8 +1,10 @@
-%div{class: 'navbar navbar-fixed-top'}
-  %a{class: 'navbar-brand', href: '/'} 
-    %span.logo 🔬 
-    %span.name Genome-Explorer
-
-  %ul{:class => 'nav navbar-nav'}
-    %li
-      %a{href: 'https://github.com/audy/genome-explorer'} source
+%nav.navbar.navbar-fixed-top
+  %div.container-fluid
+    %div.navbar-header
+      %a.navbar-brand{href: '/'} 
+        %span.logo 🔬 
+        %span.name Genome-Explorer
+    %div.collapse.navbar-collapse
+      %ul.nav.navbar-nav
+        %li
+          %a{href: 'https://github.com/audy/genome-explorer'} source
