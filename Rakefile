@@ -2,8 +2,6 @@ require './application.rb'
 
 require 'yaml'
 
-App::DB.loggers = []
-
 Dir[File.join(File.dirname(__FILE__), 'seeds', '*.rb')].each { |f| require f }
 
 desc 'start application console'
