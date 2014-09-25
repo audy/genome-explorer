@@ -28,6 +28,7 @@ class App < Sinatra::Base
     DB = Sequel.sqlite
     Sequel.extension :migration
     Sequel::Migrator.run(App::DB, 'migrations')
+    DB.loggers << Logger.new($stderr)
   end
 
   DB.extension(:pagination)

@@ -5,10 +5,10 @@ Sequel.migration do
     create_table :genomes do
       primary_key :id
 
-      Integer :assembly_id, null: false, unique: true
+      Integer :assembly_id, unique: true
 
       Integer :feature_count, default: 0
-      String :organism, null: false
+      String :organism
     end
 
     create_table :scaffolds do
@@ -17,7 +17,7 @@ Sequel.migration do
       foreign_key :genome_id, :genomes
 
       String :sequence
-      String :name, null: false, index: true
+      String :name
     end
 
     create_table :features do

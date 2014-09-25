@@ -1,12 +1,13 @@
 require 'spec_helper'
 
 describe Genome do
-  let (:genome) { Genome.new assembly_id: 121751 }
+  let (:genome) { Genome.new.save }
 
-  it '.fetch_assembly_info_from_ncbi!' do
-    genome.fetch_assembly_info_from_ncbi!
-    expect(genome.assembly_data).to_not be(nil)
-    expect(genome.assembly_data).to be_a(String)
+  it 'can have friends' do
+    genome.update({ friendships: [ genome ] })
+    genome.save
+
+    expect(Genome[genome.id].friends.size).not_to eq(0)
   end
 
 end
