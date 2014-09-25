@@ -20,6 +20,8 @@ gem 'activerecord-import'
 
 gem 'carrierwave'
 
+gem 'rails_stdout_logging'
+
 gem 'monsterid'
 
 gem 'bootstrap-sass'
