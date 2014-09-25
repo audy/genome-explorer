@@ -10,7 +10,7 @@ default: &default
 
 development:
   <<: *default
-  username: austin
+  username: erictriplett
   adapter: postgresql
   database: omgenomes
 

@@ -14,10 +14,12 @@ class Genome < ActiveRecord::Base
 
   def pull_from_ncbi
 
-    @genome = Genome.find_by_assembly_id self.assembly_id
+    @genome = self
 
     # get metadata from ncbi
-    dat = JSON.parse(`bionode-ncbi search assembly #{self.assembly_id}`)
+    ncbi_res = `bionode-ncbi search assembly #{self.assembly_id}`
+    p ncbi_res
+    dat = JSON.parse(ncbi_res)
 
     # remove features and scaffolds if there are any
     @genome.features.delete_all
@@ -33,22 +35,20 @@ class Genome < ActiveRecord::Base
 
     # has to be loaded before features so that features can reference a
     # scaffold
-    read_scaffolds(fna["path"]).each do |scaffold|
-      scaffold.genome = @genome
-      scaffold.save
+    read_scaffolds(fna["path"]).each_slice(10) do |scaffolds|
+      scaffolds.map! { |x| x.genome = @genome; x }
+      Scaffold.import scaffolds
     end
 
     # has to be loaded after scaffolds
-    read_features(gff["path"]).each do |feature|
-      feature.genome = @genome
-      feature.save
+    read_features(gff["path"]).each_slice(1_000) do |features|
+      features.map! { |x| x.genome = @genome; x }
+      Feature.import features
     end
-
-    @genome.save
 
   end
 
-  handle_asynchronously :pull_from_ncbi
+#  handle_asynchronously :pull_from_ncbi
 end
 
 #
@@ -66,9 +66,8 @@ end
 # Return an array of (unsaved) Features with attributes from specified GFF file.
 #
 def read_features path
-
   # memoize scaffold lookup
-  scaffolds = Hash.new { |h,k| Scaffold.find_by_scaffold_name(k) }
+  scaffolds = Hash.new { |h,k| h[k] = Scaffold.find_by_scaffold_name(k) }
 
   Zlib::GzipReader.open(path) do |handle|
     handle.map do |line|
