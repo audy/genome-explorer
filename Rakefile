@@ -11,7 +11,6 @@ namespace :dump do
   task :proteins => :environment do
 
     out = File.open('proteins.fasta', 'w')
-    proteins = Feature.where(feature_type: 'CDS')
 
     pbar = ProgressBar.new 'dumping', proteins.count
 
