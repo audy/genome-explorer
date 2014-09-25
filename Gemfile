@@ -41,6 +41,8 @@ gem 'haml-rails'
 gem 'pry'
 gem 'pry-rails'
 
+gem 'progressbar'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
