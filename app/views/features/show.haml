@@ -30,14 +30,22 @@
         %pre #{@feature.info}
 
 
-%div.row
-  %div.col-lg-12
-    %h3 Sequence
+- unless @related_features.nil?
+  %div.row
+    %div.col-lg-12
+      %h3 Similar Proteins
+      %table.table.table-bordered.table-striped.table-condensed
+        %thead
+          %tr
+            %th Gene Product
+            %th Organism
+        %tbody
+          - @related_features.each do |related_feature|
+            %tr
+              %td=link_to related_feature.product, genome_feature_path(related_feature.genome, related_feature)
+              %td=link_to related_feature.genome.organism, genome_path(related_feature.genome)
 
-%div.row
-  %div.col-lg-12
-    %pre
-      #{@feature.sequence}
+- # amino acid sequences
 
 - if @feature.feature_type == 'CDS'
   %div.row
