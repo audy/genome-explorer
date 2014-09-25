@@ -23,5 +23,7 @@
               #{g[:id]}
             %td
               = link_to g[:organism], genome_path(g)
+              - if g[:stats]['total_proteins'].to_i.zero?
+                %div.badge unannotated
             %td
               = "#{time_ago_in_words(g.created_at)} ago"
