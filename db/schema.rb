@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925144020) do
+ActiveRecord::Schema.define(version: 20140925173824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,13 @@ ActiveRecord::Schema.define(version: 20140925144020) do
     t.hstore   "stats"
     t.hstore   "ncbi_metadata"
     t.string   "avatar"
+  end
+
+  create_table "protein_relationships", id: false, force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "feature_id"
+    t.integer  "related_feature_id"
   end
 
   create_table "scaffolds", force: true do |t|
