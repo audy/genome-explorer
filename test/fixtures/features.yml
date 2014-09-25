@@ -4,7 +4,7 @@ one:
   start: 1
   stop: 1
   strand: MyString
-  type: 
+  feature_type: 
   info: MyString
   scaffold_id: 
   frame: 1
@@ -15,7 +15,7 @@ two:
   start: 1
   stop: 1
   strand: MyString
-  type: 
+  feature_type: 
   info: MyString
   scaffold_id: 
   frame: 1
