@@ -1,20 +1,27 @@
+= link_to 'Back', genomes_path
+
 %div.row
   %div.col-sm-2
-    genome picture
+    = image_tag @genome.avatar.url, class: 'img-circle img-avatar'
   %div.col-sm-10
     %h2 #{@genome.organism}
     %ul
-      %li #{@genome.features.count} Features
-      %li #{@genome.scaffolds.count} Scaffolds
-      %li #{'%.2g' % @genome.scaffolds.map{ |x| x.sequence.size }.inject(:+)/1e6 rescue 'none'} Mb
       %li
         NCBI Assembly:
         %a{ href: "http://www.ncbi.nlm.nih.gov/assembly/#{@genome.assembly_id}"}
           #{@genome.assembly_id}
+      %li #{@genome[:stats]['total_scaffolds']} Scaffolds (#{'%.2f' % (@genome[:stats]['genome_size'].to_f/1e6)} Mb)
+      %li
+        #{number_with_delimiter @genome[:stats]['total_features']} Features /
+        #{number_with_delimiter @genome[:stats]['total_proteins']} Proteins
+      %li Last Updated: #{time_ago_in_words(@genome.updated_at)} ago
+      %li Created: #{time_ago_in_words(@genome.created_at)} ago
 
+%hr
 
 %div.row
   %div.col-md-12
+    %h3 Protein Coding Genes
     %table.table.table-bordered.table-striped.table-condensed
       %thead
         %tr
@@ -31,5 +38,8 @@
             %td
               = link_to feature.product, genome_feature_path(@genome, feature)
 
-
-= link_to 'Back', genomes_path
+%div.row
+  %div.col-md-12
+    %h3 NCBI Metadata
+    %pre
+      = @genome[:ncbi_metadata]['meta']

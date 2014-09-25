@@ -11,10 +11,12 @@
           %th Created At
           %th Queue
       - @delayed_jobs.each do |job|
-        %tr{ class: job.failed? ? 'warning' : '' }
+        %tr
           %td
             = link_to "#{job.id}", delayed_job_path(job)
           %td
-            = job.created_at
+            #{job.created_at}
+            - if job.attempts > 0
+              %span.badge.alert-danger.pull-right #{job.attempts} attempts
           %td
             = job.queue || 'NA'

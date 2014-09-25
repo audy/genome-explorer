@@ -4,5 +4,9 @@
   %li Total Genomes: #{Genome.count}
   %li Features: #{Feature.count}
   %li Scaffolds: #{Scaffold.count}
-  - last = Genome.order(:created_at).first
-  %li Latest Genome: <i>#{last.organism}</i> added #{time_ago_in_words(last.created_at)} ago.
+  - last = Genome.order(created_at: :desc).first
+  %li
+    Latest Genome:
+    %em
+      = link_to "#{last.organism}", genome_path(last)
+    added #{time_ago_in_words(last.created_at)} ago.

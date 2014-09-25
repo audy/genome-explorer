@@ -1,6 +1,6 @@
 !!! html
 %head
-  %title Genome-Explorer
+  %title Genome Explorer
   = stylesheet_link_tag 'application', media: 'all', :'data-turbolinks-track' => true
   = javascript_include_tag 'application', :'data-turbolinks-track' => true
   = csrf_meta_tags
@@ -10,14 +10,14 @@
     %nav.navbar.navbar-fixed-top
       %div.container-fluid
         %div.navbar-header
-          %a.navbar-brand{href: '/'} 
+          %a.navbar-brand{href: '/'}
             %span.logo 🔬 
-            %span.name Genome-Explorer
+            %span.name Genome Explorer
         %div.collapse.navbar-collapse
           %ul.nav.navbar-nav
             %li
               = link_to 'Genomes', genomes_path
             %li
-              = link_to 'Jobs', delayed_jobs_path
+              = link_to raw("Jobs <span class='badge alert-info'>#{Delayed::Job.count}</span>"), delayed_jobs_path
 
     = yield

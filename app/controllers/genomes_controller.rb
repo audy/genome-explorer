@@ -1,7 +1,7 @@
 class GenomesController < ApplicationController
 
   def index
-    @genomes = Genome.all
+    @genomes = Genome.order(id: :desc).all
   end
 
   def new
@@ -10,7 +10,7 @@ class GenomesController < ApplicationController
 
   def show
     @genome = Genome.find params[:id]
-    @features = @genome.features.where(feature_type: 'CDS').limit(10)
+    @features = @genome.features.where(feature_type: 'CDS').order(:start).limit(10)
   end
 
   def create

@@ -18,6 +18,10 @@ gem 'coffee-rails', '~> 4.0.0'
 
 gem 'activerecord-import'
 
+gem 'carrierwave'
+
+gem 'monsterid'
+
 gem 'bootstrap-sass'
 gem 'bootstrap_form'
 

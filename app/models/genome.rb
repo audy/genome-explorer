@@ -8,24 +8,46 @@ class Genome < ActiveRecord::Base
 
   validates :assembly_id, numericality: { only_integer: true }, presence: true
 
+  mount_uploader :avatar, AvatarUploader
+
   after_create do
     self.pull_from_ncbi
+    self.add_avatar
+  end
+
+  def add_avatar
+    file = Tempfile.new('monsterid')
+    MonsterID.new(self.id).save(file.path)
+    self.update({ avatar: File.open(file.path) })
+    file.unlink
+  end
+
+  # update summary statistics for a genome, storing results in HStore column :stats
+  def update_stats
+    self[:stats] = { total_features: self.features.count,
+                     total_scaffolds: self.scaffolds.count,
+                     genome_size: self.scaffolds.map { |x| x.sequence.size }.inject(:+),
+                     total_proteins: self.features.where(feature_type: 'CDS').count
+    }
+    self.save
+  end
+
+  def update_ncbi_metadata
+    self[:ncbi_metadata] = JSON.parse(`bionode-ncbi search assembly #{self.assembly_id}`)
+    self.save
   end
 
   def pull_from_ncbi
 
-    @genome = self
+    self.update_ncbi_metadata_without_delay
 
-    # get metadata from ncbi
-    ncbi_res = `bionode-ncbi search assembly #{self.assembly_id}`
-    p ncbi_res
-    dat = JSON.parse(ncbi_res)
+    dat = self[:ncbi_metadata]
 
     # remove features and scaffolds if there are any
-    @genome.features.delete_all
-    @genome.scaffolds.delete_all
+    self.features.delete_all
+    self.scaffolds.delete_all
 
-    @genome.update organism: dat['organism']
+    self.update organism: dat['organism']
 
     dir = Dir.mktmpdir self.assembly_id.to_s
     Dir.chdir dir
@@ -36,19 +58,26 @@ class Genome < ActiveRecord::Base
     # has to be loaded before features so that features can reference a
     # scaffold
     read_scaffolds(fna["path"]).each_slice(10) do |scaffolds|
-      scaffolds.map! { |x| x.genome = @genome; x }
+      scaffolds.map! { |x| x.genome = self; x }
       Scaffold.import scaffolds
     end
 
     # has to be loaded after scaffolds
     read_features(gff["path"]).each_slice(1_000) do |features|
-      features.map! { |x| x.genome = @genome; x }
+      features.map! { |x| x.genome = self; x }
       Feature.import features
     end
 
+    # make sure to update stats AFTER we have downloaded everything
+    self.update_stats_without_delay
   end
 
+  # for delayed_job:
+  handle_asynchronously :update_stats
+  handle_asynchronously :update_ncbi_metadata
   handle_asynchronously :pull_from_ncbi
+  handle_asynchronously :add_avatar
+
 end
 
 #

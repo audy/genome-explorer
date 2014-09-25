@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140924190033) do
+ActiveRecord::Schema.define(version: 20140925144020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
@@ -55,6 +56,9 @@ ActiveRecord::Schema.define(version: 20140924190033) do
     t.string   "organism"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.hstore   "stats"
+    t.hstore   "ncbi_metadata"
+    t.string   "avatar"
   end
 
   create_table "scaffolds", force: true do |t|
