@@ -27,7 +27,8 @@ class Genome < ActiveRecord::Base
     self[:stats] = { total_features: self.features.count,
                      total_scaffolds: self.scaffolds.count,
                      genome_size: self.scaffolds.map { |x| x.sequence.size }.inject(:+),
-                     total_proteins: self.features.where(feature_type: 'CDS').count
+                     total_proteins: self.features.where(feature_type: 'CDS').count,
+                     shared_proteins: self.features.where(feature_type: 'CDS').count{ |x| x.related_features.size > 1 ? 1 : 0 }
     }
     self.save
   end
