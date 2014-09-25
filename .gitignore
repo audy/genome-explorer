@@ -1,4 +1,3 @@
-config/*
 db/*
 .DS_Store
 data/
