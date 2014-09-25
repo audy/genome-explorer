@@ -1,7 +1,7 @@
 class GenomesController < ApplicationController
 
   def index
-    @genomes = Genome.order(id: :desc).all
+    @genomes = Genome.where("(stats -> 'total_proteins')::int > 0").order(id: :desc)
   end
 
   def new
