@@ -48,7 +48,7 @@ class Genome < ActiveRecord::Base
 
   end
 
-#  handle_asynchronously :pull_from_ncbi
+  handle_asynchronously :pull_from_ncbi
 end
 
 #
