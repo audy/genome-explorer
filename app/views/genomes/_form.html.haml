@@ -1,0 +1,5 @@
+%div.row
+  %div.col-lg-12
+    = bootstrap_form_for @genome do |f|
+      = f.text_field :assembly_id, label: 'NCBI Assembly ID', placeholder: '12345'
+      = f.submit class: 'btn btn-primary'

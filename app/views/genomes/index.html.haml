@@ -1,0 +1,27 @@
+%div.row
+  %div.col-lg-12
+    %h2.page-header
+      Genomes
+      %small
+        = link_to 'Import', new_genome_path, class: 'btn btn-sm btn-primary'
+
+%div.row
+  %div.col-lg-12
+    %table.table.table-striped.table-bordered.table-condensed
+      %thead
+        %tr
+          %th
+            \#
+          %th
+            Name
+          %th
+            Features
+      %tbody
+        - @genomes.each do |g|
+          %tr
+            %td
+              #{g[:id]}
+            %td
+              = link_to g[:organism], genome_path(g)
+            %td
+              features

@@ -1,0 +1,47 @@
+%div.row
+  %div.col-lg-12
+    %h2.page-header Feature #{@feature.id}
+
+%div.row
+  %div.col-lg-12
+    %ul.list-group
+      %li.list-group-item
+        Organism:
+        %code
+          %a{href: "/genome/#{@feature.genome_id}"}
+            #{@feature.genome.organism}
+      %li.list-group-item
+        Type:
+        %code #{@feature.feature_type}
+      %li.list-group-item
+        Coords:
+        %code #{@feature.start} - #{@feature.stop}
+      %li.list-group-item
+        Frame:
+        %code #{@feature.frame || 'NA'}
+      %li.list-group-item
+        Strand:
+        %code #{@feature.strand || 'NA'}
+      %li.list-group-item
+        Score:
+        %code #{@feature.score || 'NA' }
+      %li.list-group-item
+        Info:
+        %pre #{@feature.info}
+
+
+%div.row
+  %div.col-lg-12
+    %h3 Sequence
+
+%div.row
+  %div.col-lg-12
+    %pre
+      #{@feature.sequence}
+
+- if @feature.feature_type == 'CDS'
+  %div.row
+    %div.col-lg-12
+      %h3 Translated Amino Acid Sequence
+      %pre
+        #{@feature.protein_sequence}

@@ -1,0 +1,32 @@
+= link_to 'Back', delayed_jobs_path
+
+%h2
+  Job
+  %code #{@delayed_job.id}
+
+
+%p
+  Created:
+  %code #{@delayed_job.created_at}
+%p
+  Updated:
+  %code #{@delayed_job.updated_at}
+%p
+  Run At:
+  %code #{@delayed_job.run_at}
+%p
+  Locked By:
+  %code #{@delayed_job.locked_by}
+%p
+  Failed At:
+  %code #{@delayed_job.failed_at}
+%p
+  Handler:
+  %code #{@delayed_job.handler}
+
+
+
+- unless @delayed_job.last_error.nil?
+  %h4 Last Error:
+  %pre
+    #{@delayed_job.last_error}

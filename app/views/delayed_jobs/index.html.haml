@@ -1,0 +1,20 @@
+%div.row
+  %div.col-12-lg
+    %h2.page-header Delayed Jobs
+
+%div.row
+  %div.col-12-lg
+    %table.table.table-compressed.table-bordered.table-striped.table-hover
+      %thead
+        %tr
+          %th Job ID
+          %th Created At
+          %th Queue
+      - @delayed_jobs.each do |job|
+        %tr{ class: job.failed? ? 'warning' : '' }
+          %td
+            = link_to "#{job.id}", delayed_job_path(job)
+          %td
+            = job.created_at
+          %td
+            = job.queue || 'NA'

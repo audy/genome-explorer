@@ -1,0 +1,10 @@
+%h2.page-header Import Genome
+
+%p
+  Import a microbial genome from NCBI by specifying the NCBI Assembly ID. This
+  number should be an integer. After importing a new genome, the annotation will
+  be downloaded in the background.
+
+= render 'form'
+
+= link_to 'Back', genomes_path

@@ -3,3 +3,5 @@ db/*
 .DS_Store
 data/
 *.sqlite
+tmp/
+log/

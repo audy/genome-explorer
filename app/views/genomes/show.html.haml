@@ -1,0 +1,35 @@
+%div.row
+  %div.col-sm-2
+    genome picture
+  %div.col-sm-10
+    %h2 #{@genome.organism}
+    %ul
+      %li #{@genome.features.count} Features
+      %li #{@genome.scaffolds.count} Scaffolds
+      %li #{'%.2g' % @genome.scaffolds.map{ |x| x.sequence.size }.inject(:+)/1e6 rescue 'none'} Mb
+      %li
+        NCBI Assembly:
+        %a{ href: "http://www.ncbi.nlm.nih.gov/assembly/#{@genome.assembly_id}"}
+          #{@genome.assembly_id}
+
+
+%div.row
+  %div.col-md-12
+    %table.table.table-bordered.table-striped.table-condensed
+      %thead
+        %tr
+          %th
+            Start - Stop
+          %th
+            Gene Product
+      %tbody
+        - @features.each do |feature|
+          %tr
+            %td
+              %code
+                #{feature[:start]} - #{feature[:stop]}
+            %td
+              = link_to feature.product, genome_feature_path(@genome, feature)
+
+
+= link_to 'Back', genomes_path
