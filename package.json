@@ -1,0 +1,25 @@
+{
+  "name": "genome-explorer",
+  "version": "0.0.0",
+  "description": "(c, 2014) Austin G. Davis-Richardson",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/audy/genome-explorer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/audy/genome-explorer/issues"
+  },
+  "homepage": "https://github.com/audy/genome-explorer",
+  "dependencies": {
+    "bionode-ncbi": "0.7.0"
+  }
+}
