@@ -16,7 +16,7 @@ class GenomesController < ApplicationController
   def create
     @genome = Genome.new(genome_params)
     if @genome.save
-      redirect_to @genome
+      redirect_to genomes_path
     else
       render 'new'
     end
