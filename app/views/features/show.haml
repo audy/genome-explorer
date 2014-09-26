@@ -7,9 +7,7 @@
     %ul.list-group
       %li.list-group-item
         Organism:
-        %code
-          %a{href: "/genome/#{@feature.genome_id}"}
-            #{@feature.genome.organism}
+        %code=link_to @feature.genome.organism, genome_path(genome)
       %li.list-group-item
         Type:
         %code #{@feature.feature_type}
