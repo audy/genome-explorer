@@ -12,10 +12,11 @@ namespace :dump do
 
     out = File.open('proteins.fasta', 'w')
 
-    pbar = ProgressBar.new 'dumping', proteins.count
+
+    pbar = ProgressBar.new 'dumping', Feature.where(feature_type: 'CDS').count
 
     Scaffold.all.each do |scaffold|
-      scaffold.features.each do |feature|
+      scaffold.features.where(feature_type: 'CDS').each do |feature|
         pbar.inc
         out.puts ">#{feature.id}\n#{feature.protein_sequence}"
       end
