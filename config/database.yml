@@ -10,7 +10,7 @@ default: &default
 
 development:
   <<: *default
-  username: erictriplett
+  username: <%= ENV['USER'] %>
   adapter: postgresql
   database: omgenomes
 
