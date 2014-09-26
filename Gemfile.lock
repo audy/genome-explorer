@@ -1,3 +1,9 @@
+GIT
+  remote: git@github.com:audy/ruby-lsh.git
+  revision: 0955cc1262704559ef4af71f22528a6ef5005947
+  specs:
+    lsh (0.6.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -167,6 +173,7 @@ DEPENDENCIES
   haml-rails
   jbuilder (~> 2.0)
   jquery-rails
+  lsh!
   monsterid
   pg
   progressbar
