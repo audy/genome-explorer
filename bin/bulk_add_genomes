@@ -3,7 +3,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
 
 require 'json'
-`bionode-ncbi search assembly #{ARGV[1]}`.split("\n").each do |line|
+`bionode-ncbi search assembly #{ARGV[0]}`.split("\n").each do |line|
   dat = JSON.parse(line)
   p Genome.create assembly_id: dat['uid']
 end
