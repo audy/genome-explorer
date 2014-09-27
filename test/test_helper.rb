@@ -4,6 +4,8 @@ require 'rails/test_help'
 
 require 'capybara/rails'
 
+ActiveRecord::Base.logger.level = 1
+
 class ActionDispatch::IntegrationTest
   # Make the Capybara DSL available in all integration tests
   include Capybara::DSL
