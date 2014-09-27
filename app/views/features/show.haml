@@ -7,7 +7,7 @@
     %ul.list-group
       %li.list-group-item
         Organism:
-        %code=link_to @feature.genome.organism, genome_path(genome)
+        %code=link_to @feature.genome.organism, genome_path(@feature.genome)
       %li.list-group-item
         Type:
         %code #{@feature.feature_type}
