@@ -2,8 +2,6 @@
 
 one:
   assembly_id: 12345
-  organism: MyString
 
 two:
   assembly_id: 34566
-  organism: MyString
