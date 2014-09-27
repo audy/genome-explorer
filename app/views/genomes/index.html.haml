@@ -15,7 +15,7 @@
           %th
             Name
           %th
-            Added
+            Updated
       %tbody
         - @genomes.each do |g|
           %tr
@@ -26,4 +26,4 @@
               - if g[:stats]['total_proteins'].to_i.zero?
                 %div.badge unannotated
             %td
-              = "#{time_ago_in_words(g.created_at)} ago"
+              = "#{time_ago_in_words(g.updated_at)} ago"
