@@ -79,4 +79,6 @@ gem 'spring',        group: :development
 group :test do
   gem 'cucumber-rails', require: false
   gem 'capybara'
+  gem 'rspec'
+  gem 'database_cleaner'
 end
