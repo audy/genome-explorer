@@ -1,1 +1,2 @@
-rspec -c -f d
+--color
+--require spec_helper
