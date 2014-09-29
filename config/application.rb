@@ -24,5 +24,7 @@ module Omgenomes
       g.test_framework :rspec
     end
 
+    config.autoload_paths << "#{config.root}/lib/jobs"
+
   end
 end
