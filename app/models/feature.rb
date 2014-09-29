@@ -11,8 +11,11 @@ class Feature < ActiveRecord::Base
   has_many :protein_relationships
   has_many :related_features, through: :protein_relationships
 
-  has_many :inverse_protein_relationships, class_name: 'ProteinRelationship', foreign_key: :related_feature_id
-  has_many :inverse_related_features, through: :inverse_protein_relationships, source: :feature
+  has_many :inverse_protein_relationships, class_name: 'ProteinRelationship',
+    foreign_key: :related_feature_id
+
+  has_many :inverse_related_features, through: :inverse_protein_relationships,
+    source: :feature
 
   def sequence
     i =  -1 + self.start
