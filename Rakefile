@@ -27,3 +27,25 @@ namespace :dump do
 
   end
 end
+
+namespace :proteinstore do
+  task :load do
+
+    @store = ProteinStore.new
+
+    puts "connected to #{@store.socket}"
+
+    pbar = ProgressBar.new 'loading', Feature.where(feature_type: 'CDS').count
+
+    Scaffold.all.each do |scaffold|
+      scaffold.features.where(feature_type: 'CDS').each do |feature|
+        @store.add feature.protein_sequence, feature.id
+      end
+    end
+
+    pbar.finish
+  end
+
+  task :query do
+  end
+end
