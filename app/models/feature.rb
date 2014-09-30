@@ -17,6 +17,14 @@ class Feature < ActiveRecord::Base
   has_many :inverse_related_features, through: :inverse_protein_relationships,
     source: :feature
 
+  def find_similar_proteins
+    if self.feature_type == 'CDS'
+      ProteinStore.new.query self.protein_sequence
+    else
+      nil
+    end
+  end
+
   def sequence
     i =  -1 + self.start
     j = -1 + self.stop

@@ -28,7 +28,7 @@
         %pre #{@feature.info}
 
 
-- unless @related_features.nil?
+- unless @related_features.compact.size == 0
   %div.row
     %div.col-lg-12
       %h3 Similar Proteins
@@ -36,12 +36,10 @@
         %thead
           %tr
             %th Gene Product
-            %th Organism
         %tbody
           - @related_features.each do |related_feature|
             %tr
-              %td=link_to related_feature.product, genome_feature_path(related_feature.genome, related_feature)
-              %td=link_to related_feature.genome.organism, genome_path(related_feature.genome)
+              %td=link_to related_feature.product, genome_feature_path(related_feature.genome_id, related_feature.id)
 
 - # amino acid sequences
 

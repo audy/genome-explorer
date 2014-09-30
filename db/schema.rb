@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925201716) do
+ActiveRecord::Schema.define(version: 20140925173824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,9 +67,6 @@ ActiveRecord::Schema.define(version: 20140925201716) do
     t.integer  "feature_id"
     t.integer  "related_feature_id"
   end
-
-  add_index "protein_relationships", ["feature_id"], name: "index_protein_relationships_on_feature_id", using: :btree
-  add_index "protein_relationships", ["related_feature_id"], name: "index_protein_relationships_on_related_feature_id", using: :btree
 
   create_table "scaffolds", force: true do |t|
     t.text     "sequence"

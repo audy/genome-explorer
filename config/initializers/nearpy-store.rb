@@ -21,7 +21,7 @@ class ProteinStore
   end
 
   def add sequence, id
-    socket.puts "SET #{sequence} #{id}"
+    socket.puts "SET #{id} #{sequence}"
   end
 
 end
