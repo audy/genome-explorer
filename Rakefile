@@ -47,5 +47,14 @@ namespace :proteinstore do
   end
 
   task :query do
+
+    @store = ProteinStore.new
+
+    Scaffold.all.each do |scaffold|
+      scaffold.features.where(feature_type: 'CDS').each do |feature|
+        p @store.query feature.protein_sequence
+      end
+    end
+
   end
 end
