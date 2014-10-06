@@ -25,6 +25,14 @@ class Feature < ActiveRecord::Base
     end
   end
 
+  # todo what are the other start amino acids? This is the *predicted* amino
+  # acid sequence so proteins with alternative start codons will not start with
+  # a methionine.
+  def weird?
+    seq = self.protein_sequence
+    seq[0] != 'M' or seq[-1] != '*' or seq[1..-2].include? '*'
+  end
+
   def sequence
     i =  -1 + self.start
     j = -1 + self.stop

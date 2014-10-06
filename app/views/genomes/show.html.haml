@@ -44,6 +44,8 @@
                 #{feature[:start]} - #{feature[:stop]}
             %td
               = link_to feature.product, genome_feature_path(@genome, feature)
+              - if feature.weird?
+                %span.label.label-warning weird
 
 = will_paginate @features
 

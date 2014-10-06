@@ -10,7 +10,10 @@
 
 %div.row
   %div.col-lg-12
-    %h2.page-header Feature #{@feature.id}
+    %h2.page-header
+      Feature #{@feature.id}
+      - if @feature.weird?
+        %span.label.label-warning Weird
 
 %div.row
   %div.col-lg-12

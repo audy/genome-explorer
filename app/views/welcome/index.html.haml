@@ -19,3 +19,5 @@
     %h2 Feature Types
     = pie_chart Feature.group(:feature_type).count
 
+// histogram... slow...
+// = column_chart Hash[ActiveRecord::Base.connection.execute('select width_bucket(char_length(sequence), 1000, 1000000000, 10000), count(*) from scaffolds group by 1 order by 1').to_a.map { |x| [x['width_bucket'], x['count']] }]

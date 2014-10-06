@@ -5,20 +5,23 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
-namespace :dump do
+namespace :proteins do
 
   desc 'dump all proteins to proteins.fasta'
-  task :proteins => :environment do
+  task :dump => :environment do
 
     out = File.open('proteins.fasta', 'w')
-
+    ActiveRecord::Base.logger.level = 1
 
     pbar = ProgressBar.new 'dumping', Feature.where(feature_type: 'CDS').count
 
     Scaffold.all.each do |scaffold|
       scaffold.features.where(feature_type: 'CDS').each do |feature|
+        seq = feature.protein_sequence
+        # skip proteins w/ weird starts or stops in the middle or dont end in a
+        # stop.
         pbar.inc
-        out.puts ">#{feature.id}\n#{feature.protein_sequence}"
+        out.puts ">#{feature.id}\n#{feature.protein_sequence}" unless feature.weird?
       end
     end
 
@@ -26,6 +29,7 @@ namespace :dump do
     out.close
 
   end
+
 end
 
 namespace :proteinstore do
