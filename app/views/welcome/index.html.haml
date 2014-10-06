@@ -11,3 +11,11 @@
       %em
         = link_to "#{last.organism}", genome_path(last)
       added #{time_ago_in_words(last.created_at)} ago.
+
+= javascript_include_tag "//www.google.com/jsapi", "chartkick" 
+
+%div.row
+  %div.col-md-12
+    %h2 Feature Types
+    = pie_chart Feature.group(:feature_type).count
+
