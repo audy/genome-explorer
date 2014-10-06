@@ -1,7 +1,13 @@
-= link_to 'Back', genomes_path
+%ol.breadcrumb
+  %li
+    %a{ href: '/' } Home
+  %li
+    %a{ href: '/genomes' } Genomes
+  %li.active
+    #{@genome.organism}
 
 %div.row
-  %div.col-sm-2
+  %div.col-xs-2
     = image_tag @genome.avatar.url, class: 'img-circle img-avatar'
   %div.col-sm-10
     %h2 #{@genome.organism}
