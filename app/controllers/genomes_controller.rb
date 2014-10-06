@@ -1,7 +1,7 @@
 class GenomesController < ApplicationController
 
   def index
-    @genomes = Genome.where("(stats -> 'total_proteins')::int > 0").order(id: :desc)
+    @genomes = Genome.where("(stats -> 'total_proteins')::int > 0").order(id: :desc).paginate(page: params[:page], per_page: 10)
   end
 
   def new
@@ -10,7 +10,7 @@ class GenomesController < ApplicationController
 
   def show
     @genome = Genome.find params[:id]
-    @features = @genome.features.where(feature_type: 'CDS').order(:start).limit(10)
+    @features = @genome.features.where(feature_type: 'CDS').order(:start).paginate(page: params[:page], per_page: 10)
   end
 
   def create

@@ -45,6 +45,8 @@
             %td
               = link_to feature.product, genome_feature_path(@genome, feature)
 
+= will_paginate @features
+
 %div.row
   %div.col-md-12
     %h3 NCBI Metadata

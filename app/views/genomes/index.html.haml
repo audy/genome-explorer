@@ -4,6 +4,7 @@
   %li.active
     Genomes
 
+
 %div.row
   %div.col-lg-12
     %h2.page-header
@@ -33,3 +34,5 @@
                 %div.badge unannotated
             %td
               = "#{time_ago_in_words(g.updated_at)} ago"
+
+= will_paginate @genomes

@@ -33,6 +33,7 @@ gem 'delayed_job'
 gem 'delayed_job_active_record'
 
 gem 'will_paginate', '~> 3.0'
+gem 'bootstrap-will_paginate'
 
 gem 'daemons'
 
