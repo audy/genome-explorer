@@ -65,9 +65,29 @@ end
 
 namespace :similarities do
 
-  desc 'load similarities from blast-like tabular output'
+  desc 'load similarities from blast-like tabular output and create similar proteins'
   task :load do
-    # create new Protein-Protein relationships
+    File.open('all-v-all-usearch.blast6.tab') do |handle|
+      handle.each do |line|
+        fields = line.strip.split("\t")
+
+        dat = {
+          :query_id      => Integer(fields[0]),
+          :subject_id    => Integer(fields[1]),
+          :identity      => Float(fields[2]),
+          :length        => Integer(fields[3]),
+          :mismatch      => Integer(fields[4]),
+          :gapopen       => Integer(fields[5]),
+          :query_start   => Integer(fields[6]),
+          :query_end     => Integer(fields[7]),
+          :subject_start => Integer(fields[8]),
+          :subject_end   => Integer(fields[9]),
+          :evalue        => Float(fields[10]),
+          :bitscore      => Float(fields[11])
+        }
+
+      end
+    end
   end
 
 end
