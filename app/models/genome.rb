@@ -16,6 +16,14 @@ class Genome < ActiveRecord::Base
     self.add_avatar
   end
 
+  def self.search(search)
+    if search
+      where [ 'organism LIKE ?', "%#{search}%" ]
+    else
+      all
+    end
+  end
+
   def add_avatar
     file = Tempfile.new('monsterid')
     MonsterID.new(self.id).save(file.path)
