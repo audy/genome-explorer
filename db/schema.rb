@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925173824) do
+ActiveRecord::Schema.define(version: 20141007140847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20140925173824) do
     t.datetime "updated_at"
     t.integer  "feature_id"
     t.integer  "related_feature_id"
+    t.string   "source"
   end
 
   create_table "scaffolds", force: true do |t|

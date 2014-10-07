@@ -62,3 +62,12 @@ namespace :proteinstore do
 
   end
 end
+
+namespace :similarities do
+
+  desc 'load similarities from blast-like tabular output'
+  task :load do
+    # create new Protein-Protein relationships
+  end
+
+end
