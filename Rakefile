@@ -33,7 +33,7 @@ namespace :proteins do
 end
 
 namespace :proteinstore do
-  task :load do
+  task :load => :environment do
 
     @store = ProteinStore.new
 
@@ -66,16 +66,21 @@ end
 namespace :similarities do
 
   desc 'load similarities from blast-like tabular output and create similar proteins'
-  task :load do
+  task :load => :environment do
     ActiveRecord::Base.logger.level = 1
     ProteinRelationship.delete_all
     File.open('all-v-all-usearch.blast6.tab') do |handle|
+#      RubyProf.start
       pbar = ProgressBar.new 'loading', File.size(handle.path)
-      yield_protein_relationships(handle).each_slice(1000) do |relationships|
-        pbar.set(handle.pos)
-        ProteinRelationship.import relationships
+      columns = [ :feature_id, :related_feature_id ]
+      read_blast_file(handle).each_slice(10_000) do |values|
+        pbar.set handle.pos
+        ProteinRelationship.import columns, values, validate: false
       end
       pbar.finish
+#      result = RubyProf.stop
+#      printer = RubyProf::GraphPrinter.new(result)
+#      printer.print(STDOUT, {})
     end
   end
 
@@ -84,7 +89,10 @@ end
 def yield_protein_relationships handle
   Enumerator.new do |enum|
     read_blast_file(handle).each do |dat|
-      enum.yield ProteinRelationship.new feature_id: dat[:query_id], related_feature_id: dat[:subject_id]
+      dat
+      enum.yield ProteinRelationship.new feature_id: dat[0],
+                                         related_feature_id: dat[1],
+                                         info: { identity: dat[2] }
     end
   end
 end
@@ -99,18 +107,21 @@ end
 
 def parse_blast_line line
   fields = line.strip.split("\t")
-  {
-    :query_id      => Integer(fields[0]),
-    :subject_id    => Integer(fields[1]),
-    :identity      => Float(fields[2]),
-    :length        => Integer(fields[3]),
-    :mismatch      => Integer(fields[4]),
-    :gapopen       => Integer(fields[5]),
-    :query_start   => Integer(fields[6]),
-    :query_end     => Integer(fields[7]),
-    :subject_start => Integer(fields[8]),
-    :subject_end   => Integer(fields[9]),
-    :evalue        => Float(fields[10]),
-    :bitscore      => Float(fields[11])
-  }
+#  {
+#    :query_id      => Integer(fields[0]),
+#    :subject_id    => Integer(fields[1]),
+#    :identity      => Float(fields[2]),
+#    :length        => Integer(fields[3]),
+#    :mismatch      => Integer(fields[4]),
+#    :gapopen       => Integer(fields[5]),
+#    :query_start   => Integer(fields[6]),
+#    :query_end     => Integer(fields[7]),
+#    :subject_start => Integer(fields[8]),
+#    :subject_end   => Integer(fields[9]),
+#    :evalue        => Float(fields[10]),
+#    :bitscore      => Float(fields[11])
+#  }
+  # query, subject, identity
+  [ fields[0],
+    fields[1] ]
 end

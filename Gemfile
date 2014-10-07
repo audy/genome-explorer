@@ -52,6 +52,10 @@ gem 'pry-rails'
 
 gem 'progressbar'
 
+group :profile do
+  gem 'ruby-prof'
+end
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
