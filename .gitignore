@@ -16,3 +16,4 @@ log/*.log
 tmp
 
 /data
+public/uploads
