@@ -48,7 +48,7 @@ class Feature < ActiveRecord::Base
   end
 
   def product
-    self.info.match(/product=(.*);/)[1] rescue 'NA'
+    self.info.match(/product=([^;]*);/)[1] rescue 'NA'
   end
 
 end
