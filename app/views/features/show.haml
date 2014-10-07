@@ -68,7 +68,7 @@
         #{@feature.protein_sequence}
   %div.row
     %div.col-lg-12
-      %form{ method: 'post', action: "http://blast.st-va.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastp&DATABASE=nr&QUERY=#{URI::encode(@feature.protein_sequence)}" , target: '_blank' }
+      %form{ method: 'post', action: "http://www.ncbi.nlm.nih.gov/blast/Blast.cgi?CMD=Web&PROGRAM=blastp&DATABASE=nr&QUERY=#{URI::encode(@feature.protein_sequence)}" , target: '_blank' }
         %input.btn.btn-primary.btn-xs{ type: 'submit', value: 'BLAST on NCBI' }
 
 - # nucleotide sequence
@@ -82,5 +82,5 @@
       #{@feature.sequence}
 %div.row
   %div.col-lg-12
-    %form{ method: 'post', action: "http://blast.st-va.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&DATABASE=nt&QUERY=#{URI::encode(@feature.sequence)}" , target: '_blank' }
+    %form{ method: 'post', action: "http://www.ncbi.nlm.nih.gov/blast/Blast.cgi?CMD=Web&PROGRAM=blastn&DATABASE=nt&QUERY=#{URI::encode(@feature.sequence)}" , target: '_blank' }
       %input.btn.btn-primary.btn-xs{ type: 'submit', value: 'BLAST on NCBI' }
