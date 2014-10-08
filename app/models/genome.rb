@@ -16,8 +16,6 @@ class Genome < ActiveRecord::Base
   end
 
   def build
-    PullGenomeFromNCBIJob.new(self.id).perform
-    UpdateGenomeStatsJob.new(self.id).perform
     CreateGenomeAvatarJob.new(self.id).perform
     UpdateGenomeStatsJob.new(self.id).perform
     PullGenomeFromNCBIJob.new(self.id).perform
