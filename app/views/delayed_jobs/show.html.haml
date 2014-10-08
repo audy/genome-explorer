@@ -1,8 +1,9 @@
 = link_to 'Back', delayed_jobs_path
 
-%h2
+%h2.page-header
   Job
   %code #{@delayed_job.id}
+= button_to 'Cancel Job', delayed_job_path(@delayed_job), method: :delete, class: 'btn btn-danger pull-right'
 
 
 %p
