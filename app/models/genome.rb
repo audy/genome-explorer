@@ -19,13 +19,15 @@ class Genome < ActiveRecord::Base
     PullGenomeFromNCBIJob.new(self.id).perform
     UpdateGenomeStatsJob.new(self.id).perform
     CreateGenomeAvatarJob.new(self.id).perform
+    UpdateGenomeStatsJob.new(self.id).perform
+    PullGenomeFromNCBIJob.new(self.id).perform
   end
 
   handle_asynchronously :build
 
   def self.search(search)
     if search
-      where [ 'organism LIKE ?', "%#{search}%" ]
+      where [ 'lower(organism) LIKE ?', "%#{search.downcase}%" ]
     else
       all
     end
