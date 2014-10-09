@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141009012829) do
+ActiveRecord::Schema.define(version: 20141009195005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,12 @@ ActiveRecord::Schema.define(version: 20141009012829) do
   add_index "features", ["genome_id"], name: "index_features_on_genome_id", using: :btree
   add_index "features", ["scaffold_id"], name: "index_features_on_scaffold_id", using: :btree
 
+  create_table "genome_relationships", force: true do |t|
+    t.integer "genome_id"
+    t.integer "related_genome_id"
+    t.integer "related_features_count"
+  end
+
   create_table "genomes", force: true do |t|
     t.integer  "assembly_id"
     t.string   "organism"
@@ -62,7 +68,7 @@ ActiveRecord::Schema.define(version: 20141009012829) do
     t.string   "avatar"
   end
 
-  create_table "protein_relationships", id: false, force: true do |t|
+  create_table "protein_relationships", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "feature_id"

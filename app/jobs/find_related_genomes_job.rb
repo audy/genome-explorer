@@ -16,7 +16,7 @@ class FindRelatedGenomesJob
 
     pbar = ProgressBar.new 'counting', ProteinRelationship.count
 
-    ProteinRelationship.all.each do |relationship|
+    ProteinRelationship.find_each do |relationship|
       pbar.inc
       l = relationship.feature.genome.id
       r = relationship.related_feature.genome.id
@@ -25,7 +25,16 @@ class FindRelatedGenomesJob
 
     pbar.finish
 
-    p related_features_counter
+    pr = []
+
+    related_features_counter.each_pair do |genome_id, v|
+      v.each_pair do |related_genome_id, related_features_count|
+        pr << [ genome_id, related_genome_id, related_features_count ]
+      end
+    end
+
+    GenomeRelationship.import [:genome_id, :related_genome_id,
+                               :related_features_count], pr
 
   end
 
