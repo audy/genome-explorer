@@ -37,6 +37,7 @@
             Start - Stop
           %th
             Gene Product
+          %th Related Features
       %tbody
         - @features.each do |feature|
           %tr
@@ -47,5 +48,7 @@
               = link_to feature.product, genome_feature_path(@genome, feature)
               - if feature.weird?
                 %span.label.label-warning weird
+            %td
+              = feature[:stats]['related_features'] rescue 'Unknown'
 
 = will_paginate @features
