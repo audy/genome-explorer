@@ -2,7 +2,7 @@
 :css
 
   .link {
-    stroke: #ccc;
+    stroke: #000;
   }
 
   .node text {
@@ -25,7 +25,7 @@
     %form
       %div.form-group
         %label Minimum # of Shared Features
-        %input{ type: 'range', name: 'quantity', min: 1, max: 10000 }
+        %input#slider{ type: 'range', name: 'quantity', min: 1, max: 2000 }
   %div.col-md-4
     another input goes herew
 
@@ -36,56 +36,77 @@
 
   var color = d3.scale.category10();
 
-  var force = d3.layout.force()
-      .charge(-120)
-      .linkDistance(30)
-      .size([width, height]);
-
-  var svg = d3.select("#image").append("svg")
-      .attr("width", width)
-      .attr("height", height);
-
   d3.json("/genome_relationships.json", function(error, graph) {
+    console.log('downloading');
 
-    force
-      .nodes(graph.nodes)
-      .links(graph.links.filter(function(d) { return d.value > 1000 }))
-      .start();
+    var nodes = graph.nodes;
+    var links = graph.links;
 
+    var force = d3.layout.force()
+        .nodes(nodes)
+        .links(links)
+        .charge(-300)
+        .linkDistance(30)
+        .size([width, height])
+        .start();
+
+    var svg = d3.select("#image").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    var all_links = graph.links;
 
     var link = svg.selectAll(".link")
-        .data(graph.links)
+        .data(links)
         .enter().append("line")
         .attr("class", "link")
         .style("stroke-width", function(d) { return Math.log(Math.sqrt(d.value))/10 });
 
     var node = svg.selectAll(".node")
-        .data(graph.nodes)
+        .data(nodes)
         .enter()
         .append("g")
         .attr("class", "node")
         .call(force.drag);
 
+    d3.selectAll("#slider").on("input", function change() {
+
+      var cutoff = this.value;
+
+      filtered_links = all_links.filter(function(d) { return d.value > cutoff});
+
+      var link = svg.selectAll(".link").
+        data(filtered_links);
+
+
+      link.enter().append("link")
+        .attr("class", "link")
+        .style("stroke-width", function(d) { return Math.log(Math.sqrt(d.value))/10 });
+
+      link.exit().remove();
+      force.links(filtered_links).start()
+    });
+
     node.append("circle")
       .attr("r", 5)
       .attr("x", -8)
       .attr("y", -8)
-      .style("fill", function(d) { return color(d.group); });
+      .style("fill", function(d) { return color(d.group); })
 
     node.append("text")
       .attr("dx", 12)
       .attr("dy", "0.35em")
       .text(function(d) { return d.name });
 
+
     force.on("tick", function() {
       link.attr("x1", function(d) { return d.source.x; })
           .attr("y1", function(d) { return d.source.y; })
           .attr("x2", function(d) { return d.target.x; })
           .attr("y2", function(d) { return d.target.y; });
-
       node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-
       node.attr("cx", function(d) { return d.x; })
           .attr("cy", function(d) { return d.y; });
-      });
     });
+
+  });
