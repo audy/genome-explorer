@@ -21,10 +21,14 @@ class GenomeRelationshipsController < ApplicationController
 
         links = genome_relationships.map do |rel|
           count = rel.related_features_count
-          if count > @min_related
-            { source: index[rel.genome_id], target: index[rel.related_genome_id], value: Math.sqrt(count) }
-          else
+          source = index[rel.genome_id]
+          target = index[rel.related_genome_id]
+          if count < @min_related
             nil
+          elsif source.nil? or target.ni;?
+            nil
+          else
+            { source: source , target: target, value: Math.sqrt(count) }
           end
         end.compact
 
