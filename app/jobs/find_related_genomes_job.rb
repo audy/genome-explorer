@@ -16,10 +16,18 @@ class FindRelatedGenomesJob
 
     pbar = ProgressBar.new 'counting', ProteinRelationship.count
 
+    # memoize feature_id -> genome_id to avoid repeating SQL queries
+    feature_to_genome_memo = Hash.new #{ |h, k| h[k] = Feature.find(k).genome_id }
+
+    # just build the hash
+    Feature.find_each do |feature|
+      feature_to_genome_memo[feature.id] = feature.genome_id
+    end
+
     ProteinRelationship.find_each do |relationship|
       pbar.inc
-      l = relationship.feature.genome.id
-      r = relationship.related_feature.genome.id
+      l = feature_to_genome_memo[relationship.feature_id]
+      r = feature_to_genome_memo[relationship.related_feature_id]
       related_features_counter[l][r] += 1
     end
 
