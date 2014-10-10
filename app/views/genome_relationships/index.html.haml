@@ -31,7 +31,7 @@
       .attr("width", width)
       .attr("height", height);
 
-  d3.json("/genome_relationships.json?min_related=1000", function(error, graph) {
+  d3.json("/genome_relationships.json?min_related=3000", function(error, graph) {
     force
       .nodes(graph.nodes)
       .links(graph.links)
