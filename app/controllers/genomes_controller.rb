@@ -2,7 +2,7 @@ class GenomesController < ApplicationController
 
   def index
     @genomes = Genome.search params[:search]
-#    @genomes = @genomes.where("(stats -> 'total_proteins')::int > 0")
+    @genomes = @genomes.where("(stats -> 'total_proteins')::int > 0")
     @genomes = @genomes.order(id: :desc).paginate(page: params[:page], per_page: 10)
   end
 

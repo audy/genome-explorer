@@ -8,7 +8,7 @@ class GenomeRelationshipsController < ApplicationController
         @min_related = Integer(params[:min_related] || 0)
 
         genome_relationships = GenomeRelationship.all
-        genomes = Genome.all
+        genomes = Genome.where("(stats -> 'total_proteins')::int > 0")
 
         genomes_list = []
 
