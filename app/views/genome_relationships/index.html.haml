@@ -33,9 +33,9 @@
 
   d3.json("/genome_relationships.json?min_related=1000", function(error, graph) {
     force
-    .nodes(graph.nodes)
-    .links(graph.links)
-    .start();
+      .nodes(graph.nodes)
+      .links(graph.links)
+      .start();
 
     var link = svg.selectAll(".link")
         .data(graph.links)
