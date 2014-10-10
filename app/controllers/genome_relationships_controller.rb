@@ -28,7 +28,7 @@ class GenomeRelationshipsController < ApplicationController
           elsif source.nil? or target.nil?
             nil
           else
-            { source: source , target: target, value: Math.sqrt(count) }
+            { source: source , target: target, value: count }
           end
         end.compact
 
