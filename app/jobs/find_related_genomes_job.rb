@@ -14,15 +14,22 @@ class FindRelatedGenomesJob
 
     ActiveRecord::Base.logger.level = 1
 
-    pbar = ProgressBar.new 'counting', ProteinRelationship.count
 
     # memoize feature_id -> genome_id to avoid repeating SQL queries
     feature_to_genome_memo = Hash.new #{ |h, k| h[k] = Feature.find(k).genome_id }
 
+    pbar = ProgressBar.new 'memoizing features', Feature.where(feature_type:
+                                                               'CDS').count
+
     # just build the hash
-    Feature.find_each do |feature|
+    Feature.where(feature_type: 'CDS').find_each do |feature|
+      pbar.inc
       feature_to_genome_memo[feature.id] = feature.genome_id
     end
+
+    pbar.finish
+
+    pbar = ProgressBar.new 'counting', ProteinRelationship.count
 
     ProteinRelationship.find_each do |relationship|
       pbar.inc
