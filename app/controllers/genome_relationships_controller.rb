@@ -25,7 +25,7 @@ class GenomeRelationshipsController < ApplicationController
           target = index[rel.related_genome_id]
           if count < @min_related
             nil
-          elsif source.nil? or target.ni;?
+          elsif source.nil? or target.nil?
             nil
           else
             { source: source , target: target, value: Math.sqrt(count) }
