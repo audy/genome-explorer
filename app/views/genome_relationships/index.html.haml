@@ -1,7 +1,7 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 :css
 
-  .link {
+  line {
     stroke: #000;
   }
 
@@ -25,7 +25,7 @@
     %form
       %div.form-group
         %label Minimum # of Shared Features
-        %input#link-slider{ type: 'range', name: 'quantity', min: 0, max: 5000 }
+        %input#link-slider{ type: 'range', name: 'quantity', min: -10, max: 5000 }
   %div.col-md-4
     another input goes herew
 
@@ -54,13 +54,10 @@
         .attr("width", width)
         .attr("height", height);
 
-    var all_links = graph.links;
-
     var link = svg.selectAll(".link")
         .data(links)
         .enter().append("line")
-        .attr("class", "link")
-        .style("stroke-width", function(d) { return Math.log(Math.sqrt(d.value))/10 });
+        .attr("class", "link");
 
     var node = svg.selectAll(".node")
         .data(nodes)
@@ -69,35 +66,25 @@
         .attr("class", "node")
         .call(force.drag);
 
-    d3.selectAll("#slider").on("input", function change() {
-
-      var cutoff = this.value;
-
-      filtered_links = all_links.filter(function(d) { return d.value > cutoff});
-
-      var link = svg.selectAll(".link").
-        data(filtered_links);
-
-
-      link.enter().append("link")
-        .attr("class", "link")
-        .style("stroke-width", function(d) { return Math.log(Math.sqrt(d.value))/10 });
-
-      link.exit().remove();
-      force.links(filtered_links).start()
-    });
-
     node.append("circle")
       .attr("r", 5)
       .attr("x", -8)
       .attr("y", -8)
       .style("fill", function(d) { return color(d.group); })
 
-    node.append("text")
+    var labels = node.append("text")
       .attr("dx", 12)
       .attr("dy", "0.35em")
-      .text(function(d) { return d.name });
+      .text(function(d) { return d.name })
+      .style("visibility", "hidden");
 
+    node.on("mouseover", function(d) {
+        d3.select(labels[0][d.index]).style("visibility","visible")
+    })
+    .on("mouseout", function(d)
+    {
+        d3.select(labels[0][d.index]).style("visibility","hidden")
+    })
 
     force.on("tick", function() {
       link.attr("x1", function(d) { return d.source.x; })
@@ -107,6 +94,26 @@
       node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
       node.attr("cx", function(d) { return d.x; })
           .attr("cy", function(d) { return d.y; });
+    });
+
+    // similarity slider
+    d3.selectAll("#link-slider").on("input", function() {
+      var cutoff = this.value;
+
+      filtered_links = links.filter(function(d) { return d.value >= cutoff });
+
+      var link = svg.selectAll(".link")
+        .data(filtered_links);
+
+      link.enter()
+        .append("line")
+        .attr("class", "link");
+
+      link.exit().remove();
+
+      force
+        .links(filtered_links)
+        .start()
     });
 
   });
