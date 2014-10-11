@@ -45,19 +45,14 @@
     var force = d3.layout.force()
         .nodes(nodes)
         .links(links)
+        .linkDistance(20)
         .charge(-300)
-        .linkDistance(30)
         .size([width, height])
         .start();
 
     var svg = d3.select("#image").append("svg")
         .attr("width", width)
         .attr("height", height);
-
-    var link = svg.selectAll(".link")
-        .data(links)
-        .enter().append("line")
-        .attr("class", "link");
 
     var node = svg.selectAll(".node")
         .data(nodes)
@@ -78,19 +73,15 @@
       .text(function(d) { return d.name })
       .style("visibility", "hidden");
 
+    // show genome organism name on mouseover
+
     node.on("mouseover", function(d) {
         d3.select(labels[0][d.index]).style("visibility","visible")
-    })
-    .on("mouseout", function(d)
-    {
+    }).on("mouseout", function(d) {
         d3.select(labels[0][d.index]).style("visibility","hidden")
     })
 
     force.on("tick", function() {
-      link.attr("x1", function(d) { return d.source.x; })
-          .attr("y1", function(d) { return d.source.y; })
-          .attr("x2", function(d) { return d.target.x; })
-          .attr("y2", function(d) { return d.target.y; });
       node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
       node.attr("cx", function(d) { return d.x; })
           .attr("cy", function(d) { return d.y; });
@@ -101,15 +92,6 @@
       var cutoff = this.value;
 
       filtered_links = links.filter(function(d) { return d.value >= cutoff });
-
-      var link = svg.selectAll(".link")
-        .data(filtered_links);
-
-      link.enter()
-        .append("line")
-        .attr("class", "link");
-
-      link.exit().remove();
 
       force
         .links(filtered_links)
