@@ -20,7 +20,7 @@ class Genome < ActiveRecord::Base
     source: :genome
 
   after_create do
-    self.delay(queue: 'genome building').build
+    self.delay(queue: 'local').build
   end
 
   def build
