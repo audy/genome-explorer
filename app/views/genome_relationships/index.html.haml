@@ -33,7 +33,7 @@
   d3.json("/genome_relationships.json", function(error, graph) {
     console.log('downloading');
 
-    var links_enabled = true;
+    var links_enabled = false;
 
     var nodes = graph.nodes;
     var links = graph.links;
@@ -54,7 +54,7 @@
         .attr("width", width)
         .attr("height", height);
 
-    if (links_enabled) { var link = draw_links(svg, links) }
+    var link = draw_links(svg, links);
 
     var node = svg.selectAll(".node")
         .data(nodes)
@@ -87,14 +87,17 @@
       node.attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
 
-      link.attr("x1", function(d) { return d.source.x; })
-          .attr("y1", function(d) { return d.source.y; })
-          .attr("x2", function(d) { return d.target.x; })
-          .attr("y2", function(d) { return d.target.y; });
+      if (links_enabled) {
+        link.attr("x1", function(d) { return d.source.x; })
+            .attr("y1", function(d) { return d.source.y; })
+            .attr("x2", function(d) { return d.target.x; })
+            .attr("y2", function(d) { return d.target.y; });
+      }
       link.style("visibility", function(d) {
-        return d.value > cutoff ? "visible" : "hidden";
-        })
-  });
+        return (links_enabled && (d.value > cutoff)) ? "visible" : "hidden";
+      });
+    });
+
 
     // similarity slider
     d3.selectAll("#link-slider").on("input", function() {
@@ -105,8 +108,8 @@
         .start();
     });
 
-    d3.selectAll("#enable-links").on("input", function() {
-      console.log(this.value);
+    d3.selectAll("#enable-links").on("change", function() {
+      links_enabled = this.checked;
     });
 
   });
