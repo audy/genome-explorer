@@ -1,1 +1,1 @@
-web: RACK_ENV='production' rails server -p $PORT
+web: RAILS_ENV='production' rails server -p $PORT
