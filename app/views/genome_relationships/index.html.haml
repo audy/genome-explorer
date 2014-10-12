@@ -3,19 +3,16 @@
 = stylesheet_link_tag params[:controller]
 
 %div.row
-  %div.col-md-12#image
+  %div.col-md-10#image
     %span
-
-%hr
-
-%div.row
-  %div.col-md-4
+  %div.col-md-2
     %form
       %div.form-group
         %label Minimum # of Shared Features
         %input#link-slider{ type: 'range', name: 'quantity', min: -10, max: 5000 }
-  %div.col-md-4
-    another input goes herew
+      %div.form-group
+        %label Render links?
+        %input#enable-links{ type: 'checkbox' }
 
 
 :javascript
@@ -24,25 +21,40 @@
 
   var color = d3.scale.category20();
 
+  draw_links = function(svg, links) {
+    var link = svg.selectAll(".link")
+      .data(links);
+    link.enter().append("line").attr("class", "link");
+    link.exit().remove();
+    return link;
+  }
+
+
   d3.json("/genome_relationships.json", function(error, graph) {
     console.log('downloading');
+
+    var links_enabled = true;
 
     var nodes = graph.nodes;
     var links = graph.links;
 
     var force = d3.layout.force()
         .nodes(nodes)
-        .links(links)
-        .linkDistance(20)
         .charge(-20)
         .theta(0.2)
         .gravity(0.01)
         .size([width, height])
-        .start();
+        .links(links).linkDistance(20);
+
+    force.start();
+
+    var cutoff = 0;
 
     var svg = d3.select("#image").append("svg")
         .attr("width", width)
         .attr("height", height);
+
+    if (links_enabled) { var link = draw_links(svg, links) }
 
     var node = svg.selectAll(".node")
         .data(nodes)
@@ -64,7 +76,6 @@
       .style("visibility", "hidden");
 
     // show genome organism name on mouseover
-
     node.on("mouseover", function(d) {
         d3.select(labels[0][d.index]).style("visibility","visible")
     }).on("mouseout", function(d) {
@@ -74,18 +85,28 @@
     force.on("tick", function() {
       node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
       node.attr("cx", function(d) { return d.x; })
-          .attr("cy", function(d) { return d.y; });
-    });
+        .attr("cy", function(d) { return d.y; });
+
+      link.attr("x1", function(d) { return d.source.x; })
+          .attr("y1", function(d) { return d.source.y; })
+          .attr("x2", function(d) { return d.target.x; })
+          .attr("y2", function(d) { return d.target.y; });
+      link.style("visibility", function(d) {
+        return d.value > cutoff ? "visible" : "hidden";
+        })
+  });
 
     // similarity slider
     d3.selectAll("#link-slider").on("input", function() {
-      var cutoff = this.value;
-
+      cutoff = this.value;
       filtered_links = links.filter(function(d) { return d.value >= cutoff });
-
       force
         .links(filtered_links)
-        .start()
+        .start();
+    });
+
+    d3.selectAll("#enable-links").on("input", function() {
+      console.log(this.value);
     });
 
   });
