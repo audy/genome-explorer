@@ -3,7 +3,7 @@ class FindRelatedProteinsJob
   def initialize
     @method = 'usearch'
     @ncpu = 24
-    @identity = '0.6'
+    @identity = '0.2'
   end
 
   # dump proteins to fasta file
