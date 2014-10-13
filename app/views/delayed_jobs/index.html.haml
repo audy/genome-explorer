@@ -9,11 +9,14 @@
         %tr
           %th Job ID
           %th Created At
+          %th Locked
           %th Queue
       - @delayed_jobs.each do |job|
         %tr
           %td
             = link_to "#{job.id}", delayed_job_path(job)
+          %td
+            = time_ago_in_words(job.locked_at)
           %td
             #{job.created_at}
             - if job.attempts > 0
