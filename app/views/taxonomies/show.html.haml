@@ -1,0 +1,12 @@
+%h3.page-header=@taxonomy.name
+
+%ul
+  %li
+    %code=@taxonomy.rank
+  %li
+    Children:
+    %code #{@taxonomy.children.count}
+  %li
+    Parent:
+    = link_to "#{@taxonomy.parent.name}", taxonomy_path(@taxonomy.parent)
+    (#{@taxonomy.parent.rank})

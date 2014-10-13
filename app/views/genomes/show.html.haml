@@ -10,7 +10,7 @@
   %div.col-xs-2
     = image_tag @genome.avatar.url, class: 'img-circle img-avatar'
   %div.col-sm-10
-    %h2 #{@genome.organism}
+    %h2 #{@genome.name}
     %ul
       %li
         NCBI Assembly:
@@ -22,6 +22,10 @@
           #{number_with_delimiter @genome[:stats]['total_features']} Features /
           #{number_with_delimiter @genome[:stats]['total_proteins']} Proteins
           (#{number_with_delimiter @genome[:stats]['shared_proteins']} Shared)
+        %li Taxonomic Parent
+        %code
+          = link_to @genome.parent.name, taxonomy_path(@genome.parent)
+
       %li Last Updated: #{time_ago_in_words(@genome.updated_at)} ago
       %li Created: #{time_ago_in_words(@genome.created_at)} ago
 

@@ -21,6 +21,8 @@
               = link_to raw("Jobs <span class='badge alert-info'>#{count_or_empty_string(Delayed::Job)}</span>"), '/delayed_job'
             %li
               = link_to 'Graph', genome_relationships_path
+            %li
+              = link_to 'Taxonomies', taxonomies_path
 
           = form_tag genomes_path, method: 'get', class: 'navbar-form navbar-right' do
             %div.form-group

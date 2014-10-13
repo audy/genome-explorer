@@ -1,0 +1,4 @@
+%h3.page-header Taxonomies
+
+- @taxonomies.each do |t|
+  %li=link_to "#{t.name} (#{t.rank})", taxonomy_path(t)

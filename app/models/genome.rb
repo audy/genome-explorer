@@ -6,6 +6,8 @@ class Genome < ActiveRecord::Base
   has_many :scaffolds
   has_many :features
 
+  belongs_to :taxonomy
+
   validates :assembly_id, numericality: { only_integer: true }, presence: true,
     uniqueness: true
 
@@ -27,6 +29,7 @@ class Genome < ActiveRecord::Base
     CreateGenomeAvatarJob.new(self.id).perform
     PullGenomeFromNCBIJob.new(self.id).perform
     UpdateGenomeStatsJob.new(self.id).perform
+    # UpdateGenomesTaxonomiesJob.new(self.id).perform
   end
 
   def self.search(search)
@@ -35,6 +38,25 @@ class Genome < ActiveRecord::Base
     else
       all
     end
+  end
+
+  def parent
+     taxonomy.parent
+  end
+
+  def parent_name
+    taxonomy.parent.name
+  end
+
+  def taxonomy
+    taxid = self[:ncbi_metadata]['taxid']
+    'Unknown'
+    Taxonomy.find(taxid.to_i)
+  end
+
+  def name
+    taxid = self[:ncbi_metadata]['taxid']
+    taxonomy.name rescue 'Unknown'
   end
 
 end

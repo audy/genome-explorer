@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     resources :features
   end
 
+  resources :taxonomies
+
   resources :genome_relationships do
   end
 
