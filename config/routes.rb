@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
-  resources :delayed_jobs do
-  end
+  #resources :delayed_jobs do
+  #end
 
   resources :genomes do
     resources :scaffolds do
@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   resources :genome_relationships do
   end
+
+  match '/delayed_job' => DelayedJobWeb, :anchor => false, via: [:get, :post]
 
   # You can have the root of your site routed with "root"
   root 'welcome#index'

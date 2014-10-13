@@ -18,7 +18,7 @@
             %li
               = link_to 'Genomes', genomes_path
             %li
-              = link_to raw("Jobs <span class='badge alert-info'>#{count_or_empty_string(Delayed::Job)}</span>"), delayed_jobs_path
+              = link_to raw("Jobs <span class='badge alert-info'>#{count_or_empty_string(Delayed::Job)}</span>"), '/delayed_job'
             %li
               = link_to 'Graph', genome_relationships_path
 
