@@ -15,12 +15,12 @@ namespace :compute do
   end
 
   desc 'compute related proteins (via USEARCH)'
-  task :related_proteins => [:environment, 'proteins.fasta'] do
+  task :related_proteins => [ :environment ] do
     FindRelatedProteinsJob.new.perform
   end
 
   desc 'compute related genomes from related proteins'
-  task :related_genomes => [ :environment, :related_proteins ] do
+  task :related_genomes => [ :environment ] do
     FindRelatedGenomesJob.new.perform
   end
 end

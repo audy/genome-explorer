@@ -8,7 +8,7 @@ class FindRelatedProteinsJob
 
   # dump proteins to fasta file
   def perform
-    DumpProteinsToFileJob.new('proteins.fasta').perform
+    ActiveRecord::Base.logger.level = 1
     run_usearch
     build_relationships_from_blast_output
   end
@@ -47,7 +47,7 @@ class FindRelatedProteinsJob
     # query, subject
     [ fields[0], # query id
       fields[1], # subject id
-      Integer(fields[2]) # percent identity, rounded
+      (100 * Float(fields[2])).to_i # percent identity, rounded
     ]
   end
 
