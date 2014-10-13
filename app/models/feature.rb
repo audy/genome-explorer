@@ -17,14 +17,6 @@ class Feature < ActiveRecord::Base
   has_many :inverse_related_features, through: :inverse_protein_relationships,
     source: :feature
 
-  def find_similar_proteins
-    if self.feature_type == 'CDS'
-      ProteinStore.new.query self.protein_sequence
-    else
-      nil
-    end
-  end
-
   # todo what are the other start amino acids? This is the *predicted* amino
   # acid sequence so proteins with alternative start codons will not start with
   # a methionine.

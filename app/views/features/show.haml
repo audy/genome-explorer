@@ -39,6 +39,9 @@
       %li.list-group-item
         Info:
         %pre #{@feature.info}
+      %li.list-group-item
+        Related Features:
+        %pre #{@feature.stats['related_features'] rescue 'Unknown'}
 
 
 - unless @related_features.size == 0

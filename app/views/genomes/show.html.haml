@@ -29,6 +29,26 @@
 
 %div.row
   %div.col-md-12
+    %h3 Similar Organisms
+  %div.col-md-12
+    %table.table.table-bordered.table-striped.table-condensed
+      %thead
+        %tr
+          %th Organism
+          %th Shared Genes
+      %tbody
+        - @related_genomes.each do |related_genome|
+          %tr
+            %td= link_to related_genome.organism, genome_path(related_genome)
+            - n_shared = GenomeRelationship.where(genome_id: @genome.id,
+              related_genome_id: related_genome.id).first.related_features_count
+            %td #{'%0.2f' % (100 *n_shared / @genome[:stats]['total_proteins'].to_f)}
+
+  %div.col-md-12
+    = will_paginate @related_genomes, param_name: 'genomes_page'
+
+%div.row
+  %div.col-md-12
     %h3 Protein Coding Genes
     %table.table.table-bordered.table-striped.table-condensed
       %thead
@@ -37,6 +57,7 @@
             Start - Stop
           %th
             Gene Product
+          %th Related Features
       %tbody
         - @features.each do |feature|
           %tr
@@ -47,5 +68,7 @@
               = link_to feature.product, genome_feature_path(@genome, feature)
               - if feature.weird?
                 %span.label.label-warning weird
-
-= will_paginate @features
+            %td
+              = feature[:stats]['related_features'] rescue 'Unknown'
+  %div.col-md-12
+    = will_paginate @features, param_name: 'features_page'

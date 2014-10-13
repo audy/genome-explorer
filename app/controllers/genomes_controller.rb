@@ -12,7 +12,8 @@ class GenomesController < ApplicationController
 
   def show
     @genome = Genome.find params[:id]
-    @features = @genome.features.where(feature_type: 'CDS').order(:start).paginate(page: params[:page], per_page: 10)
+    @features = @genome.features.where(feature_type: 'CDS').order(:start).paginate(page: params[:features_page], per_page: 10)
+    @related_genomes = @genome.related_genomes.paginate(page: params[:genomes_page], per_page: 10)
   end
 
   def create

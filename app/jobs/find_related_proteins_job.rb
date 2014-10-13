@@ -3,7 +3,7 @@ class FindRelatedProteinsJob
   def initialize
     @method = 'usearch'
     @ncpu = 24
-    @identity = '0.6'
+    @identity = '0.2'
   end
 
   # dump proteins to fasta file
@@ -27,10 +27,12 @@ class FindRelatedProteinsJob
 
   def build_relationships_from_blast_output
     ProteinRelationship.transaction do
+      # todo allow for multiple types of proteinrelationships from different
+      # sources.
       ProteinRelationship.delete_all
       File.open('proteins.blast6.tab') do |handle|
         pbar = ProgressBar.new 'loading', File.size(handle.path)
-        columns = [ :feature_id, :related_feature_id ]
+        columns = [ :feature_id, :related_feature_id, :identity ]
         read_blast_file(handle).each_slice(10_000) do |values|
           pbar.set handle.pos
           ProteinRelationship.import columns, values, validate: false
@@ -43,8 +45,10 @@ class FindRelatedProteinsJob
   def parse_blast_line line
     fields = line.strip.split("\t")
     # query, subject
-    [ fields[0],
-      fields[1] ]
+    [ fields[0], # query id
+      fields[1], # subject id
+      Integer(fields[2]) # percent identity, rounded
+    ]
   end
 
   def read_blast_file handle
