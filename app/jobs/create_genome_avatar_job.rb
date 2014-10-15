@@ -6,4 +6,8 @@ CreateGenomeAvatarJob = Struct.new(:id) do
     @genome.update({ avatar: File.open(file.path) })
     file.unlink
   end
+  
+  def queue
+    'local' # must run were app has access to data/
+  end
 end
