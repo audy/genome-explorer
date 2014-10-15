@@ -2,7 +2,6 @@ DumpProteinsToFileJob = Struct.new(:filename) do
 
   def perform
     out = File.open(self.filename, 'w')
-    ActiveRecord::Base.logger.level = 1
 
     pbar = ProgressBar.new 'dumping', Feature.where(feature_type: 'CDS').count
 
