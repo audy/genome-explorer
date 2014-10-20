@@ -16,6 +16,8 @@ class GenomeRelationshipsController < ApplicationController
             # find all genomes related to this genome
             genomes_related = GenomeRelationship.where(genome: params[:genome_id]).all
             # find relationships within genomes that are related to this genome
+            # todo: it would be cool to be able to specify depth and build this
+            # graph iteratively up to n levels.
             related_relationships = GenomeRelationship.where(genome_id: genomes_related.map(&:related_genome_id)).all
             # combine, use to build graph
             genomes_related + related_relationships
