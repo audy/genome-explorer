@@ -4,11 +4,28 @@ class GenomeRelationshipsController < ApplicationController
 
     respond_to do |format|
       format.json do
+        # a big mess.
 
         @min_related = Integer(params[:min_related] || 0)
 
-        genome_relationships = GenomeRelationship.all
-        genomes = Genome.where("(stats -> 'total_proteins')::int > 0")
+        params[:genome_id] = 1
+
+        # find all genome relationships where genome_id is params[:genome_id]
+        # then find all genome relationships whose genome_id is in the related
+        # genome ids.
+        genome_relationships = 
+          unless params[:genome_id].nil?
+            GenomeRelationship.cache {
+              # find all genomes related to this genome
+              genomes_related = GenomeRelationship.where(genome: params[:genome_id]).all
+              related_to_genome = GenomeRelationship.where(genome: genomes_related).all
+              genomes_related + related_to_genome
+            }
+          else
+            GenomeRelationship.all
+          end
+
+        genomes = ( genome_relationships.uniq.map(&:genome) ).uniq
 
         genomes_list = []
 
