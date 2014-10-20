@@ -3,8 +3,6 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.6'
 
-#gem 'lsh', git: 'https://github.com/audy/ruby-lsh.git', ref: 'cd04c936ba588bcceff3507ea50147d36d9d68f4'
-
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 gem 'pg'
