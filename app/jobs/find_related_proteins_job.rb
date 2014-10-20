@@ -10,7 +10,9 @@ class FindRelatedProteinsJob
   def perform
     ActiveRecord::Base.logger.level = 1
     run_usearch
-    build_relationships_from_blast_output
+    ProteinRelationship.transaction {
+      build_relationships_from_blast_output
+    }
   end
 
 
