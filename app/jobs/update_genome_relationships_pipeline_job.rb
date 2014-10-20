@@ -1,7 +1,9 @@
 class UpdateGenomeRelationshipsPipelineJob
   def perform
-    DumpProteinsJob.new('proteins.fasta').perform
-    FindRelatedProteinsJob.new.perform
-    FindRelatedGenomesJob.new.peform
+    ActiveRecord::Base.transaction {
+      DumpProteinsToFileJob.new('proteins.fasta').perform
+      FindRelatedProteinsJob.new.perform
+      FindRelatedGenomesJob.new.peform
+    }
   end
 end
