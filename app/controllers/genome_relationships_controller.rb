@@ -8,26 +8,26 @@ class GenomeRelationshipsController < ApplicationController
 
         @min_related = Integer(params[:min_related] || 0)
 
-        params[:genome_id] = 1
-
         # find all genome relationships where genome_id is params[:genome_id]
         # then find all genome relationships whose genome_id is in the related
         # genome ids.
         genome_relationships = 
           unless params[:genome_id].nil?
-            GenomeRelationship.cache {
-              # find all genomes related to this genome
-              genomes_related = GenomeRelationship.where(genome: params[:genome_id]).all
-              related_to_genome = GenomeRelationship.where(genome: genomes_related).all
-              genomes_related + related_to_genome
-            }
+            # find all genomes related to this genome
+            genomes_related = GenomeRelationship.where(genome: params[:genome_id]).all
+            # find relationships within genomes that are related to this genome
+            related_relationships = GenomeRelationship.where(genome_id: genomes_related.map(&:related_genome_id)).all
+            # combine, use to build graph
+            genomes_related + related_relationships
           else
             GenomeRelationship.all
           end
 
         # get a list of all genomes included in the genome relationships
+        # (this list is highly redundant so uniq it, also sometimes there are
+        # nils so just remove them).
         genomes = (genome_relationships.map(&:genome) +
-                   genome_relationships.map(&:related_genome)).uniq
+                   genome_relationships.map(&:related_genome)).uniq.compact
 
         # build graph nodes
         # also make a 0-based indexed array of genomes (for referencing the
