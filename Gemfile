@@ -18,7 +18,7 @@ gem 'coffee-rails', '~> 4.0.0'
 
 gem 'activerecord-import'
 
-gem 'rollbar'
+gem 'rollbar', '1.2.2'
 
 gem 'carrierwave'
 
