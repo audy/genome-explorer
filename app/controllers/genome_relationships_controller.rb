@@ -25,17 +25,26 @@ class GenomeRelationshipsController < ApplicationController
             GenomeRelationship.all
           end
 
-        genomes = ( genome_relationships.uniq.map(&:genome) ).uniq
+        # get a list of all genomes included in the genome relationships
+        genomes = (genome_relationships.map(&:genome) +
+                   genome_relationships.map(&:related_genome)).uniq
 
+        # build graph nodes
+        # also make a 0-based indexed array of genomes (for referencing the
+        # genomes in the links)
         genomes_list = []
-
         nodes = genomes.map do |genome|
           genomes_list << genome.id
           { name: genome.organism, group: genome.organism.split[1] }
         end
 
+        # convert the 0-indexed array into a hash, so we can reference the
+        # genomes by their 0-based index
         index = Hash[genomes_list.map.with_index.to_a] 
 
+        # build the links { source:, target:, value: }
+        # where source and target are the 0-based index of the genome in
+        # genomes_list (which got converted to index hash).
         links = genome_relationships.map do |rel|
           count = rel.related_features_count
           source = index[rel.genome_id]
