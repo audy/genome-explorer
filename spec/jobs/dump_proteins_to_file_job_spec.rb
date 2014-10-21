@@ -14,6 +14,11 @@ describe DumpProteinsToFileJob do
     # job returns the number of sequences dumped
     expect(job.perform).to eq(1)
     expect(File.exists?(job.filename)).to_not be(false)
+    records =
+      File.open(job.filename) do |handle|
+        Dna.new(handle, :format => :fasta).to_a
+      end
+    expect(records.first.sequence).to eq(feature.protein_sequence)
   end
 
 end
