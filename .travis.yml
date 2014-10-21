@@ -10,4 +10,4 @@ addons:
 before_script:
   - cp config/database.travis.yml config/database.yml
   - psql -c 'create database omggenomes_test;' -U postgres
-  - rake db:create
+  - bundle exec rake db:create
