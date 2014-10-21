@@ -27,7 +27,7 @@ test: &test
   <<: *default
   database: omgenomes-test
   adapter: postgresql
-  username: austin
+  username: postgres
 
 production:
   <<: *default
