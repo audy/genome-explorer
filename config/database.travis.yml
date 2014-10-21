@@ -7,6 +7,6 @@ default: &default
 # Do not set this db to the same as development or production.
 test: &test
   <<: *default
-  database: omgenomes-test
+  database: omgenomes_test
   adapter: postgresql
   username: postgres
