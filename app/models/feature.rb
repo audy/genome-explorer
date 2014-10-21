@@ -36,7 +36,7 @@ class Feature < ActiveRecord::Base
   end
 
   def protein_sequence
-    @protein_sequence ||= Bio::Sequence.auto(self.sequence).translate
+    Bio::Sequence.auto(self.sequence).translate
   end
 
   def product
