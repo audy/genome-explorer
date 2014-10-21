@@ -35,4 +35,8 @@ describe Feature do
     expect(feature.feature_type).to eq('CDS')
   end
 
+  it '#protein_sequence correctly handles start codons'
+
+  it '#protein_sequence correctly translates (bacterial) mRNAs'
+
 end
