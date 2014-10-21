@@ -28,7 +28,10 @@ ActiveRecord::Migration.maintain_test_schema!
 ActiveRecord::Base.logger.level = 1
 
 RSpec.configure do |config|
+
+  # include FactoryGirl magic DSL
   config.include FactoryGirl::Syntax::Methods
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
