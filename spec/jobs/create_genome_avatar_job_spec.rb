@@ -17,7 +17,8 @@ describe CreateGenomeAvatarJob do
 
   it 'creates an file (image)' do
     create_genome_avatar_job.perform
-    expect(File.exists?(genome.reload.avatar.url)).to_not be(false)
+    path = './public/' + genome.reload.avatar.url
+    expect(File.exists?(path)).to_not be(false)
   end
 
   it 'creates an image'
