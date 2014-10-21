@@ -40,12 +40,12 @@ RSpec.configure do |config|
   # FactoryGirl::InvalidFactoryError is raised with a list of the offending
   # factories. Recommended usage of FactoryGirl.lint is to invoke this once before
   # the test suite is run.
-  config.before(:suite) do
+  config.before(:each) do
     begin
       DatabaseCleaner.start
       FactoryGirl.lint
     ensure
-      DatabaseCleaner.clean
+      DatabaseCleaner.clean_with :truncation
     end
   end
 
