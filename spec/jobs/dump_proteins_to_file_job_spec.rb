@@ -9,11 +9,19 @@ describe DumpProteinsToFileJob do
     expect(job).not_to be(nil)
   end
 
-  it 'dumps proteins to a file' do
+  it 'performs' do
     feature = create(:feature)
     # job returns the number of sequences dumped
     expect(job.perform).to eq(1)
+  end
+
+  it 'creates a file' do
+    feature = create(:feature)
     expect(File.exists?(job.filename)).to_not be(false)
+  end
+
+  it 'creates a file with proteins that match' do
+    feature = create(:feature)
     records =
       File.open(job.filename) do |handle|
         Dna.new(handle, :format => :fasta).to_a
