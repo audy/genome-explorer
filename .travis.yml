@@ -8,4 +8,4 @@ addons:
   postgresql: "9.3"
 
 before_script:
-  - psql -c 'create database omggenomes-test;' -U postgres
+  - psql -c 'create database omggenomes_test;' -U postgres
