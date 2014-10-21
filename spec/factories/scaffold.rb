@@ -5,6 +5,7 @@ FactoryGirl.define do
     # factorygirl already has a method name sequence which causes all sorts of
     # weirdnesses to occur
     add_attribute :sequence, 'ATGGATCAATGA' 
+    genome
   end
 
 end
