@@ -28,8 +28,23 @@ ActiveRecord::Migration.maintain_test_schema!
 ActiveRecord::Base.logger.level = 1
 
 RSpec.configure do |config|
+  config.include FactoryGirl::Syntax::Methods
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+
+  # FactoryGirl.lint builds each factory and subsequently calls #valid? on it (if
+  # valid? is defined); if any calls to #valid? return false,
+  # FactoryGirl::InvalidFactoryError is raised with a list of the offending
+  # factories. Recommended usage of FactoryGirl.lint is to invoke this once before
+  # the test suite is run.
+  config.before(:suite) do
+    begin
+      DatabaseCleaner.start
+      FactoryGirl.lint
+    ensure
+      DatabaseCleaner.clean
+    end
+  end
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
