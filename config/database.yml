@@ -25,9 +25,9 @@ profile:
 # Do not set this db to the same as development or production.
 test: &test
   <<: *default
-  database: omgenomes_test
+  database: omgenomes-test
   adapter: postgresql
-  username: postgres
+  username: austin
 
 production:
   <<: *default

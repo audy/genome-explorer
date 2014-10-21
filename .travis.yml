@@ -8,4 +8,5 @@ addons:
   postgresql: '9.3'
 
 before_script:
+  - cp config/database.travis.yml config/database.yml
   - psql -c 'create database omggenomes_test;' -U postgres
