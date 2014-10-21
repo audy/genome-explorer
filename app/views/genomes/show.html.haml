@@ -34,18 +34,19 @@
     %table.table.table-bordered.table-striped.table-condensed
       %thead
         %tr
+          %th #
           %th Organism
-          %th Shared Genes
+          %th Genes Shared
       %tbody
-        - @related_genomes.each do |related_genome|
+        - @genome_relationships.each do |genome_relationship|
           %tr
-            %td= link_to related_genome.organism, genome_path(related_genome)
-            - n_shared = GenomeRelationship.where(genome_id: @genome.id,
-              related_genome_id: related_genome.id).first.related_features_count
-            %td #{'%0.2f' % (100 *n_shared / @genome[:stats]['total_proteins'].to_f)}
+            %td= genome_relationship.related_genome_id
+            %td= link_to genome_relationship.related_genome.organism, genome_path(genome_relationship.related_genome)
+            - n_shared = genome_relationship.related_features_count
+            %td #{'%0.2f' % (100 *n_shared / @genome[:stats]['total_proteins'].to_f)} %
 
   %div.col-md-12
-    = will_paginate @related_genomes, param_name: 'genomes_page'
+    = will_paginate @genome_relationships, param_name: 'genomes_page'
 
 %div.row
   %div.col-md-12

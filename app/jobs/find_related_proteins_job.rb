@@ -8,7 +8,6 @@ class FindRelatedProteinsJob
 
   # dump proteins to fasta file
   def perform
-    ActiveRecord::Base.logger.level = 1
     run_usearch
     ProteinRelationship.transaction {
       build_relationships_from_blast_output

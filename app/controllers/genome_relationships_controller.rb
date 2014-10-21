@@ -4,21 +4,49 @@ class GenomeRelationshipsController < ApplicationController
 
     respond_to do |format|
       format.json do
+        # a big mess.
 
         @min_related = Integer(params[:min_related] || 0)
 
-        genome_relationships = GenomeRelationship.all
-        genomes = Genome.where("(stats -> 'total_proteins')::int > 0")
+        # find all genome relationships where genome_id is params[:genome_id]
+        # then find all genome relationships whose genome_id is in the related
+        # genome ids.
+        genome_relationships = 
+          unless params[:genome_id].nil?
+            # find all genomes related to this genome
+            genomes_related = GenomeRelationship.where(genome: params[:genome_id]).all
+            # find relationships within genomes that are related to this genome
+            # todo: it would be cool to be able to specify depth and build this
+            # graph iteratively up to n levels.
+            related_relationships = GenomeRelationship.where(genome_id: genomes_related.map(&:related_genome_id)).all
+            # combine, use to build graph
+            genomes_related + related_relationships
+          else
+            GenomeRelationship.all
+          end
 
+        # get a list of all genomes included in the genome relationships
+        # (this list is highly redundant so uniq it, also sometimes there are
+        # nils so just remove them).
+        genomes = (genome_relationships.map(&:genome) +
+                   genome_relationships.map(&:related_genome)).uniq.compact
+
+        # build graph nodes
+        # also make a 0-based indexed array of genomes (for referencing the
+        # genomes in the links)
         genomes_list = []
-
         nodes = genomes.map do |genome|
           genomes_list << genome.id
           { name: genome.organism, group: genome.organism.split[1] }
         end
 
+        # convert the 0-indexed array into a hash, so we can reference the
+        # genomes by their 0-based index
         index = Hash[genomes_list.map.with_index.to_a] 
 
+        # build the links { source:, target:, value: }
+        # where source and target are the 0-based index of the genome in
+        # genomes_list (which got converted to index hash).
         links = genome_relationships.map do |rel|
           count = rel.related_features_count
           source = index[rel.genome_id]

@@ -14,10 +14,9 @@
 
 = javascript_include_tag "//www.google.com/jsapi", "chartkick" 
 
-%div.row
-  %div.col-md-12
-    %h2 Feature Types
-    = pie_chart Feature.group(:feature_type).count
+- offset = rand(Genome.count)
+- rando_genome = Genome.offset(offset).first
 
-// histogram... slow...
-// = column_chart Hash[ActiveRecord::Base.connection.execute('select width_bucket(char_length(sequence), 1000, 1000000000, 10000), count(*) from scaffolds group by 1 order by 1').to_a.map { |x| [x['width_bucket'], x['count']] }]
+%h3 Random Genome
+%em
+  = link_to rando_genome.organism, genome_path(rando_genome)

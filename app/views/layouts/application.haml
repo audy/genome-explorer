@@ -18,7 +18,7 @@
             %li
               = link_to 'Genomes', genomes_path
             %li
-              = link_to raw("Jobs <span class='badge alert-info'>#{count_or_empty_string(Delayed::Job)}</span>"), delayed_jobs_path
+              = link_to raw("Jobs <span class='badge alert-info'>#{count_or_empty_string(Delayed::Job)}</span>"), '/delayed_job'
             %li
               = link_to 'Graph', genome_relationships_path
 
@@ -29,3 +29,13 @@
 
     %div
       = yield
+
+// so giant evil corporations can track u :|
+:javascript
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55831762-1', 'auto');
+  ga('send', 'pageview');

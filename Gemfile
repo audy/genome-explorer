@@ -3,8 +3,6 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.6'
 
-#gem 'lsh', git: 'https://github.com/audy/ruby-lsh.git', ref: 'cd04c936ba588bcceff3507ea50147d36d9d68f4'
-
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 gem 'pg'
@@ -20,6 +18,8 @@ gem 'coffee-rails', '~> 4.0.0'
 
 gem 'activerecord-import'
 
+gem 'rollbar', '1.2.2'
+
 gem 'carrierwave'
 
 gem 'rails_stdout_logging'
@@ -31,6 +31,7 @@ gem 'bootstrap_form'
 
 gem 'delayed_job'
 gem 'delayed_job_active_record'
+gem 'delayed_job_web'
 
 gem 'will_paginate', '~> 3.0'
 gem 'bootstrap-will_paginate'
@@ -72,7 +73,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 
 # Spring speeds up development by keeping your application running in the
 # background. Read more: https://github.com/rails/spring
-#gem 'spring',        group: :development
+gem 'spring',        group: :development
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -90,6 +91,7 @@ group :test do
   gem 'cucumber-rails', require: false
   gem 'capybara'
   gem 'database_cleaner'
+  gem 'factory_girl_rails'
 end
 
 gem 'rspec-rails', group: [:development, :test]

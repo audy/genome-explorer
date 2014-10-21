@@ -48,8 +48,11 @@ class FindRelatedGenomesJob
       end
     end
 
-    GenomeRelationship.import [:genome_id, :related_genome_id,
-                               :related_features_count], pr
+    GenomeRelationship.transaction {
+      GenomeRelationship.destroy_all
+      GenomeRelationship.import [:genome_id, :related_genome_id,
+                                :related_features_count], pr
+    }
 
   end
 

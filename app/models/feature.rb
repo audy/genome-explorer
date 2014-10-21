@@ -35,6 +35,7 @@ class Feature < ActiveRecord::Base
     seq
   end
 
+  # xxx real slow!
   def protein_sequence
     Bio::Sequence.auto(self.sequence).translate
   end

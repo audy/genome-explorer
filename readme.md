@@ -1,5 +1,8 @@
 # Genome Explorer
 
+[![Build
+Status](https://magnum.travis-ci.com/audy/genome-explorer.svg?token=f7yoxymBn6pUMxVADYxk&branch=master)](https://magnum.travis-ci.com/audy/genome-explorer)
+
 (c, 2014) Austin G. Davis-Richardson
 
 LICENSE: MIT

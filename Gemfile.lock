@@ -77,11 +77,20 @@ GEM
     delayed_job_active_record (4.0.2)
       activerecord (>= 3.0, < 4.2)
       delayed_job (>= 3.0, < 4.1)
+    delayed_job_web (1.2.9)
+      activerecord (> 3.0.0)
+      delayed_job (> 2.0.3)
+      sinatra (>= 1.4.4)
     diff-lcs (1.2.5)
     dna (0.3.0)
     erubis (2.7.0)
     eventmachine (1.0.3)
     execjs (2.2.1)
+    factory_girl (4.5.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.5.0)
+      factory_girl (~> 4.5.0)
+      railties (>= 3.0.0)
     gherkin (2.12.2)
       multi_json (~> 1.3)
     groupdate (2.3.0)
@@ -127,6 +136,8 @@ GEM
     pry-rails (0.3.2)
       pry (>= 0.9.10)
     rack (1.5.2)
+    rack-protection (1.5.3)
+      rack
     rack-test (0.6.2)
       rack (>= 1.0)
     rails (4.1.6)
@@ -148,6 +159,8 @@ GEM
     rake (10.3.2)
     rdoc (4.1.2)
       json (~> 1.4)
+    rollbar (1.2.2)
+      multi_json (~> 1.3)
     rspec-core (3.1.4)
       rspec-support (~> 3.1.0)
     rspec-expectations (3.1.2)
@@ -174,7 +187,12 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    sinatra (1.4.5)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
     slop (3.6.0)
+    spring (1.1.3)
     sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -221,7 +239,9 @@ DEPENDENCIES
   database_cleaner
   delayed_job
   delayed_job_active_record
+  delayed_job_web
   dna
+  factory_girl_rails
   groupdate
   haml
   haml-rails
@@ -235,10 +255,12 @@ DEPENDENCIES
   pry-rails
   rails (= 4.1.6)
   rails_stdout_logging
+  rollbar (= 1.2.2)
   rspec-rails
   ruby-prof
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
+  spring
   sqlite3
   thin
   turbolinks

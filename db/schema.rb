@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141013181103) do
+ActiveRecord::Schema.define(version: 20141013210723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 20141013181103) do
     t.hstore   "stats"
     t.hstore   "ncbi_metadata"
     t.string   "avatar"
+    t.integer  "taxonomy_id"
   end
 
   create_table "protein_relationships", force: true do |t|
@@ -91,5 +92,11 @@ ActiveRecord::Schema.define(version: 20141013181103) do
   end
 
   add_index "scaffolds", ["genome_id"], name: "index_scaffolds_on_genome_id", using: :btree
+
+  create_table "taxonomies", force: true do |t|
+    t.integer "parent_id"
+    t.string  "name"
+    t.string  "rank"
+  end
 
 end

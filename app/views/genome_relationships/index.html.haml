@@ -14,6 +14,7 @@
         %label Render links?
         %input#enable-links{ type: 'checkbox' }
 
+- path = "/genome_relationships.json?genome_id=#{params[:genome_id]}"
 
 :javascript
   var width = $(window).width();
@@ -30,7 +31,7 @@
   }
 
 
-  d3.json("/genome_relationships.json", function(error, graph) {
+  d3.json("#{path}", function(error, graph) {
     console.log('downloading');
 
     var links_enabled = false;
