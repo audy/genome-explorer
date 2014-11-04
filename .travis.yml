@@ -14,6 +14,7 @@ before_script:
 
 notifications:
   slack: triplettlab:Labahf3TN0MtJgCffs7xi2za
+  email: false
 
 after_success:
   - chmod 600 .travis/deploy_key
