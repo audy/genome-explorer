@@ -5,25 +5,34 @@ class GenomeRelationshipsController < ApplicationController
     respond_to do |format|
       format.json do
         # a big mess.
-
-        @min_related = Integer(params[:min_related] || 0)
+        
+        @min_related = Integer(params[:min_related] || 10)
 
         # find all genome relationships where genome_id is params[:genome_id]
         # then find all genome relationships whose genome_id is in the related
         # genome ids.
         genome_relationships = 
-          unless params[:genome_id].nil?
+          unless params[:genome_id].nil? || params[:genome_id].empty?
             # find all genomes related to this genome
-            genomes_related = GenomeRelationship.where(genome: params[:genome_id]).all
+            genomes_related = GenomeRelationship.
+              where(genome: params[:genome_id]).
+              where('related_features_count > ?', @min_related).
+              all
+
             # find relationships within genomes that are related to this genome
             # todo: it would be cool to be able to specify depth and build this
             # graph iteratively up to n levels.
-            related_relationships = GenomeRelationship.where(genome_id: genomes_related.map(&:related_genome_id)).all
+            related_relationships =
+              GenomeRelationship.
+              where(genome_id: genomes_related.map(&:related_genome_id)).
+              where('related_features_count > ?', @min_related).
+              all
             # combine, use to build graph
             genomes_related + related_relationships
           else
             GenomeRelationship.all
           end
+
 
         # get a list of all genomes included in the genome relationships
         # (this list is highly redundant so uniq it, also sometimes there are

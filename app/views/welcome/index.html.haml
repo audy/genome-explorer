@@ -1,16 +1,17 @@
 %h2.page-header Welcome
 
-%ul
-  %li Total Genomes: #{Genome.count}
-  %li Features: #{Feature.count}
-  %li Scaffolds: #{Scaffold.count}
-  - last = Genome.order(created_at: :desc).first
-  - unless last.nil?
-    %li
-      Latest Genome:
-      %em
-        = link_to "#{last.organism}", genome_path(last)
-      added #{time_ago_in_words(last.created_at)} ago.
+
+%p
+  Welcome to genome explorer, you should probably look at a
+  %a{href: '/genome_relationships?genome_id=14'} graph.
+
+- last = Genome.order(created_at: :desc).first
+- unless last.nil?
+  %h3
+    Latest Genome
+  %em
+    = link_to "#{last.organism}", genome_path(last)
+  added #{time_ago_in_words(last.created_at)} ago.
 
 = javascript_include_tag "//www.google.com/jsapi", "chartkick" 
 

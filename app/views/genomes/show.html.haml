@@ -42,7 +42,7 @@
       %tbody
         - @genome_relationships.each do |genome_relationship|
           %tr
-            %td= genome_relationship.related_genome_id
+            %td= genome_relationship.id
             %td= link_to genome_relationship.related_genome.organism, genome_path(genome_relationship.related_genome)
             - n_shared = genome_relationship.related_features_count
             %td #{'%0.2f' % (100 *n_shared / @genome[:stats]['total_proteins'].to_f)} %
