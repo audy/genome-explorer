@@ -37,7 +37,10 @@ class Feature < ActiveRecord::Base
 
   # xxx real slow!
   def protein_sequence
-    Bio::Sequence.auto(self.sequence).translate
+    # create a new nucleotide sequence, translate it.
+    # do NOT use 'auto' as it will sometimes mistake nucleotide for
+    # amino acid
+    Bio::Sequence::NA.new(self.sequence).translate
   end
 
   def product
