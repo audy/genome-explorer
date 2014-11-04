@@ -1,17 +1,16 @@
 default: &default
   pool: 5
   timeout: 5000
+  adapter: postgresql
 
 development:
   <<: *default
   username: <%= ENV['USER'] %>
-  adapter: postgresql
   database: omgenomes
 
 profile:
   <<: *default
   username: <%= ENV['USER'] %>
-  adapter: postgresql
   database: omgenomes
 
 # Warning: The database defined as "test" will be erased and
@@ -20,7 +19,6 @@ profile:
 test: &test
   <<: *default
   database: omgenomes_test
-  adapter: postgresql
   username: austin
 
 production:
