@@ -2,7 +2,7 @@ language: ruby
 cache: bundler
 
 rvm:
-  - 2.1.2
+- 2.1.2
 
 addons:
   postgresql: '9.3'
@@ -14,3 +14,20 @@ before_script:
 
 notifications:
   slack: triplettlab:Labahf3TN0MtJgCffs7xi2za
+  email: false
+
+after_success:
+  - chmod 600 .travis/deploy_key
+  - ssh-add .travis/deploy_key
+  - git remote add deploy dokku@austinfanclub.com:genomes
+  - git push deploy
+
+env:
+  global:
+    secure: ZY/412uUphfTSGhCycg4v/9nfzQKS5RO9m6PeKzQiOuZWs9crNbQZv7S6n1zl495xfJk9uBgLseGysE8TUDvEkInUb32YMtP+Jh0U0/r4EkTkS/dMrYnLagkiCehbu+qrwM36uRmgrq7w6J8fL9ofiAO+GS4i/2ydj04hi4zeKw=
+
+# decrypt deploy key
+before_install:
+  # so we can git push
+  - 'echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config'
+  - openssl aes-256-cbc -K $encrypted_dbf285548d10_key -iv $encrypted_dbf285548d10_iv -in .travis/deploy_key.enc -out .travis/deploy_key -d

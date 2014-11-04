@@ -1,6 +1,5 @@
 %h2.page-header Welcome
 
-
 %p
   Welcome to genome explorer, you should probably look at a
   %a{href: '/genome_relationships?genome_id=14'} graph.
@@ -12,12 +11,3 @@
   %em
     = link_to "#{last.organism}", genome_path(last)
   added #{time_ago_in_words(last.created_at)} ago.
-
-= javascript_include_tag "//www.google.com/jsapi", "chartkick" 
-
-- offset = rand(Genome.count)
-- rando_genome = Genome.offset(offset).first
-
-%h3 Random Genome
-%em
-  = link_to rando_genome.organism, genome_path(rando_genome)
