@@ -22,6 +22,7 @@ require 'rspec/rails'
 
 unless ActiveRecord::Base.connected?
   $stderr.puts 'ERROR! cannot connect to database'
+  $stderr.puts Rails.configuration.database_configuration[Rails.env].to_yaml
   exit -1
 end
 
