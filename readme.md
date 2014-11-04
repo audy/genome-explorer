@@ -31,6 +31,12 @@ bundle exec rake db:migrate
 bundle exec rackup
 ```
 
+## Continuous Integration and Deployment
+
+Any push to the `master` branch of this GitHub repository will first be tested
+using Travis-CI and then, if tests pass, deployed to genome.austinfanclub.com
+via dokku.
+
 ## License
 
 The MIT License (MIT)
