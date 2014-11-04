@@ -20,11 +20,11 @@ require 'rspec/rails'
 #
 # Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
-unless ActiveRecord::Base.connected?
-  $stderr.puts 'ERROR! cannot connect to database'
-  $stderr.puts Rails.configuration.database_configuration[Rails.env].to_yaml
-  exit -1
-end
+#unless ActiveRecord::Base.connected?
+#  $stderr.puts 'ERROR! cannot connect to database'
+#  $stderr.puts ActiveRecord::Base.connection_config.to_yaml
+#  exit -1
+#end
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
