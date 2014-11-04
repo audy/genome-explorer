@@ -17,3 +17,6 @@ tmp
 
 public/uploads
 public/assets
+
+# NEIN
+.travis/deploy_key
