@@ -58,7 +58,7 @@
           - @related_features.each do |related_feature|
             %tr
               %td=link_to related_feature.product, genome_feature_path(related_feature.genome_id, related_feature.id)
-              %td=link_to related_feature.genome.organism, genome_path(related_feature.genome)
+              %td=link_to related_feature.genome.organism, genome_path(related_feature.genome) rescue 'Missing'
               %td=related_feature.similarity rescue 'Unknown'
 
 - # amino acid sequences
