@@ -1,10 +1,10 @@
 class UpdateGenomeRelationshipsPipelineJob
   def perform
     ActiveRecord::Base.transaction {
-      DumpProteinsToFileJob.new('proteins.fasta').perform
       # start fresh each time
       ProteinRelationship.destroy_all
       GenomeRelationship.destroy_all
+      DumpProteinsToFileJob.new('proteins.fasta').perform
       FindRelatedProteinsJob.new.perform
       FindRelatedGenomesJob.new.peform
     }
