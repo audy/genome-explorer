@@ -23,4 +23,8 @@ namespace :compute do
   task :related_genomes => [ :environment ] do
     FindRelatedGenomesJob.new.perform
   end
+
+  task :related_genomes_pipeline => [ :environment ] do
+    UpdateGenomeRelationshipsPipelineJob.new.perform
+  end
 end
