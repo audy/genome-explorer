@@ -82,7 +82,7 @@ group :test do
 
   # integration testing
   gem 'cucumber-rails', require: false
-  gem 'capybara'
+  gem 'capybara-rails'
 
   # cleans up databases
   gem 'database_cleaner'
