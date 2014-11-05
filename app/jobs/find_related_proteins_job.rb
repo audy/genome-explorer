@@ -16,9 +16,8 @@ class FindRelatedProteinsJob
     }
   end
 
-
   def run_usearch
-    system %Q{usearch \
+    system %Q{usearch61 \
         -usearch_local proteins.fasta \
         -db proteins.fasta \
         -id #{@identity} \
