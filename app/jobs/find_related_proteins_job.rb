@@ -4,6 +4,8 @@ class FindRelatedProteinsJob
     @method = 'usearch'
     @ncpu = 24
     @identity = '0.2'
+    @maxaccepts = 256
+    @maxrejects = 512
   end
 
   # dump proteins to fasta file
@@ -14,23 +16,21 @@ class FindRelatedProteinsJob
     }
   end
 
-
   def run_usearch
-    system %Q{usearch \
+    system %Q{usearch61 \
         -usearch_local proteins.fasta \
         -db proteins.fasta \
         -id #{@identity} \
         -blast6out proteins.blast6.tab \
         -threads #{@ncpu} \
-        -maxaccepts 128 \
-        -maxrejects 256}
+        -maxaccepts #{@maxaccepts} \
+        -maxrejects #{@maxrejects}}
   end
 
   def build_relationships_from_blast_output
     ProteinRelationship.transaction do
       # todo allow for multiple types of proteinrelationships from different
       # sources.
-      ProteinRelationship.delete_all
       File.open('proteins.blast6.tab') do |handle|
         pbar = ProgressBar.new 'loading', File.size(handle.path)
         columns = [ :feature_id, :related_feature_id, :identity ]
