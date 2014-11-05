@@ -32,7 +32,6 @@ class FindRelatedProteinsJob
     ProteinRelationship.transaction do
       # todo allow for multiple types of proteinrelationships from different
       # sources.
-      ProteinRelationship.delete_all
       File.open('proteins.blast6.tab') do |handle|
         pbar = ProgressBar.new 'loading', File.size(handle.path)
         columns = [ :feature_id, :related_feature_id, :identity ]
