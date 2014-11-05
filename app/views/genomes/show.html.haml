@@ -18,6 +18,8 @@
         NCBI Assembly:
         %a{ href: "http://www.ncbi.nlm.nih.gov/assembly/#{@genome.assembly_id}"}
           #{@genome.assembly_id}
+      - unless @genome[:ncbi_metadata].nil?
+        %li Submitted by: #{@genome['ncbi_metadata']['submitterorganization'] rescue 'Unknown'}
       - unless @genome[:stats].nil?
         %li #{@genome[:stats]['total_scaffolds']} Scaffolds (#{'%.2f' % (@genome[:stats]['genome_size'].to_f/1e6)} Mb)
         %li
