@@ -1,8 +1,21 @@
 %h2.page-header Welcome
 
 %p
-  Welcome to genome explorer, you should probably look at a
-  %a{href: '/genome_relationships?genome_id=14'} graph.
+  Welcome to Genome Explorer.
+
+%p
+  To get an idea what this website is about, check out a
+  %a{href: '/genomes/14'} genome
+  ,
+  %a{href: '/genomes/14/features/33402'}
+    a protein-coding gene
+  or maybe look at a
+  %a{href: '/genome_relationships?genome_id=14'} graph
+  of a genome's relationship with other genomes.
+
+%p
+  This site is a working prototype being built by
+  %a{href: 'http://agdr.co'} Austin G. Davis-Richardson
 
 - last = Genome.order(created_at: :desc).first
 - unless last.nil?
