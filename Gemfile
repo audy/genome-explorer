@@ -26,6 +26,8 @@ gem 'rails_stdout_logging'
 
 gem 'monsterid'
 
+gem 'redcarpet'
+
 gem 'bootstrap-sass'
 gem 'bootstrap_form'
 
