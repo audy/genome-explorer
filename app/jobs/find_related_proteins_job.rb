@@ -4,6 +4,8 @@ class FindRelatedProteinsJob
     @method = 'usearch'
     @ncpu = 24
     @identity = '0.2'
+    @maxaccepts = 256
+    @maxrejects = 512
   end
 
   # dump proteins to fasta file
@@ -22,8 +24,8 @@ class FindRelatedProteinsJob
         -id #{@identity} \
         -blast6out proteins.blast6.tab \
         -threads #{@ncpu} \
-        -maxaccepts 128 \
-        -maxrejects 256}
+        -maxaccepts #{@maxaccepts} \
+        -maxrejects #{@maxrejects}}
   end
 
   def build_relationships_from_blast_output
