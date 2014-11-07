@@ -4,7 +4,7 @@
   %li
     %a{ href: '/genomes' } Genomes
   %li
-    - unless @feature.genome.organism.nil?
+    - unless !@feature.genome.nil? and @feature.genome.organism.nil?
       = link_to @feature.genome.organism, genome_path(@feature.genome)
   %li.active
     Feature # #{@feature.id}
