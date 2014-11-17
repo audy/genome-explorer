@@ -80,9 +80,7 @@ end
 
 group :test do
 
-  # integration testing
   gem 'cucumber-rails', require: false
-  gem 'capybara-rails'
 
   # silly codeclimate test coverage bage
   gem 'codeclimate-test-reporter', require: nil

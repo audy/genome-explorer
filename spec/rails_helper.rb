@@ -35,12 +35,6 @@ ActiveRecord::Base.logger.level = 1
 
 RSpec.configure do |config|
 
-  # include FactoryGirl magic DSL
-  config.include FactoryGirl::Syntax::Methods
-
-  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
-
   # FactoryGirl.lint builds each factory and subsequently calls #valid? on it (if
   # valid? is defined); if any calls to #valid? return false,
   # FactoryGirl::InvalidFactoryError is raised with a list of the offending
@@ -49,7 +43,6 @@ RSpec.configure do |config|
   config.before(:each) do
     begin
       DatabaseCleaner.start
-      FactoryGirl.lint
     ensure
       DatabaseCleaner.clean_with :truncation
     end

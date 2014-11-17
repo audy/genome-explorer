@@ -2,7 +2,14 @@ require 'rails_helper'
 
 describe Scaffold do
 
-  let (:scaffold) { create(:scaffold) }
+  let(:genome) { Genome.create }
+  let(:scaffold) { Scaffold.create sequence: 'ATGGATCAATGA', genome: genome  }
+  let(:feature) { Feature.create genome: genome,
+                    scaffold: scaffold,
+                    feature_type: 'CDS',
+                    start: 1,
+                    stop: 12
+            }
 
   it 'can be created' do
     expect(scaffold).not_to eq(nil)

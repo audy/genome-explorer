@@ -2,6 +2,15 @@ require 'rails_helper'
 
 describe DumpProteinsToFileJob do
 
+  let(:genome) { Genome.create }
+  let(:scaffold) { Scaffold.create sequence: 'ATGGATCAATGA'  }
+  let(:feature) { Feature.create genome: genome,
+                    scaffold: scaffold,
+                    feature_type: 'CDS',
+                    start: 1,
+                    stop: 12
+            }
+  
   # todo use tempfile
   let (:job) { DumpProteinsToFileJob.new('test.fasta') }
 
@@ -10,18 +19,19 @@ describe DumpProteinsToFileJob do
   end
 
   it 'performs' do
-    feature = create(:feature)
+    # these need to be instantiated manually
+    genome
+    feature
+    scaffold
     # job returns the number of sequences dumped
     expect(job.perform).to eq(1)
   end
 
   it 'creates a file' do
-    feature = create(:feature)
     expect(File.exists?(job.filename)).to_not be(false)
   end
 
   it 'creates a file with proteins that match' do
-    feature = create(:feature)
     records =
       File.open(job.filename) do |handle|
         Dna.new(handle, :format => :fasta).to_a

@@ -15,8 +15,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-
-# Use Capybara acceptance test framework
+# Use Capybara DSL
 require 'capybara/rspec'
 
 # code-climate dingus

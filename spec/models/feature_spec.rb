@@ -2,7 +2,14 @@ require 'rails_helper'
 
 describe Feature do
 
-  let(:feature) { create(:feature) }
+  let(:genome) { Genome.create }
+  let(:scaffold) { Scaffold.create sequence: 'ATGGATCAATGA'  }
+  let(:feature) { Feature.create genome: genome,
+                    scaffold: scaffold,
+                    feature_type: 'CDS',
+                    start: 1,
+                    stop: 12
+            }
 
   it 'can be created' do
     expect(feature).to_not be(nil)
@@ -10,6 +17,15 @@ describe Feature do
 
   it 'has a scaffold' do
     expect(feature.scaffold).to_not be(nil)
+    expect(feature.scaffold).to eq(scaffold)
+  end
+
+  it 'has a scaffold with a sequence' do
+    expect(feature.scaffold.sequence).to_not be(nil)
+  end
+
+  it 'belongs to a genome' do
+    expect(feature.genome).to eq(genome)
   end
 
   it 'has a (nucleotide) sequence (from scaffold)' do
@@ -35,8 +51,12 @@ describe Feature do
     expect(feature.feature_type).to eq('CDS')
   end
 
-  it '#protein_sequence correctly handles start codons'
-
-  it '#protein_sequence correctly translates (bacterial) mRNAs'
+  it 'updates genome attribute if it is added to genome.features' do
+    f = Feature.create
+    g = Genome.create
+    g.features << f
+    g.save
+    expect(f.genome.id).to eq(genome.id)
+  end
 
 end

@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe 'the welcome page', type: :feature do
 
   it 'says welcome' do
