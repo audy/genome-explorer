@@ -93,13 +93,6 @@ ActiveRecord::Schema.define(version: 20141105204412) do
 
   add_index "scaffolds", ["genome_id"], name: "index_scaffolds_on_genome_id", using: :btree
 
-  create_table "statistics", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "kind"
-    t.hstore   "data"
-  end
-
   create_table "taxonomies", force: true do |t|
     t.integer "parent_id"
     t.string  "name"
