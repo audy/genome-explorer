@@ -20,8 +20,11 @@
 require 'capybara/rspec'
 
 # code-climate dingus
-require 'codeclimate-test-reporter'
-CodeClimate::TestReporter.start
+
+unless ENV['CODECLIMATE_REPO_TOKEN'].nil?
+  require 'codeclimate-test-reporter'
+  CodeClimate::TestReporter.start
+end
 
 RSpec.configure do |config|
 
