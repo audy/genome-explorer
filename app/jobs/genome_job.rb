@@ -13,7 +13,7 @@ class GenomeJob < Struct.new :genome_id
     record_stat 'genome_job/failed'
   end
 
-  def succes job
+  def success job
     record_stat 'genome_job/success'
   end
 
