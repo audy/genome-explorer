@@ -6,7 +6,7 @@ class UpdateGenomeRelationshipsPipelineJob
       GenomeRelationship.destroy_all
       DumpProteinsToFileJob.new('proteins.fasta').perform
       FindRelatedProteinsJob.new.perform
-      FindRelatedGenomesJob.new.peform
+      FindRelatedGenomesJob.new.perform
     }
   end
 

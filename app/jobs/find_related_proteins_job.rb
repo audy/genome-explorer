@@ -3,7 +3,7 @@ class FindRelatedProteinsJob
   def initialize
     @method = 'usearch'
     @ncpu = 24
-    @identity = '0.2'
+    @identity = '0.1'
     @maxaccepts = 256
     @maxrejects = 512
   end
@@ -17,7 +17,8 @@ class FindRelatedProteinsJob
   end
 
   def run_usearch
-    system %Q{usearch61 \
+    # xxx make usearch a configuration item
+    system %Q{#{@method}\
         -usearch_local proteins.fasta \
         -db proteins.fasta \
         -id #{@identity} \
