@@ -17,12 +17,11 @@ class Feature < ActiveRecord::Base
   has_many :inverse_related_features, through: :inverse_protein_relationships,
     source: :feature
 
-  # todo what are the other start amino acids? This is the *predicted* amino
-  # acid sequence so proteins with alternative start codons will not start with
-  # a methionine.
+  # for now I am only going to call AAs "weird" if they have gaps
+  # xxx this needs to be better defined with some biological background
+  # xxx need to verify that the start codon makes sense
   def weird?
-    seq = self.protein_sequence
-    seq[0] != 'M' or seq[-1] != '*' or seq[1..-2].include? '*'
+    self.protein_sequence[1..-2].include? '*'
   end
 
   def sequence
