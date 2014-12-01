@@ -71,6 +71,11 @@ group :development do
   gem 'ruby-prof'
   gem 'spring'
 
+  # for autoreloading and test running
+  gem 'guard'
+  gem 'guard-livereload', require: false
+  gem 'rack-livereload'
+
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', '~> 0.4.0', group: :doc
 end

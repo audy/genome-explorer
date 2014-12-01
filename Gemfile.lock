@@ -50,6 +50,8 @@ GEM
       activesupport (>= 3.2.0)
       json (>= 1.7)
       mime-types (>= 1.16)
+    celluloid (0.16.0)
+      timers (~> 4.0.0)
     chartkick (1.3.2)
     chunky_png (1.3.3)
     codeclimate-test-reporter (0.4.1)
@@ -89,6 +91,9 @@ GEM
     diff-lcs (1.2.5)
     dna (0.3.0)
     docile (1.1.5)
+    em-websocket (0.5.1)
+      eventmachine (>= 0.12.9)
+      http_parser.rb (~> 0.6.0)
     erubis (2.7.0)
     ethon (0.7.1)
       ffi (>= 1.3.0)
@@ -104,6 +109,7 @@ GEM
     faraday_middleware (0.9.1)
       faraday (>= 0.7.4, < 0.10)
     ffi (1.9.6)
+    formatador (0.2.5)
     gh (0.13.2)
       addressable
       backports
@@ -115,6 +121,16 @@ GEM
       multi_json (~> 1.3)
     groupdate (2.3.0)
       activesupport (>= 3)
+    guard (2.6.1)
+      formatador (>= 0.2.4)
+      listen (~> 2.7)
+      lumberjack (~> 1.0)
+      pry (>= 0.9.12)
+      thor (>= 0.18.1)
+    guard-livereload (2.3.1)
+      em-websocket (~> 0.5)
+      guard (~> 2.0)
+      multi_json (~> 1.8)
     haml (4.0.5)
       tilt
     haml-rails (0.5.3)
@@ -124,6 +140,8 @@ GEM
       railties (>= 4.0.1)
     highline (1.6.21)
     hike (1.2.3)
+    hitimes (1.2.2)
+    http_parser.rb (0.6.0)
     i18n (0.6.11)
     jquery-rails (3.1.2)
       railties (>= 3.0, < 5.0)
@@ -131,6 +149,11 @@ GEM
     json (1.8.1)
     launchy (2.4.3)
       addressable (~> 2.3)
+    listen (2.7.11)
+      celluloid (>= 0.15.2)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9)
+    lumberjack (1.0.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
@@ -161,6 +184,8 @@ GEM
       json
       websocket (~> 1.0)
     rack (1.5.2)
+    rack-livereload (0.3.15)
+      rack
     rack-protection (1.5.3)
       rack
     rack-test (0.6.2)
@@ -186,6 +211,9 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.3.2)
+    rb-fsevent (0.9.4)
+    rb-inotify (0.9.5)
+      ffi (>= 0.5.0)
     rdoc (4.1.2)
       json (~> 1.4)
     redcarpet (3.2.0)
@@ -242,6 +270,8 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
+    timers (4.0.1)
+      hitimes
     travis (1.7.2)
       addressable (~> 2.3)
       backports
@@ -286,6 +316,8 @@ DEPENDENCIES
   dna
   factory_girl_rails
   groupdate
+  guard
+  guard-livereload
   haml
   haml-rails
   jquery-rails
@@ -294,6 +326,7 @@ DEPENDENCIES
   progressbar
   pry
   pry-rails
+  rack-livereload
   rails (= 4.1.6)
   rails_12factor
   redcarpet
