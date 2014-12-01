@@ -29,3 +29,15 @@ namespace :enqeue do
     UpdateGenomeRelationshipsPipelineJob.new.delay.perform
   end
 end
+
+namespace :version do
+
+  desc 'print current version number to STDOUT'
+  task :show do
+    puts Omgenomes::Version::STRING
+  end
+
+  desc 'increment version number'
+  task :bump do
+  end
+end
