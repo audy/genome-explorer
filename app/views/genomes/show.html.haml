@@ -77,6 +77,6 @@
               - if feature.weird?
                 %span.label.label-warning weird
             %td
-              = feature[:stats]['related_features'] rescue 'Unknown'
+              = feature.protein_relationships.count # ['related_features'] rescue 'Unknown'
   %div.col-md-12
     = will_paginate @features, param_name: 'features_page'
