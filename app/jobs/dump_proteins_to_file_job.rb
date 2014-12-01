@@ -28,4 +28,8 @@ DumpProteinsToFileJob = Struct.new(:filename) do
     return tot
   end
 
+  def queue
+    'big'
+  end
+
 end
