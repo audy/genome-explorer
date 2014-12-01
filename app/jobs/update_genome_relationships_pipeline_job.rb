@@ -13,4 +13,8 @@ class UpdateGenomeRelationshipsPipelineJob
   def max_run_time
     60 * 60 * 12 # 12 hours in seconds
   end
+
+  def queue
+    'big'
+  end
 end
