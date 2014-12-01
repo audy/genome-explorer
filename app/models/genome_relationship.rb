@@ -3,6 +3,10 @@ class GenomeRelationship < ActiveRecord::Base
   belongs_to :related_genome, class_name: 'Genome', foreign_key:
     :related_genome_id
 
+  def autophilic?
+    self.related_genome == self.genome
+  end
+
   def self.dedup
     grouped = all.group_by do |model|
       [model.genome_id, model.related_genome_id]
