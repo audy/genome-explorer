@@ -5,26 +5,27 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
-namespace :compute do
+namespace :enqeue do
 
   file 'proteins.fasta' => :dump_proteins
 
   desc 'dump all proteins to proteins.fasta'
   task :dump_proteins => :environment do
-    DumpProteinsToFileJob.new('proteins.fasta').perform
+    DumpProteinsToFileJob.new('proteins.fasta').delay.perform
   end
 
   desc 'compute related proteins (via USEARCH)'
   task :related_proteins => [ :environment ] do
-    FindRelatedProteinsJob.new.perform
+    FindRelatedProteinsJob.new.delay.perform
   end
 
   desc 'compute related genomes from related proteins'
   task :related_genomes => [ :environment ] do
-    FindRelatedGenomesJob.new.perform
+    FindRelatedGenomesJob.new.delay.perform
   end
 
+  desc 'find related genomes pipeline'
   task :related_genomes_pipeline => [ :environment ] do
-    UpdateGenomeRelationshipsPipelineJob.new.perform
+    UpdateGenomeRelationshipsPipelineJob.new.delay.perform
   end
 end
