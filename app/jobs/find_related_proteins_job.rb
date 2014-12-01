@@ -61,4 +61,8 @@ class FindRelatedProteinsJob
     end
   end
 
+  def queue
+    'big'
+  end
+
 end
