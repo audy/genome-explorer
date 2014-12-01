@@ -1,11 +1,25 @@
 class FindRelatedProteinsJob
 
-  def initialize
-    @method = 'usearch'
-    @ncpu = 24
-    @identity = '0.1'
-    @maxaccepts = 256
-    @maxrejects = 512
+  def initialize kwargs = {}
+
+    defaults = {
+      method: 'usearch',
+      ncpu: 24,
+      identity: '0.1',
+      maxaccepts: 256,
+      maxrejects: 512,
+      input: 'proteins.fasta'
+    }
+
+    opts = defaults.update(kwargs)
+
+    @method     = opts[:method]
+    @ncpu       = opts[:ncpu]
+    @identity   = opts[:identity]
+    @maxaccepts = opts[:maxaccepts]
+    @maxrejects = opts[:maxrejects]
+    @input      = opts[:input]
+
   end
 
   # dump proteins to fasta file
@@ -19,8 +33,8 @@ class FindRelatedProteinsJob
   def run_usearch
     # xxx make usearch a configuration item
     system %Q{#{@method}\
-        -usearch_local proteins.fasta \
-        -db proteins.fasta \
+        -usearch_local #{@input} \
+        -db #{@input} \
         -id #{@identity} \
         -blast6out proteins.blast6.tab \
         -threads #{@ncpu} \
