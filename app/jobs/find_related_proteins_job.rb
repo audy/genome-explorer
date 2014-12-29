@@ -43,18 +43,16 @@ class FindRelatedProteinsJob
   end
 
   def build_relationships_from_blast_output
-    ProteinRelationship.transaction do
-      # todo allow for multiple types of proteinrelationships from different
-      # sources.
-      File.open('proteins.blast6.tab') do |handle|
-        pbar = ProgressBar.new 'loading', File.size(handle.path)
-        columns = [ :feature_id, :related_feature_id, :identity ]
-        read_blast_file(handle).each_slice(10_000) do |values|
-          pbar.set handle.pos
-          ProteinRelationship.import columns, values, validate: false
-        end
-        pbar.finish
+    # todo allow for multiple types of proteinrelationships from different
+    # sources.
+    File.open('proteins.blast6.tab') do |handle|
+      pbar = ProgressBar.new 'loading', File.size(handle.path)
+      columns = [ :feature_id, :related_feature_id, :identity ]
+      read_blast_file(handle).each_slice(10_000) do |values|
+        pbar.set handle.pos
+        ProteinRelationship.import columns, values, validate: false
       end
+      pbar.finish
     end
   end
 
