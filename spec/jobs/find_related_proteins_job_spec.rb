@@ -12,10 +12,10 @@ describe FindRelatedProteinsJob do
 
   it 'can find releated proteins' do
     job.perform
-    ProteinRelationship.count.should_not eq(0)
+    expect(ProteinRelationship.count).not_to eq(0)
     # two-way relationship for each pair of features = 8 relationships
     # (yes I know that is inefficients I should fix this at some point)
-    ProteinRelationship.count.should eq(8)
+    expect(ProteinRelationship.count).to eq(8)
   end
 
 end
