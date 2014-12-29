@@ -41,5 +41,8 @@ module Omgenomes
       g.test_framework :rspec
     end
 
+    # autorequire everything in lib
+    config.autoload_paths += %W(#{config.root}/lib)
+
   end
 end
