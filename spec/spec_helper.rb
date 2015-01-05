@@ -27,6 +27,13 @@ end
 
 RSpec.configure do |config|
 
+  # skip tests that require usearch if usearch is not installed
+  # todo better way to test than string comparison ...
+  if `which usearch` == ''
+    puts 'skipping usearch tests'
+    config.filter_run_excluding :requires_usearch => true
+  end
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
