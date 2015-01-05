@@ -6,7 +6,9 @@ class Genome < ActiveRecord::Base
   has_many :scaffolds
   has_many :features
 
-  validates :assembly_id, numericality: { only_integer: true }, presence: true,
+  validates :assembly_id,
+    numericality: { only_integer: true },
+    presence: true,
     uniqueness: true
 
   mount_uploader :avatar, AvatarUploader
