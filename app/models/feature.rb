@@ -39,7 +39,7 @@ class Feature < ActiveRecord::Base
     # create a new nucleotide sequence, translate it.
     # do NOT use 'auto' as it will sometimes mistake nucleotide for
     # amino acid
-    Bio::Sequence::NA.new(self.sequence).translate.rstrip('*') # remove stop codon
+    Bio::Sequence::NA.new(self.sequence).translate # remove stop codon
   end
 
   def product
