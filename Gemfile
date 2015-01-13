@@ -70,6 +70,9 @@ gem 'rollbar', '~> 1.3.1'
 # background. Read more: https://github.com/rails/spring but also fucks
 # everything up
 group :development do
+
+  gem 'foreman'
+
   gem 'ruby-prof'
   gem 'spring'
 
