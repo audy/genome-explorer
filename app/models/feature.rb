@@ -8,7 +8,7 @@ class Feature < ActiveRecord::Base
   belongs_to :scaffold
   belongs_to :genome
 
-  has_many :protein_relationships
+  has_many :protein_relationships, dependent: :destroy
   has_many :related_features, through: :protein_relationships
 
   has_many :inverse_protein_relationships, class_name: 'ProteinRelationship',

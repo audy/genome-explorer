@@ -22,4 +22,22 @@ describe Genome do
     expect{ genome.save! }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
+  it 'deletes its associated models when deleted' do
+
+    scaffold_id = Scaffold.create!(genome: genome).id
+    feature_id = Feature.create!(genome: genome).id
+    g2 = Genome.create assembly_id: 4567
+
+    genome.related_genomes << g2
+    related_ids = genome.related_genomes.map(&:id)
+
+    genome.save!
+
+    expect{genome.destroy!}.to_not raise_error
+
+    expect(Scaffold.first(scaffold_id)).to be_empty
+    expect(Feature.first(feature_id)).to be_empty
+    expect(GenomeRelationship.all).to be_empty
+  end
+
 end
