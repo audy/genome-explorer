@@ -34,6 +34,33 @@
               -> output (heterogenous format)
     ```
 
+    Example POST format to API:
+
+    ```json
+    {
+
+      algorithm_parameters: {
+        // optional, used for feature selection
+        categories: [ [ 'genome_1', 'genome_2' ],
+                      [ 'genome_3', 'genome_4' ] ]
+      },
+
+      genomes: {
+
+        genome_id: {
+          features: {
+            feature_id: {
+              // metadata (start, stop, etc ...)
+            },
+            // ...
+          }
+        },
+        // ...
+
+      }
+    }
+    ```
+
   - The API should return:
 
     - A list of features and associated statistics:
