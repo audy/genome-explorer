@@ -1,18 +1,17 @@
-# I'm trying to think of ways to refactor this. I want to be able to build
-# lots of different graphs using lots of different datasets. This code should
-# probably be moved to ApplicationController as it probably will get used
-# elsewhere (for example, building graphs of proteins instead of genomes).
 #
-# Since I want to build the graph using lots of different data/methods etc...,
-# I should probably make a separate class called GraphConstructor then create
-# a new Graph class, passing the Constructor to it or something else
-# Java-esque. There are also different ways to represent a Graph (for example,
-# the d3.js force-directed-graph requires a list of nodes, then link) so there
-# would also need to be a GraphRepresentation class.
+# this module is poorly named. It should be called something like GraphViewer or
+# GraphLense as it isn't really constructing a graph but providing different
+# representations of the GenomeRelationship table.
 #
-# --austin
-
-
+# This could also be generalized to provide views of the FeatureRelationship
+# table.
+#
+# This module could be modified to provide different lenses on relationships
+# tables.
+#
+# I should read a few books on design patterns and rails
+#
+# --austin (Tue Jan 13 15:50:44 EST 2015)
 
 module Graphs
 
