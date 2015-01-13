@@ -1,2 +1,2 @@
-web: RAILS_ENV='production' rails server -p $PORT
-worker: RAILS_ENV='production' QUEUE='local' rake jobs:work
+web: rails server -p $PORT
+worker: rake jobs:work
