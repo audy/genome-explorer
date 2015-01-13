@@ -64,6 +64,8 @@ gem 'bio'
 gem 'pry'
 gem 'pry-rails'
 
+gem 'rollbar', '~> 1.3.1'
+
 # Spring speeds up development by keeping your application running in the
 # background. Read more: https://github.com/rails/spring but also fucks
 # everything up
