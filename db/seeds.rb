@@ -24,14 +24,14 @@
 end
 
 # This will only create the genomes It will not download their annotations or
-# build any graphs.  This part should be part of the seed as I want this to be
+# build any graphs. This part should be part of the seed as I want this to be
 # able to generate a minimum working web app.
 
-puts 'building genomes with data from NCBI'
-Genome.all.each do |genome|
-  puts "building #{genome}"
-  genome.build
-end
+# wait for genomes to finish building
+puts 'waiting for genomes to be built by workers'
+sleep 1 while Delayed::Job.count > 0
 
-puts 'building social graph'
-UpdateGenomeRelationshipsPipelineJob.new.perform
+# construct social graph
+UpdateGenomeRelationshipsPipelineJob.new.delay.perform
+puts 'waiting for social graph'
+sleep 1 while Delayed::Job.count > 0
