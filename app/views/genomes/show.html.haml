@@ -18,6 +18,8 @@
         NCBI Assembly:
         %a{ href: "http://www.ncbi.nlm.nih.gov/assembly/#{@genome.assembly_id}"}
           #{@genome.assembly_id}
+      - unless @genome[:ncbi_metadata].nil?
+        %li Submitted by: #{@genome['ncbi_metadata']['submitterorganization'] rescue 'Unknown'}
       - unless @genome[:stats].nil?
         %li #{@genome[:stats]['total_scaffolds']} Scaffolds (#{'%.2f' % (@genome[:stats]['genome_size'].to_f/1e6)} Mb)
         %li
@@ -43,7 +45,10 @@
         - @genome_relationships.each do |genome_relationship|
           %tr
             %td= genome_relationship.id
-            %td= link_to genome_relationship.related_genome.organism, genome_path(genome_relationship.related_genome)
+            %td
+              = link_to genome_relationship.related_genome.organism, genome_path(genome_relationship.related_genome)
+              - if genome_relationship.autophilic?
+                %span.label.label-info self
             - n_shared = genome_relationship.related_features_count
             %td #{'%0.2f' % (100 *n_shared / @genome[:stats]['total_proteins'].to_f)} %
 
@@ -72,6 +77,6 @@
               - if feature.weird?
                 %span.label.label-warning weird
             %td
-              = feature[:stats]['related_features'] rescue 'Unknown'
+              = feature.protein_relationships.count # ['related_features'] rescue 'Unknown'
   %div.col-md-12
     = will_paginate @features, param_name: 'features_page'

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe CreateGenomeAvatarJob do
 
-  let(:genome) { create(:genome) }
+  let(:genome) { Genome.create assembly_id: 42 }
   let(:create_genome_avatar_job) { CreateGenomeAvatarJob.new(genome.id) }
 
   it 'can be created' do

@@ -41,8 +41,3 @@ class UpdateFeatureRelationships
 
   end
 end
-
-desc 'update protein relationships'
-task :update_graph => :environment do
-  UpdateFeatureRelationships.perform
-end

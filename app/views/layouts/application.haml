@@ -28,6 +28,12 @@
     %div
       = yield
 
+  %footer.footer
+    %span.text-muted
+      Version:
+      = "#{Omgenomes::Version::STRING}"
+      = "(#{Omgenomes::Version::COMMIT})"
+
 // so giant evil corporations can track u :|
 :javascript
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

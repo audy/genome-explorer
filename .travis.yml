@@ -7,6 +7,9 @@ rvm:
 addons:
   postgresql: '9.3'
 
+  code_climate:
+    repo_token: a5f85297627ea49b4c070e561292228bf03817b61a36b01d2ecd310370abace2
+
 before_script:
   - cp config/database.travis.yml config/database.yml
   - psql -c 'create database omggenomes_test;' -U postgres

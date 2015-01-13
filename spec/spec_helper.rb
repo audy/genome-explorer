@@ -15,7 +15,24 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+# Use Capybara DSL
+require 'capybara/rspec'
+
+# code-climate dingus
+
+unless ENV['CODECLIMATE_REPO_TOKEN'].nil?
+  require 'codeclimate-test-reporter'
+  CodeClimate::TestReporter.start
+end
+
 RSpec.configure do |config|
+
+  # skip tests that require usearch if usearch is not installed
+  # todo better way to test than string comparison ...
+  if `which usearch` == ''
+    puts 'skipping usearch tests'
+    config.filter_run_excluding :requires_usearch => true
+  end
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

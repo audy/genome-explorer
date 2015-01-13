@@ -5,3 +5,33 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+
+# seed with a few similar, small genomes
+# E.g. Mycoplasma
+
+[
+  183078, # B. dorei DSM 17855
+  202521, # B. dorei 105
+  202531, # B. dorei 439
+  33928,  # B. vulgatus ATCC 8482
+  472768, # B. vulgatus CL09T03C04
+  224378, # B. vulgatus PC510
+  31428,  # B. fragilis YCH46
+].each do |assembly_id|
+  genome = Genome.create assembly_id: assembly_id
+  puts "new genome: #{genome}"
+end
+
+# This will only create the genomes It will not download their annotations or
+# build any graphs. This part should be part of the seed as I want this to be
+# able to generate a minimum working web app.
+
+# wait for genomes to finish building
+puts 'waiting for genomes to be built by workers'
+sleep 1 while Delayed::Job.count > 0
+
+# construct social graph
+UpdateGenomeRelationshipsPipelineJob.new.delay.perform
+puts 'waiting for social graph'
+sleep 1 while Delayed::Job.count > 0

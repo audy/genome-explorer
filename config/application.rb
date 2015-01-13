@@ -7,7 +7,24 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 module Omgenomes
+
+  module Version
+
+    data = YAML.load(ERB.new(File.read('version.yaml')).result)
+
+    MAJOR  = data['major']
+    MINOR  = data['minor']
+    PATCH  = data['patch']
+    REV    = data['rev']
+    COMMIT = data['commit']
+
+    STRING = "#{MAJOR}.#{MINOR}.#{PATCH}-#{REV}"
+
+  end
+
+
   class Application < Rails::Application
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -23,6 +40,9 @@ module Omgenomes
     config.generators do |g|
       g.test_framework :rspec
     end
+
+    # autorequire everything in lib
+    config.autoload_paths += %W(#{config.root}/lib)
 
   end
 end

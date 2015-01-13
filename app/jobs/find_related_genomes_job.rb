@@ -1,6 +1,6 @@
 class FindRelatedGenomesJob
 
-  def perform
+  def perform opts = {}
     # - pairwise comparison of all genomes to determine the number of
     #   shared/similar proteins. 260^2 > 50k. A lot of comparisons, queries.
     #
@@ -18,27 +18,31 @@ class FindRelatedGenomesJob
     # memoize feature_id -> genome_id to avoid repeating SQL queries
     feature_to_genome_memo = Hash.new #{ |h, k| h[k] = Feature.find(k).genome_id }
 
-    pbar = ProgressBar.new 'memoizing features', Feature.where(feature_type:
-                                                               'CDS').count
+    if opts[:progress]
+      pbar = ProgressBar.new 'memoizing features', Feature.where(feature_type:
+                                                                'CDS').count
+    end
 
     # just build the hash
     Feature.where(feature_type: 'CDS').find_each do |feature|
-      pbar.inc
+      pbar.inc if opts[:progress]
       feature_to_genome_memo[feature.id] = feature.genome_id
     end
 
-    pbar.finish
+    pbar.finish if opts[:progress]
 
-    pbar = ProgressBar.new 'counting', ProteinRelationship.count
+    if opts[:progress]
+      pbar = ProgressBar.new('counting', ProteinRelationship.count)
+    end
 
     ProteinRelationship.find_each do |relationship|
-      pbar.inc
+      pbar.inc if opts[:progress]
       l = feature_to_genome_memo[relationship.feature_id]
       r = feature_to_genome_memo[relationship.related_feature_id]
       related_features_counter[l][r] += 1
     end
 
-    pbar.finish
+    pbar.finish if opts[:progress]
 
     pr = []
 

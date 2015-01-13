@@ -1,16 +1,20 @@
 class UpdateGenomeRelationshipsPipelineJob
   def perform
     ActiveRecord::Base.transaction {
-      # start fresh each time
+      # gotta be fresh, gotta destroy all relationships
       ProteinRelationship.destroy_all
       GenomeRelationship.destroy_all
       DumpProteinsToFileJob.new('proteins.fasta').perform
       FindRelatedProteinsJob.new.perform
-      FindRelatedGenomesJob.new.peform
+      FindRelatedGenomesJob.new.perform
     }
   end
 
   def max_run_time
     60 * 60 * 12 # 12 hours in seconds
+  end
+
+  def queue
+    'big'
   end
 end

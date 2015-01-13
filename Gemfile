@@ -1,100 +1,107 @@
 source 'https://rubygems.org'
 
+ruby '2.1.2'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.6'
 
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+# Use postgres across all environments
 gem 'pg'
+
+# Use thin as the webserver
+gem 'thin'
 
 # Use SASS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+#
+# JavaScript Business
+#
 
-# Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.0'
+gem 'uglifier', '>= 1.3.0' # Use Uglifier as compressor for JavaScript assets
+gem 'coffee-rails', '~> 4.0.0' # Use CoffeeScript for .js.coffee assets and views
+gem 'jquery-rails' # Use jquery as the JavaScript library
 
-gem 'activerecord-import'
+# 12 factor apps (12factor.net)
+gem 'rails_12factor', group: :production
 
-gem 'rollbar', '1.2.2'
-
+# For file attachments (mostly used for avatars)
 gem 'carrierwave'
 
-gem 'rails_stdout_logging'
-
+# Procedurally-generated avatars for Genomes
 gem 'monsterid'
 
+# Markdown
+gem 'redcarpet'
+
+# Layout/Template Stuff
 gem 'bootstrap-sass'
 gem 'bootstrap_form'
+gem 'will_paginate', '~> 3.0'
+gem 'bootstrap-will_paginate'
 
+gem 'haml'
+gem 'haml-rails'
+
+# Background-job stuff
 gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'delayed_job_web'
+gem 'progressbar'
 
-gem 'will_paginate', '~> 3.0'
-gem 'bootstrap-will_paginate'
+# For speedy importing of lots of records
+gem 'activerecord-import'
 
 # plotting stuff
 gem 'chartkick'
 gem 'groupdate'
 
-gem 'daemons'
-
+# bioinformatics-related gems
 gem 'dna'
 gem 'bio'
 
-gem 'haml'
-gem 'haml-rails'
-
+# For debugging in production :D
 gem 'pry'
 gem 'pry-rails'
 
-gem 'progressbar'
-
-group :profile do
-  gem 'ruby-prof'
-end
-
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-
-# Turbolinks makes following links in your web application faster. Read more:
-# https://github.com/rails/turbolinks
-gem 'turbolinks'
-gem 'nprogress-rails'
-
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
-
-# bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0',          group: :doc
+gem 'rollbar', '~> 1.3.1'
 
 # Spring speeds up development by keeping your application running in the
-# background. Read more: https://github.com/rails/spring
-gem 'spring',        group: :development
+# background. Read more: https://github.com/rails/spring but also fucks
+# everything up
+group :development do
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+  gem 'foreman'
 
-# Use unicorn as the app server
-# gem 'unicorn'
+  gem 'ruby-prof'
+  gem 'spring'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+  # for autoreloading and test running
+  gem 'guard'
+  gem 'guard-livereload', require: false
+  gem 'rack-livereload'
 
-# Use debugger
-# gem 'debugger', group: [:development, :test]
-
-group :test do
-  gem 'cucumber-rails', require: false
-  gem 'capybara'
-  gem 'database_cleaner'
-  gem 'factory_girl_rails'
-  gem 'travis'
+  # bundle exec rake doc:rails generates the API under doc/api.
+  gem 'sdoc', '~> 0.4.0', group: :doc
 end
 
-gem 'rspec-rails', group: [:development, :test]
+group :test do
 
-gem 'thin'
+  gem 'cucumber-rails', require: false
+
+  # silly codeclimate test coverage bage
+  gem 'codeclimate-test-reporter', require: nil
+
+  # cleans up databases
+  gem 'database_cleaner'
+
+  # generates models
+  gem 'factory_girl_rails'
+
+  # continuous integration
+  gem 'travis'
+
+  # Austin's favorite test engine
+  gem 'rspec-rails'
+
+end
