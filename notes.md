@@ -36,7 +36,7 @@
 
     Example POST format to API:
 
-    ```json
+    ```javascript
     {
 
       "params": {
