@@ -50,9 +50,12 @@
         "genome_id": {
           "features": {
             "feature_id": {
-              // metadata (start, stop, etc ...)
-            },
-            //...
+              // metadata
+              "start": 503, // caveat: unfinished genomes
+              "stop": 803,
+              "strand": "plus",
+              "type": "CDD",
+            }, //...
           }
         },
         // ...
