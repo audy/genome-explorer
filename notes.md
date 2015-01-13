@@ -39,24 +39,23 @@
     ```json
     {
 
-      algorithm_parameters: {
-        /* optional, used for feature selection */
-        categories: [ [ 'genome_1', 'genome_2' ],
-                      [ 'genome_3', 'genome_4' ] ]
+      "params": {
+        // optional, used for feature selection
+        "categories": [ [ "genome_1", "genome_2" ],
+                      [ "genome_3", "genome_4" ] ]
       },
 
-      genomes: {
+      "genomes": {
 
-        genome_id: {
-          features: {
-            feature_id: {
-              /* metadata (start, stop, etc ...) */
+        "genome_id": {
+          "features": {
+            "feature_id": {
+              // metadata (start, stop, etc ...)
             },
-            /* ... */
+            //...
           }
         },
-        /* ... */
-
+        // ...
       }
     }
     ```
