@@ -1,2 +1,2 @@
 web: rails server -p $PORT
-worker: rake jobs:work
+worker: QUEUE='local' rake jobs:work
