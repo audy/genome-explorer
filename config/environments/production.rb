@@ -1,11 +1,3 @@
-#
-# Delayed Job
-#
-
-# set default queue to local
-Delayed::Worker.default_queue_name = 'local'
-
-
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
