@@ -44,7 +44,39 @@ class Feature < ActiveRecord::Base
     self.protein_sequence[1..-2].include? '*'
   end
 
+  # aka nucleotide sequence
   def sequence
+    get_stat('nucleotide_sequence') || update_nucleotide_sequence
+  end
+
+  def protein_sequence
+    get_stat('protein_sequence') || update_protein_sequence
+  end
+
+  def product
+    self.info.match(/product=([^;]*);/)[1] rescue 'NA'
+  end
+
+  # update self[:stats]
+  def set_stat k, v
+    self[:stats] = (self[:stats] || {})[k] = v
+  end
+
+  def get_stat k
+    (self[:stats] || {})[k]
+  end
+
+  def update_nucleotide_sequence
+    set_stat('nucleotide_sequence', sequence_from_scaffold)
+  end
+
+  def update_protein_sequence
+    set_stat('protein_sequence', protein_sequence_from_scaffold)
+  end
+
+  private
+
+  def sequence_from_scaffold
     i =  -1 + self.start
     j = -1 + self.stop
     seq =  self.scaffold.sequence[i..j]
@@ -54,18 +86,10 @@ class Feature < ActiveRecord::Base
     seq
   end
 
-  # xxx real slow!
-  def protein_sequence
-    # create a new nucleotide sequence, translate it.
-    # do NOT use 'auto' as it will sometimes mistake nucleotide for
-    # amino acid
+  def protein_sequence_from_scaffold
     self.sequence.downcase.chars.each_slice(3).map do |sl|
       CODON_TABLE[sl.join]
     end.join
-  end
-
-  def product
-    self.info.match(/product=([^;]*);/)[1] rescue 'NA'
   end
 
 end
