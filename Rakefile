@@ -9,10 +9,20 @@ desc 'clean up dead records and relations'
 task :clean_db => :environment do
   ActiveRecord::Base.transaction do
 
-    sql = 'DELETE FROM protein_relationships l WHERE NOT EXISTS (SELECT NULL FROM features r where r.id = l.feature_id)'
+    # delete protein relationships when features don't exist
+    sql = 'DELETE FROM protein_relationships l WHERE NOT EXISTS (SELECT NULL FROM features r WHERE r.id = l.feature_id)'
     p ActiveRecord::Base.connection.execute(sql)
 
-    sql = 'DELETE FROM protein_relationships l WHERE NOT EXISTS (SELECT NULL FROM features r where r.id = l.related_feature_id)'
+    # delete protein relationships when related feature doesn't exist
+    sql = 'DELETE FROM protein_relationships l WHERE NOT EXISTS (SELECT NULL FROM features r WHERE r.id = l.related_feature_id)'
+    p ActiveRecord::Base.connection.execute(sql)
+
+    # delete features when genome doesn't exist
+    sql = 'DELETE FROM features l WHERE NOT EXISTS (SELECT NULL FROM genomes r WHERE r.id = l.genome_id)'
+    p ActiveRecord::Base.connection.execute(sql)
+
+    # delete scaffolds where genome doesn't exist
+    sql = 'DELETE FROM scaffolds l WHERE NOT EXISTS (SELECT NULL FROM genomes r WHERE r.id = l.genome_id)'
     p ActiveRecord::Base.connection.execute(sql)
 
   end
