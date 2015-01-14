@@ -5,6 +5,61 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
+desc 'clean up dead records and relations'
+task :clean_db do
+  ActiveRecord::Base.transaction do
+
+    # slow!!! and I don't think caching helps much
+
+    Genome.cache {
+      Feature.cache {
+        pbar = ProgressBar.new 'feature relationships', ProteinRelationship.count
+        ProteinRelationship.find_each do |relation|
+          if relation.feature.nil? or relation.related_feature.nil? or relation.feature.genome.nil? or relation.related_feature.genome.nil?
+            relation.delete
+          end
+          pbar.inc
+        end
+        pbar.finish
+      }
+    }
+
+    Genome.cache {
+      Scaffold.cache {
+        pbar = ProgressBar.new 'features', Feature.count
+        Feature.find_each do |feature|
+          feature.delete if feature.genome.nil?
+          # this happens automatically now
+          # feature.scaffold.delete if feature.genome.nil?
+          pbar.inc
+        end
+        pbar.finish
+      }
+    }
+
+    Genome.cache {
+      pbar = ProgressBar.new 'genome relationships', GenomeRelationship.count
+      GenomeRelationship.find_each do |relation|
+        if relation.genome.nil? or relation.related_genome.nil?
+          relation.delete
+        end
+        pbar.inc
+      end
+      pbar.finish
+    }
+
+    Genome.cache {
+      pbar = ProgressBar.new 'scaffolds', Scaffold.count
+      Scaffold.find_each do |scaffold|
+        scaffold.delete if scaffold.genome.nil?
+        pbar.inc
+      end
+      pbar.finish
+    }
+
+  end
+end
+
 namespace :enqeue do
 
   file 'proteins.fasta' => :dump_proteins
