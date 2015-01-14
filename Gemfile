@@ -5,14 +5,11 @@ ruby '2.1.2'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.6'
 
-# Use postgres across all environments
+# database driver
 gem 'pg'
 
-# Use thin as the webserver
+# webserver
 gem 'thin'
-
-# Use SASS for stylesheets
-gem 'sass-rails', '~> 4.0.3'
 
 #
 # JavaScript Business
@@ -22,7 +19,7 @@ gem 'uglifier', '>= 1.3.0' # Use Uglifier as compressor for JavaScript assets
 gem 'coffee-rails', '~> 4.0.0' # Use CoffeeScript for .js.coffee assets and views
 gem 'jquery-rails' # Use jquery as the JavaScript library
 
-# 12 factor apps (12factor.net)
+# 12 factor apps (see 12factor.net)
 gem 'rails_12factor', group: :production
 
 # For file attachments (mostly used for avatars)
@@ -31,17 +28,20 @@ gem 'carrierwave'
 # Procedurally-generated avatars for Genomes
 gem 'monsterid'
 
-# Markdown
+# markdown rendering
 gem 'redcarpet'
 
 # Layout/Template Stuff
+
 gem 'bootstrap-sass'
 gem 'bootstrap_form'
 gem 'will_paginate', '~> 3.0'
 gem 'bootstrap-will_paginate'
-
 gem 'haml'
 gem 'haml-rails'
+
+# Use SASS for stylesheets
+gem 'sass-rails', '~> 4.0.3'
 
 # Background-job stuff
 gem 'delayed_job'
@@ -49,7 +49,7 @@ gem 'delayed_job_active_record'
 gem 'delayed_job_web'
 gem 'progressbar'
 
-# For speedy importing of lots of records
+# For speedily importing lots of records
 gem 'activerecord-import'
 
 # plotting stuff
@@ -64,6 +64,7 @@ gem 'bio'
 gem 'pry'
 gem 'pry-rails'
 
+# error reporting to rollbar.io
 gem 'rollbar', '~> 1.3.1'
 
 # Spring speeds up development by keeping your application running in the
@@ -71,9 +72,10 @@ gem 'rollbar', '~> 1.3.1'
 # everything up
 group :development do
 
+  # bundle exec foreman start to start the app and a worker
   gem 'foreman'
 
-  gem 'ruby-prof'
+  # make loading app faster / breaks things
   gem 'spring'
 
   # for autoreloading and test running
