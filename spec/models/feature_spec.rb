@@ -59,4 +59,12 @@ describe Feature do
     expect(f.genome.id).to eq(genome.id)
   end
 
+  it 'caches nucleotide sequence after creation' do
+    expect(feature.stats['nucleotide_sequence']).to_not be_nil
+  end
+
+  it 'caches protein sequence after creation' do
+    expect(feature.stats['protein_sequence']).to_not be_nil
+  end
+
 end

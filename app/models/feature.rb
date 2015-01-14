@@ -37,6 +37,14 @@ class Feature < ActiveRecord::Base
   has_many :inverse_related_features, through: :inverse_protein_relationships,
     source: :feature
 
+  before_save do
+    # cache sequences after create (before save)
+    unless self.protein_coding? or [ self.start, self.stop, self.scaffold ].include?(nil)
+      update_nucleotide_sequence
+      update_protein_sequence
+    end
+  end
+
   # for now I am only going to call AAs "weird" if they have gaps
   # xxx this needs to be better defined with some biological background
   # xxx need to verify that the start codon makes sense
@@ -49,6 +57,14 @@ class Feature < ActiveRecord::Base
     get_stat('nucleotide_sequence') || update_nucleotide_sequence
   end
 
+  def self.proteins
+    self.where(feature_type: 'CDS')
+  end
+
+  def protein_coding?
+    self.feature_type == 'CDS'
+  end
+
   def protein_sequence
     get_stat('protein_sequence') || update_protein_sequence
   end
@@ -59,11 +75,12 @@ class Feature < ActiveRecord::Base
 
   # update self[:stats]
   def set_stat k, v
-    self[:stats] = (self[:stats] || {})[k] = v
+    self.stats = (self.stats || Hash.new)
+    self.stats[k] = v
   end
 
   def get_stat k
-    (self[:stats] || {})[k]
+    self[:stats][k] rescue nil
   end
 
   def update_nucleotide_sequence

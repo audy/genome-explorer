@@ -33,6 +33,10 @@ class Genome < ActiveRecord::Base
     UpdateGenomeStatsJob.new(self.id).perform
   end
 
+  def update_stats
+    UpdateGenomeStatsJob.new(self.id).perform
+  end
+
   def self.search(search)
     if search
       where [ 'lower(organism) LIKE ?', "%#{search.downcase}%" ]
