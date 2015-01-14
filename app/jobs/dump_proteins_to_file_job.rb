@@ -8,7 +8,7 @@ DumpProteinsToFileJob = Struct.new(:filename) do
     pbar = ProgressBar.new 'dumping', Feature.where(feature_type: 'CDS').count
 
     Scaffold.cache {
-      Feature.where(feature_type: 'CDS').find_each do |feature|
+      Feature.proteins.find_each do |feature|
         pbar.inc
         # skip proteins w/ weird starts or stops in the middle or dont end in a
         # stop.

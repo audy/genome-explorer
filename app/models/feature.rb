@@ -44,6 +44,16 @@ class Feature < ActiveRecord::Base
     self.protein_sequence[1..-2].include? '*'
   end
 
+  def protein_coding?
+    self.feature_type == 'CDS'
+  end
+
+  # Used to get only protein-coding genes (useful b/c CDS definition may change
+  # or be expanded)
+  def self.proteins
+    self.where(feature_type: 'CDS')
+  end
+
   # aka nucleotide sequence
   def sequence
     get_stat('nucleotide_sequence') || update_nucleotide_sequence

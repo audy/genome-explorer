@@ -51,6 +51,12 @@ describe Feature do
     expect(feature.feature_type).to eq('CDS')
   end
 
+  it '#protein? returns true if feature is protein-coding' do
+    expect(feature.protein_coding?).to eq(true)
+    feature.update feature_type: 'SDF'
+    expect(feature.protein_coding?).to eq(false)
+  end
+
   it 'updates genome attribute if it is added to genome.features' do
     f = Feature.create
     g = Genome.create

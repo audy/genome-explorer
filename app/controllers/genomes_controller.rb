@@ -13,8 +13,7 @@ class GenomesController < ApplicationController
   def show
     @genome = Genome.find params[:id]
 
-    @features = @genome.features.
-      where(feature_type: 'CDS').
+    @features = @genome.proteins.
       order(:start).
       paginate(page: params[:features_page], per_page: 10)
 
