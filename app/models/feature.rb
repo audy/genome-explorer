@@ -56,32 +56,15 @@ class Feature < ActiveRecord::Base
 
   # aka nucleotide sequence
   def sequence
-    get_stat('nucleotide_sequence') || update_nucleotide_sequence
+    sequence_from_scaffold
   end
 
   def protein_sequence
-    get_stat('protein_sequence') || update_protein_sequence
+    protein_sequence_from_scaffold
   end
 
   def product
     self.info.match(/product=([^;]*);/)[1] rescue 'NA'
-  end
-
-  # update self[:stats]
-  def set_stat k, v
-    self[:stats] = (self[:stats] || {})[k] = v
-  end
-
-  def get_stat k
-    (self[:stats] || {})[k]
-  end
-
-  def update_nucleotide_sequence
-    set_stat('nucleotide_sequence', sequence_from_scaffold)
-  end
-
-  def update_protein_sequence
-    set_stat('protein_sequence', protein_sequence_from_scaffold)
   end
 
   private
