@@ -25,6 +25,12 @@ task :clean_db => :environment do
     sql = 'DELETE FROM scaffolds l WHERE NOT EXISTS (SELECT NULL FROM genomes r WHERE r.id = l.genome_id)'
     p ActiveRecord::Base.connection.execute(sql)
 
+    # delete genome relationships where genome doesn't exist
+    sql = 'DELETE FROM genome_relationships l WHERE NOT EXISTS (SELECT NULL FROM genomes r WHERE r.id = l.genome_id)'
+    p ActiveRecord::Base.connection.execute(sql)
+    sql = 'DELETE FROM genome_relationships l WHERE NOT EXISTS (SELECT NULL FROM genomes r WHERE r.id = l.related_genome_id)'
+    p ActiveRecord::Base.connection.execute(sql)
+
   end
 end
 
