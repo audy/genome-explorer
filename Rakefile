@@ -6,7 +6,7 @@ require File.expand_path('../config/application', __FILE__)
 Rails.application.load_tasks
 
 desc 'clean up dead records and relations'
-task :clean_db do
+task :clean_db => :environment do
   ActiveRecord::Base.transaction do
 
     # slow!!! and I don't think caching helps much
