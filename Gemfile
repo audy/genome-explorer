@@ -107,3 +107,7 @@ group :test do
   gem 'rspec-rails'
 
 end
+
+group :benchmark do
+  gem 'ruby-prof'
+end
