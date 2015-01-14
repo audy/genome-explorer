@@ -73,7 +73,7 @@ class FindRelatedProteinsJob
     end
   end
 
-  def queue
+  def queue_name
     'big'
   end
 
