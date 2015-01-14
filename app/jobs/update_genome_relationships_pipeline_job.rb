@@ -14,7 +14,7 @@ class UpdateGenomeRelationshipsPipelineJob
     60 * 60 * 12 # 12 hours in seconds
   end
 
-  def queue
+  def queue_name
     'big'
   end
 end
