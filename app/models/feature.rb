@@ -46,4 +46,12 @@ class Feature < ActiveRecord::Base
     self.info.match(/product=([^;]*);/)[1] rescue 'NA'
   end
 
+  def self.search(search)
+    if search
+      where [ 'lower(info) LIKE ?', "%#{search.downcase}%" ]
+    else
+      all
+    end
+  end
+
 end
