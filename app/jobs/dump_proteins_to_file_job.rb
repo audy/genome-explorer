@@ -9,11 +9,13 @@ DumpProteinsToFileJob = Struct.new(:filename, :genomes) do
 
     # dump features from all genomes.
     @scaffolds =
-      if genomes.nil?
-        Scaffold
+      if self.genomes.empty?
+        Scaffold.all
       else # dump only genomes in specific array
-        Scaffold.where(genome_id: genomes)
+        Scaffold.where(genome_id: self.genomes)
       end
+
+    puts "dumping proteins for #{@scaffolds.count} scaffolds"
 
     # iterate over scaffolds rather than features because each feature's
     # scaffold needs to be looked up in order to retrieve its sequence. This

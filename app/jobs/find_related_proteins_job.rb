@@ -1,3 +1,8 @@
+
+# 1. run usearch
+# 2. parse blast-6-tab output
+# 3. Create new entries in the feature relationships graph
+
 class FindRelatedProteinsJob
 
   def initialize kwargs = {}
@@ -8,7 +13,9 @@ class FindRelatedProteinsJob
       identity: '0.1',
       maxaccepts: 256,
       maxrejects: 512,
-      input: 'proteins.fasta'
+      output: 'proteins.blast6.tab',
+      input: 'proteins.fasta',
+      database: 'proteins.fasta'
     }
 
     opts = defaults.update(kwargs)
@@ -19,12 +26,18 @@ class FindRelatedProteinsJob
     @maxaccepts = opts[:maxaccepts]
     @maxrejects = opts[:maxrejects]
     @input      = opts[:input]
+    @output     = opts[:output]
+    @database   = opts[:database]
 
   end
 
   # dump proteins to fasta file
   def perform
     run_usearch
+    # XXX should this transaction be used here? It should be up to the calling
+    # statement whether or not to use a transaction. I'm going to leave it here
+    # because I can't think of a reason why it would cause something unexpected
+    # to happen.
     ProteinRelationship.transaction {
       build_relationships_from_blast_output
     }
@@ -34,9 +47,9 @@ class FindRelatedProteinsJob
     # xxx make usearch a configuration item
     system %Q{#{@method}\
         -usearch_local #{@input} \
-        -db #{@input} \
+        -db #{@database} \
         -id #{@identity} \
-        -blast6out proteins.blast6.tab \
+        -blast6out #{@output} \
         -threads #{@ncpu} \
         -maxaccepts #{@maxaccepts} \
         -maxrejects #{@maxrejects}}
@@ -45,7 +58,7 @@ class FindRelatedProteinsJob
   def build_relationships_from_blast_output
     # todo allow for multiple types of proteinrelationships from different
     # sources.
-    File.open('proteins.blast6.tab') do |handle|
+    File.open(@output) do |handle|
       pbar = ProgressBar.new 'loading', File.size(handle.path)
       columns = [ :feature_id, :related_feature_id, :identity ]
       read_blast_file(handle).each_slice(10_000) do |values|

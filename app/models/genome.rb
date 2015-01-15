@@ -27,6 +27,10 @@ class Genome < ActiveRecord::Base
     self.delay(queue: 'local').build
   end
 
+  def added_to_graph?
+    self.in_graph
+  end
+
   def build
     CreateGenomeAvatarJob.new(self.id).perform
     PullGenomeFromNCBIJob.new(self.id).perform
