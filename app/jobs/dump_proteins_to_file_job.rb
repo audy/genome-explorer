@@ -5,15 +5,18 @@ DumpProteinsToFileJob = Struct.new(:filename) do
 
     tot = 0
 
-    pbar = ProgressBar.new 'dumping', Feature.where(feature_type: 'CDS').count
+    pbar = ProgressBar.new 'dumping', Feature.proteins.count
 
+    # iterate over scaffolds rather than features because each feature's
+    # scaffold needs to be looked up in order to retrieve its sequence. This
+    # results in less calls to the DB.
     Scaffold.cache {
-      Feature.proteins.find_each do |feature|
-        pbar.inc
-        # skip proteins w/ weird starts or stops in the middle or dont end in a
-        # stop.
-        out.puts ">#{feature.id}\n#{feature.protein_sequence}" unless feature.weird?
-        tot += 1
+      Scaffold.find_each do |scaffold|
+        scaffold.features.proteins.find_each do |feature|
+          pbar.inc
+          out.puts ">#{feature.id}\n#{feature.protein_sequence}" unless feature.weird?
+          tot += 1
+        end
       end
     }
 
