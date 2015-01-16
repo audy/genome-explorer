@@ -2,8 +2,10 @@ PullGenomeFromNCBIJob = Struct.new(:id) do
 
   def perform
     @genome = Genome.find(self.id)
-    self.pull_metadata_from_ncbi
-    self.download_from_ncbi
+    Genome.transaction {
+      self.pull_metadata_from_ncbi
+      self.download_from_ncbi
+    }
   end
 
   def pull_metadata_from_ncbi

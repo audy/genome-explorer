@@ -2,6 +2,16 @@ require 'rails_helper'
 
 describe Genome do
 
+  # build a genome using data from NCBI
+  before :all do
+    # mycobacterium smegmatis str. MC2 155
+    #  a relatively small genome
+    #  any way to skip this?
+    #  do I want to skip this?
+    @genome = Genome.create assembly_id: 36108
+    @genome.build
+  end
+
   let(:genome) { Genome.create assembly_id: 1234 }
 
   it 'can be saved' do
@@ -51,4 +61,18 @@ describe Genome do
     expect(GenomeRelationship.where(related_genome_id: g1.id)).to be_empty
   end
 
+  it '#annotated? returns false by default' do
+    expect(genome.annotated?).to be(false)
+  end
+
+  # this is a slow test which is why I'm combining multiple things into one
+  # maybe I should just use `before`.
+  it '#build pulls data from NCBI' do
+    expect(@genome.features).to_not be_empty
+    expect(@genome.scaffolds).to_not be_empty
+  end
+
+  it '#annotated? equals true after #build is called' do
+    expect(@genome.annotated?).to be(true)
+  end
 end
