@@ -33,21 +33,20 @@ describe Genome do
   end
 
   it '#destroy removes associated features and scaffolds' do
+    genome_id = genome.id
 
-    scaffold_id = Scaffold.create!(genome: genome).id
-    feature_id = Feature.create!(genome: genome).id
+    # create a genome relationship
     g2 = Genome.create assembly_id: 4567
-
     genome.related_genomes << g2
     related_ids = genome.related_genomes.map(&:id)
-
     genome.save!
 
     expect{genome.destroy!}.to_not raise_error
 
-    expect(Scaffold.first(scaffold_id)).to be_empty
-    expect(Feature.first(feature_id)).to be_empty
-    expect(GenomeRelationship.all).to be_empty
+    expect(Scaffold.where(genome_id: genome_id).count).to eq(0)
+    expect(Feature.where(genome_id: genome_id).count).to eq(0)
+    expect(GenomeRelationship.where(genome_id: genome_id).count).to eq(0)
+    expect(GenomeRelationship.where(related_genome_id: genome_id).count).to eq(0)
   end
 
   it '#destroy removes associated genome relationships' do
