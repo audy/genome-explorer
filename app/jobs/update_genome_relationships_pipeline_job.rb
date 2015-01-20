@@ -47,12 +47,11 @@ class UpdateGenomeRelationshipsPipelineJob
       # form intra-genome feature relationships.
       `cat new-proteins.fasta >> proteins.fasta`
 
-      # preserve IDs of new relationships
-      FindRelatedProteinsJob.new(input: 'new-proteins.fasta',
+      # ** existing protein relationships are skipped
+      FindRelatedProteinsJob.new(input: 'proteins.fasta',
                                  database: 'proteins.fasta').perform
 
-      # needs to be altered to only look at new relationships
-      # pass list of new feature IDs.
+      # todo: only create *new* genome relationships
       FindRelatedGenomesJob.new.perform
     }
   end
