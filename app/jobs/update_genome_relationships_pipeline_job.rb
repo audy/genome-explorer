@@ -61,7 +61,7 @@ class UpdateGenomeRelationshipsPipelineJob
       # features to consider. I really should be passing a list of
       # relationships. This relies on the assumption that if a genome has
       # previously been added to the graph, it wouldn't have any new features
-      FindRelatedGenomesJob.new.perform(imported_features)
+      FindRelatedGenomesJob.new(feature_ids: imported_features).perform
     }
   end
 

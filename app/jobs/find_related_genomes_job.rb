@@ -6,24 +6,29 @@
 # created after a certain time. `created_at` gets filled in before the
 # transaction ends so this is possible.
 
-class FindRelatedGenomesJob < Struct.new(:feature_ids)
+class FindRelatedGenomesJob
 
-  def perform opts = {}
+  def initialize opts = {}
+    @feature_ids = opts[:feature_ids]
+    @opts = opts
+  end
+
+  def perform
 
     # optionally take a list of features to use, otherwise, use all of 'em
     # XXX what if the list of features is really huge?
     @features =
-      if self.feature_ids.nil?
+      if @feature_ids.nil?
         Feature.proteins
       else
-        Feature.where(id: self.feature_ids)
+        Feature.where(id: @feature_ids.to_a)
       end
 
     puts "using #{@features.count} features"
 
     # by default, use all protein-relationships.
     # if a list of features was provided, use only their relationships.
-    if self.feature_ids.nil?
+    if @feature_ids.nil?
       puts 'using all protein relationships'
       @relations = ProteinRelationship.all
     else
@@ -32,8 +37,8 @@ class FindRelatedGenomesJob < Struct.new(:feature_ids)
       # since using find_each.
       @relations = ProteinRelationship.where(
         'feature_id IN (?) OR related_feature_id IN (?)',
-        self.feature_ids,
-        self.feature_ids
+        @feature_ids,
+        @feature_ids
       )
       puts "using #{@relations.count} protein relationships"
     end
@@ -54,30 +59,30 @@ class FindRelatedGenomesJob < Struct.new(:feature_ids)
     # memoize feature_id -> genome_id to avoid repeating SQL queries
     feature_to_genome_memo = Hash.new { |h, k| h[k] = Feature.find(k).genome_id }
 
-    if opts[:progress]
+    if @opts[:progress]
       pbar = ProgressBar.new 'memoizing features', @features.count
     end
 
     # just build the hash
     @features.find_each do |feature|
-      pbar.inc if opts[:progress]
+      pbar.inc if @opts[:progress]
       feature_to_genome_memo[feature.id] = feature.genome_id
     end
 
-    pbar.finish if opts[:progress]
+    pbar.finish if @opts[:progress]
 
-    if opts[:progress]
+    if @opts[:progress]
       pbar = ProgressBar.new('counting', @relations.count)
     end
 
     @relations.find_each do |relationship|
-      pbar.inc if opts[:progress]
+      pbar.inc if @opts[:progress]
       l = feature_to_genome_memo[relationship.feature_id]
       r = feature_to_genome_memo[relationship.related_feature_id]
       related_features_counter[l][r] += 1
     end
 
-    pbar.finish if opts[:progress]
+    pbar.finish if @opts[:progress]
 
     pr = []
 

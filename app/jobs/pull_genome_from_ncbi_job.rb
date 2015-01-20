@@ -10,7 +10,7 @@ class PullGenomeFromNCBIJob
     @genome = Genome.find(@id)
     Genome.transaction {
       self.pull_metadata_from_ncbi
-      unless @gff_path.nil? or @fna_path.nil?
+      if @gff_path.nil? or @fna_path.nil?
         @gff_path, @fna_path = self.download_from_ncbi.values_at(:gff_path,
                                                                  :fna_path)
       end
