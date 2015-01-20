@@ -58,6 +58,9 @@ class FindRelatedProteinsJob
   def build_relationships_from_blast_output
     # todo allow for multiple types of proteinrelationships from different
     # sources.
+    # todo allow for filtering criteria using `filtration_lambda` (forgive me)
+    # which is a lambda that will result in hits being filtered out if it
+    # evaluates to false
     File.open(@output) do |handle|
       pbar = ProgressBar.new 'loading', File.size(handle.path)
       columns = [ :feature_id, :related_feature_id, :identity ]

@@ -1,3 +1,9 @@
+# as the name suggests, this should only _update_ feature relationships, not
+# build a new feature-relationships graph from scratch. However, building the
+# graph from scratch is a special case of updating it when no genomes have been
+# added before so the same job should be used for initially constructing the
+# graph.
+
 class UpdateFeatureRelationships
   class << self
   def perform

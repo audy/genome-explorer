@@ -1,15 +1,58 @@
+#
+# This job is meant to add *new* genomes and their features to the genomes and
+# features similarity tables, respectively.
+#
+# This job starts by finding all genomes that have yet to be added to the graph
+# (Genome.in_graph? == false), adding their proteins to the local proteins
+# database and running USEARCH with their proteins against the entire proteins
+# database, then creating new protein and genome relationships entries.
+#
+# 1. Find all genomes not in graph
+# 2. Dump proteins to `new-proteins.fasta`
+# 3. Concatenate `new-proteins.fasta` with `proteins.fasta`
+# 4. Run usearch -query new-proteins.fasta -database proteins.fasta
+# 5. Parse usearch output, adding new feature relationships
+# 6. Add new genome relationships based on *only new* feature relationships
+#   - How do I query for only new feature relationships? (probably just store
+#     them after creation)
+
 class UpdateGenomeRelationshipsPipelineJob
+
   def perform
+
+    # must be an array! not a relation because relation will get updated
+    # whenever Genome table changes.
+    @new_genomes = Genome.where(in_graph: false).to_a
+
+    if @new_genomes.count == 0
+      puts "no new genomes, exiting!"
+      return
+    end
+
     ActiveRecord::Base.transaction {
-      # gotta be fresh, gotta *delete* all relationships
-      DumpProteinsToFileJob.new('proteins.fasta').perform
 
-      puts 'deleting protein relationships'
-      ProteinRelationship.delete_all
-      puts 'deleting genome relationships'
-      GenomeRelationship.delete_all
+      # dont update @new_genomes
+      Genome.where(in_graph: false).update_all(in_graph: true)
 
-      FindRelatedProteinsJob.new.perform
+      puts "updating graph w/ #{@new_genomes.count} genomes"
+
+      # dump only new proteins beforehand. Assume that proteins.fasta is up to
+      # date.
+      # XXX maybe in the future check that proteins.fasta is up to date by
+      # looking at the IDs or the last time it was updated ??
+      DumpProteinsToFileJob.new('new-proteins.fasta',
+                                @new_genomes.map(&:id)).perform
+
+      # concatenate new-proteins.fasta with proteins.fasta because we want to
+      # form intra-genome feature relationships.
+      `cat new-proteins.fasta >> proteins.fasta`
+
+      # preserve IDs of new relationships
+      FindRelatedProteinsJob.new(input: 'new-proteins.fasta',
+                                 database: 'proteins.fasta').perform
+
+      # needs to be altered to only look at new relationships
+      # pass list of new feature IDs.
       FindRelatedGenomesJob.new.perform
     }
   end
