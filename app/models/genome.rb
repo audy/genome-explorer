@@ -44,7 +44,7 @@ class Genome < ActiveRecord::Base
       CreateGenomeAvatarJob.new(self.id).perform
       PullGenomeFromNCBIJob.new(self.id).perform
       UpdateGenomeStatsJob.new(self.id).perform
-      @genome.annotated = true
+      self.annotated = true
     }
   end
 
