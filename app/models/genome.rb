@@ -27,10 +27,26 @@ class Genome < ActiveRecord::Base
     self.delay(queue: 'local').build
   end
 
-  def build
+  def annotated?
+    self.annotated
+  end
+
+  def added_to_graph?
+    self.in_graph
+  end
+
+  def create_avatar
     CreateGenomeAvatarJob.new(self.id).perform
-    PullGenomeFromNCBIJob.new(self.id).perform
-    UpdateGenomeStatsJob.new(self.id).perform
+  end
+
+  def build kwargs = {}
+    Genome.transaction {
+      CreateGenomeAvatarJob.new(self.id).perform
+      PullGenomeFromNCBIJob.new(self.id, fna_path: kwargs[:fna_path],
+                                         gff_path: kwargs[:gff_path]).perform
+      UpdateGenomeStatsJob.new(self.id).perform
+      self.annotated = true
+    }
   end
 
   def self.search(search)

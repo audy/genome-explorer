@@ -1,9 +1,21 @@
-PullGenomeFromNCBIJob = Struct.new(:id) do
+class PullGenomeFromNCBIJob
+
+  def initialize id, kwargs = {}
+    @id = id
+    @gff_path = kwargs[:gff_path]
+    @fna_path = kwargs[:fna_path]
+  end
 
   def perform
-    @genome = Genome.find(self.id)
-    self.pull_metadata_from_ncbi
-    self.download_from_ncbi
+    @genome = Genome.find(@id)
+    Genome.transaction {
+      self.pull_metadata_from_ncbi
+      unless @gff_path.nil? or @fna_path.nil?
+        @gff_path, @fna_path = self.download_from_ncbi.values_at(:gff_path,
+                                                                 :fna_path)
+      end
+      self.import_from_ncbi_data(@gff_path, @fna_path)
+    }
   end
 
   def pull_metadata_from_ncbi
@@ -26,20 +38,22 @@ PullGenomeFromNCBIJob = Struct.new(:id) do
     fna = JSON.parse(`bionode-ncbi download assembly #{@genome.assembly_id}`.split("\n").last)
     gff = JSON.parse(`bionode-ncbi download gff #{@genome.assembly_id}`.split("\n").last)
 
+    return { gff_path: gff['path'], fna_path: fna['path'] }
+  end
+
+  def import_from_ncbi_data gff_path, fna_path
     # has to be loaded before features so that features can reference a
     # scaffold
-    read_scaffolds(fna["path"]).each_slice(10) do |scaffolds|
+    read_scaffolds(fna_path).each_slice(10) do |scaffolds|
       scaffolds.map! { |x| x.genome = @genome; x }
       Scaffold.import scaffolds
     end
 
     # has to be loaded after scaffolds
-    read_features(gff["path"]).each_slice(1_000) do |features|
+    read_features(gff_path).each_slice(1_000) do |features|
       features.map! { |x| x.genome = @genome; x }
       Feature.import features
     end
-
-    # make sure to update stats AFTER we have downloaded everything
   end
 
   #

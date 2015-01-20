@@ -1,4 +1,4 @@
-DumpProteinsToFileJob = Struct.new(:filename) do
+DumpProteinsToFileJob = Struct.new(:filename, :genomes) do
 
   def perform
     out = File.open(self.filename, 'w')
@@ -7,11 +7,21 @@ DumpProteinsToFileJob = Struct.new(:filename) do
 
     pbar = ProgressBar.new 'dumping', Feature.proteins.count
 
+    # dump features from all genomes.
+    @scaffolds =
+      if self.genomes.nil?
+        Scaffold.all
+      else # dump only genomes in specific array
+        Scaffold.where(genome_id: self.genomes)
+      end
+
+    puts "dumping proteins for #{@scaffolds.count} scaffolds"
+
     # iterate over scaffolds rather than features because each feature's
     # scaffold needs to be looked up in order to retrieve its sequence. This
     # results in less calls to the DB.
     Scaffold.cache {
-      Scaffold.find_each do |scaffold|
+      @scaffolds.find_each do |scaffold|
         scaffold.features.proteins.find_each do |feature|
           pbar.inc
           out.puts ">#{feature.id}\n#{feature.protein_sequence}" unless feature.weird?
@@ -31,7 +41,7 @@ DumpProteinsToFileJob = Struct.new(:filename) do
     return tot
   end
 
-  def queue
+  def queue_name
     'big'
   end
 

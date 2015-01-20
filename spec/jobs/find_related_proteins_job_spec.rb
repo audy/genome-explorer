@@ -8,7 +8,7 @@ describe FindRelatedProteinsJob do
 
   before (:all) { IO.write(TMP_FILE, SEQUENCES) }
 
-  let (:job) { FindRelatedProteinsJob.new(input: TMP_FILE.path) }
+  let (:job) { FindRelatedProteinsJob.new(input: TMP_FILE.path, database: TMP_FILE.path) }
 
   # this job fails on travis because there is no USEARCH.
   it 'can find releated proteins', requires_usearch: true do
