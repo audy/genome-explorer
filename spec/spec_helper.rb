@@ -38,7 +38,6 @@ RSpec.configure do |config|
     puts 'skipping bionode-ncbi tests'
     config.filter_run_excluding :requires_bionode => true
   end
-  config.filter_run_excluding :requires_bionode => true
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
