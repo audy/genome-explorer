@@ -12,11 +12,11 @@ module Omgenomes
 
     data = YAML.load(ERB.new(File.read('version.yaml')).result)
 
-    MAJOR  = data['major']
-    MINOR  = data['minor']
-    PATCH  = data['patch']
-    REV    = data['rev']
-    COMMIT = data['commit']
+    MAJOR  = 0 # data['major']
+    MINOR  = 0 # data['minor']
+    PATCH  = 0 # data['patch']
+    REV    = 0 # data['rev']
+    COMMIT = 0 # data['commit']
 
     STRING = "#{MAJOR}.#{MINOR}.#{PATCH}-#{REV}"
 

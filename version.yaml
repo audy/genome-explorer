@@ -1,5 +1,0 @@
-major: 0
-minor: 0
-patch: 0
-rev: <%= `git rev-parse HEAD` rescue 'Error' %>
-commit: <%= `git log -1 --pretty=%B` rescue 'Error' %>
