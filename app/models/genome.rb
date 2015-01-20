@@ -45,7 +45,7 @@ class Genome < ActiveRecord::Base
       PullGenomeFromNCBIJob.new(self.id, fna_path: kwargs[:fna_path],
                                          gff_path: kwargs[:gff_path]).perform
       UpdateGenomeStatsJob.new(self.id).perform
-      self.annotated = true
+      self.update! annotated: true
     }
   end
 
