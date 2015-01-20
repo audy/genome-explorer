@@ -41,7 +41,7 @@ DumpProteinsToFileJob = Struct.new(:filename, :genomes) do
     return tot
   end
 
-  def queue
+  def queue_name
     'big'
   end
 
