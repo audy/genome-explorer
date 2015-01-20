@@ -45,6 +45,9 @@ class UpdateGenomeRelationshipsPipelineJob
 
       # concatenate new-proteins.fasta with proteins.fasta because we want to
       # form intra-genome feature relationships.
+      # todo: this needs to be tempfiles
+      # todo: this needs to not default to proteins.fasta but some other file
+      # so that tests and what-not don't step on it.
       `cat new-proteins.fasta >> proteins.fasta`
 
       # ** existing protein relationships are skipped
