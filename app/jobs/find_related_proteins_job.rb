@@ -17,19 +17,21 @@ class FindRelatedProteinsJob
       maxrejects: 512,
       output: 'proteins.blast6.tab',
       input: 'proteins.fasta',
-      database: 'proteins.fasta'
+      database: 'proteins.fasta',
+      skip_existing: true # won't create duplicate feature relationships
     }
 
     opts = defaults.update(kwargs)
 
-    @method     = opts[:method]
-    @ncpu       = opts[:ncpu]
-    @identity   = opts[:identity]
-    @maxaccepts = opts[:maxaccepts]
-    @maxrejects = opts[:maxrejects]
-    @input      = opts[:input]
-    @output     = opts[:output]
-    @database   = opts[:database]
+    @method        = opts[:method]
+    @ncpu          = opts[:ncpu]
+    @identity      = opts[:identity]
+    @maxaccepts    = opts[:maxaccepts]
+    @maxrejects    = opts[:maxrejects]
+    @input         = opts[:input]
+    @output        = opts[:output]
+    @database      = opts[:database]
+    @skip_existing = opts[:skip_existing]
 
   end
 
@@ -63,28 +65,40 @@ class FindRelatedProteinsJob
     
     # keep a list of existing protein relationships and don't re-import them
     # can't rely on ActiveRecord to do this because we're using `import`.
-    puts 'generating list of existing protein relationships'
-    existing = ProteinRelationship.find_each.map { |x| [x.feature_id, x.related_feature_id ]}
-    existing = existing.to_set
-    
-    puts "found #{existing.size} existing protein relationships"
+    if @skip_existing
+      puts 'generating list of existing protein relationships'
+      existing = ProteinRelationship.find_each.map { |x| [x.feature_id, x.related_feature_id ]}
+      existing = existing.to_set
+      puts "found #{existing.size} existing protein relationships"
+    end
     
     total_imported = 0
+
+    imported_features = Set.new
     
     File.open(@output) do |handle|
       pbar = ProgressBar.new 'loading', File.size(handle.path)
       columns = [ :feature_id, :related_feature_id, :identity ]
       read_blast_file(handle).each_slice(10_000) do |values|
         pbar.set handle.pos
-        # (this part should be working now)
-        values.reject! { |v| existing.include? v[0..1] }
+
+        # don't consider features if they were already in the graph
+        if @skip_existing
+          values.reject! { |v| existing.include? v[0..1] }
+        end
+
         total_imported += values.size
         ProteinRelationship.import columns, values, validate: false
+
+        imported_features.merge(values.map { |v| v[0..1] }.flatten)
       end
       pbar.finish
     end
     
     puts "imported #{total_imported} new protein relationships"
+
+    # return list of imported feature IDs
+    return imported_features
   end
 
   def parse_blast_line line
