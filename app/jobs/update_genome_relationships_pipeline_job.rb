@@ -51,11 +51,17 @@ class UpdateGenomeRelationshipsPipelineJob
       `cat new-proteins.fasta >> proteins.fasta`
 
       # ** existing protein relationships are skipped
-      FindRelatedProteinsJob.new(input: 'proteins.fasta',
-                                 database: 'proteins.fasta').perform
+      imported_features = FindRelatedProteinsJob.new(input: 'proteins.fasta',
+                                   database: 'proteins.fasta',
+                                   skip_existing: true).perform
 
-      # todo: only create *new* genome relationships
-      FindRelatedGenomesJob.new.perform
+      # todo: only create *new* genome relationships using new protein
+      # relationships
+      # this is kind of a flawed method. Here I am just passing a list of
+      # features to consider. I really should be passing a list of
+      # relationships. This relies on the assumption that if a genome has
+      # previously been added to the graph, it wouldn't have any new features
+      FindRelatedGenomesJob.new.perform(imported_features)
     }
   end
 
