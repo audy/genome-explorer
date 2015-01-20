@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Genome do
+describe Genome, requires_bionode: true do
 
   # build a genome using data from NCBI
   before :all do
