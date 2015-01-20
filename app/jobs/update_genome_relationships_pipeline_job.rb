@@ -22,7 +22,7 @@ class UpdateGenomeRelationshipsPipelineJob
 
     # must be an array! not a relation because relation will get updated
     # whenever Genome table changes.
-    @new_genomes = Genome.where(in_graph: false).to_a
+    @new_genomes = Genome.where(in_graph: false, annotated: true).to_a
 
     if @new_genomes.count == 0
       puts "no new genomes, exiting!"
