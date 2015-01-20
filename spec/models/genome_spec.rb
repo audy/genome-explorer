@@ -9,7 +9,8 @@ describe Genome do
     #  any way to skip this?
     #  do I want to skip this?
     @genome = Genome.create assembly_id: 36108
-    @genome.build
+    @genome.build fna_path: 'spec/data/31608/GCA_000010105.1_ASM1010v1_genomic.fna.gz',
+                  gff_path: 'spec/data/31608/GCA_000010105.1_ASM1010v1_genomic.gff.gz'
   end
 
   let(:genome) { Genome.create assembly_id: 1234 }

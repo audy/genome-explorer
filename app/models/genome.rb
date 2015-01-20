@@ -39,10 +39,11 @@ class Genome < ActiveRecord::Base
     CreateGenomeAvatarJob.new(self.id).perform
   end
 
-  def build
+  def build kwargs = {}
     Genome.transaction {
       CreateGenomeAvatarJob.new(self.id).perform
-      PullGenomeFromNCBIJob.new(self.id).perform
+      PullGenomeFromNCBIJob.new(self.id, fna_path: kwargs[:fna_path],
+                                         gff_path: kwargs[:gff_path]).perform
       UpdateGenomeStatsJob.new(self.id).perform
       self.annotated = true
     }
