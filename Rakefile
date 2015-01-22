@@ -70,3 +70,50 @@ namespace :version do
   task :bump do
   end
 end
+
+#
+# [ genome_id: {
+#     features: { feature_id: {
+#           start: i, stop: j,
+#           related_features { related_id: { similarity: }, ... }
+#     }, ...
+#  }, ... // serialized
+# ]
+#
+
+desc 'dump DB to serialized json for machine learning'
+task :to_json do
+
+  require 'json'
+
+  pbar = ProgressBar.new 'dumping', Feature.proteins.count
+
+  Genome.find_each do |genome|
+
+    gh = Hash.new
+    gh[:id] = genome.id
+    gh[:organism] = genome.organism
+    gh[:assembly_id] = genome.assembly_id
+
+    gh[:features] =
+      genome.features.proteins.find_each.map do |feature|
+        pbar.inc
+        {
+          id: feature.id,
+          start: feature.start,
+          stop: feature.stop,
+          strand: feature.strand,
+          related: feature.protein_relationships.find_each.map do |rf|
+            {
+              id: rf.related_feature_id,
+              similarity: 0
+            }
+          end
+        }
+      end
+
+    puts gh.to_json
+  end
+
+  pbar.finish
+end
