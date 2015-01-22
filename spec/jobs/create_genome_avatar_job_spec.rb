@@ -21,6 +21,4 @@ describe CreateGenomeAvatarJob do
     expect(File.exists?(path)).to_not be(false)
   end
 
-  it 'creates an image'
-
 end
