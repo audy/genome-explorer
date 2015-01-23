@@ -2,9 +2,13 @@ require 'rails_helper'
 
 describe PullGenomeFromNCBIJob do
 
-  # how to test without being really slow or annoying to NCBI?
-  let(:pull_genome_from_ncbi_job) { PullGenomeFromNCBIJob.new 1234 }
+  # Mycoplasma genitalium G37 (smallest bacterial genome)
 
-  it 'can be created'
+  it '#perform takes a genome ID and builds a genome' do
+    genome = Genome.create! assembly_id: 203758 
+    expect{PullGenomeFromNCBIJob.new(genome.id).perform}.not_to raise_error
+    expect(genome.features.count).not_to eq(0)
+    expect(genome.scaffolds.count).not_to eq(0)
+  end
 
 end
