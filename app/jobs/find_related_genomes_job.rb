@@ -1,6 +1,48 @@
+# this job builds the entire genomes graph from scratch based on the entire
+# features graph.
+#
+# It needs to be altered to accept a list of features to build a graph from.
+# Alternatively, I could query the database to only use feature relationships
+# created after a certain time. `created_at` gets filled in before the
+# transaction ends so this is possible.
+
 class FindRelatedGenomesJob
 
-  def perform opts = {}
+  def initialize opts = {}
+    @feature_ids = opts[:feature_ids]
+    @opts = opts
+  end
+
+  def perform
+
+    # optionally take a list of features to use, otherwise, use all of 'em
+    # XXX what if the list of features is really huge?
+    @features =
+      if @feature_ids.nil?
+        Feature.proteins
+      else
+        Feature.where(id: @feature_ids.to_a)
+      end
+
+    puts "using #{@features.count} features"
+
+    # by default, use all protein-relationships.
+    # if a list of features was provided, use only their relationships.
+    if @feature_ids.nil?
+      puts 'using all protein relationships'
+      @relations = ProteinRelationship.all
+    else
+      # only use relations belonging to those features
+      # XXX potentially bad for SQL database? Check logs for queries. Maybe not
+      # since using find_each.
+      @relations = ProteinRelationship.where(
+        'feature_id IN (?) OR related_feature_id IN (?)',
+        @feature_ids,
+        @feature_ids
+      )
+      puts "using #{@relations.count} protein relationships"
+    end
+
     # - pairwise comparison of all genomes to determine the number of
     #   shared/similar proteins. 260^2 > 50k. A lot of comparisons, queries.
     #
@@ -14,35 +56,33 @@ class FindRelatedGenomesJob
 
     ActiveRecord::Base.logger.level = 1
 
-
     # memoize feature_id -> genome_id to avoid repeating SQL queries
-    feature_to_genome_memo = Hash.new #{ |h, k| h[k] = Feature.find(k).genome_id }
+    feature_to_genome_memo = Hash.new { |h, k| h[k] = Feature.find(k).genome_id }
 
-    if opts[:progress]
-      pbar = ProgressBar.new 'memoizing features', Feature.where(feature_type:
-                                                                'CDS').count
+    if @opts[:progress]
+      pbar = ProgressBar.new 'memoizing features', @features.count
     end
 
     # just build the hash
-    Feature.where(feature_type: 'CDS').find_each do |feature|
-      pbar.inc if opts[:progress]
+    @features.find_each do |feature|
+      pbar.inc if @opts[:progress]
       feature_to_genome_memo[feature.id] = feature.genome_id
     end
 
-    pbar.finish if opts[:progress]
+    pbar.finish if @opts[:progress]
 
-    if opts[:progress]
-      pbar = ProgressBar.new('counting', ProteinRelationship.count)
+    if @opts[:progress]
+      pbar = ProgressBar.new('counting', @relations.count)
     end
 
-    ProteinRelationship.find_each do |relationship|
-      pbar.inc if opts[:progress]
+    @relations.find_each do |relationship|
+      pbar.inc if @opts[:progress]
       l = feature_to_genome_memo[relationship.feature_id]
       r = feature_to_genome_memo[relationship.related_feature_id]
       related_features_counter[l][r] += 1
     end
 
-    pbar.finish if opts[:progress]
+    pbar.finish if @opts[:progress]
 
     pr = []
 
@@ -52,11 +92,15 @@ class FindRelatedGenomesJob
       end
     end
 
+    # does this need to be in a transaction?
     GenomeRelationship.transaction {
-      GenomeRelationship.destroy_all
+      # GenomeRelationship.destroy_all
+      # dont assume building relationships from scratch
       GenomeRelationship.import [:genome_id, :related_genome_id,
                                 :related_features_count], pr
     }
+
+    puts "imported #{pr.count} new genome relationships"
 
   end
 

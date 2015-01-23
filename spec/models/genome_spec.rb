@@ -1,6 +1,17 @@
 require 'rails_helper'
 
-describe Genome do
+describe Genome, requires_bionode: true do
+
+  # build a genome using data from NCBI
+  before :all do
+    # mycobacterium smegmatis str. MC2 155
+    #  a relatively small genome
+    #  any way to skip this?
+    #  do I want to skip this?
+    @genome = Genome.create assembly_id: 36108
+    @genome.build fna_path: 'spec/data/31608/GCA_000010105.1_ASM1010v1_genomic.fna.gz',
+                  gff_path: 'spec/data/31608/GCA_000010105.1_ASM1010v1_genomic.gff.gz'
+  end
 
   let(:genome) { Genome.create assembly_id: 1234 }
 
@@ -23,21 +34,20 @@ describe Genome do
   end
 
   it '#destroy removes associated features and scaffolds' do
+    genome_id = genome.id
 
-    scaffold_id = Scaffold.create!(genome: genome).id
-    feature_id = Feature.create!(genome: genome).id
+    # create a genome relationship
     g2 = Genome.create assembly_id: 4567
-
     genome.related_genomes << g2
     related_ids = genome.related_genomes.map(&:id)
-
     genome.save!
 
     expect{genome.destroy!}.to_not raise_error
 
-    expect(Scaffold.first(scaffold_id)).to be_empty
-    expect(Feature.first(feature_id)).to be_empty
-    expect(GenomeRelationship.all).to be_empty
+    expect(Scaffold.where(genome_id: genome_id).count).to eq(0)
+    expect(Feature.where(genome_id: genome_id).count).to eq(0)
+    expect(GenomeRelationship.where(genome_id: genome_id).count).to eq(0)
+    expect(GenomeRelationship.where(related_genome_id: genome_id).count).to eq(0)
   end
 
   it '#destroy removes associated genome relationships' do
@@ -51,4 +61,18 @@ describe Genome do
     expect(GenomeRelationship.where(related_genome_id: g1.id)).to be_empty
   end
 
+  it '#annotated? returns false by default' do
+    expect(genome.annotated?).to be(false)
+  end
+
+  # this is a slow test which is why I'm combining multiple things into one
+  # maybe I should just use `before`.
+  it '#build pulls data from NCBI' do
+    expect(@genome.features).to_not be_empty
+    expect(@genome.scaffolds).to_not be_empty
+  end
+
+  it '#annotated? equals true after #build is called' do
+    expect(@genome.annotated?).to be(true)
+  end
 end
