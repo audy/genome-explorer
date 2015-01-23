@@ -9,18 +9,13 @@ class PullGenomeFromNCBIJob
   def perform
     @genome = Genome.find(@id)
     Genome.transaction {
-      self.pull_metadata_from_ncbi
+      @genome.pull_metadata_from_ncbi
       if @gff_path.nil? or @fna_path.nil?
         @gff_path, @fna_path = self.download_from_ncbi.values_at(:gff_path,
                                                                  :fna_path)
       end
       self.import_from_ncbi_data(@gff_path, @fna_path)
     }
-  end
-
-  def pull_metadata_from_ncbi
-    @genome[:ncbi_metadata] = JSON.parse(`bionode-ncbi search assembly #{@genome.assembly_id}`)
-    @genome.save
   end
 
   def download_from_ncbi
