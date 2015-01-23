@@ -25,8 +25,6 @@ class PullGenomeFromNCBIJob
     @genome.features.delete_all
     @genome.scaffolds.delete_all
 
-    @genome.update organism: dat['organism']
-
     dir = Dir.mktmpdir @genome.assembly_id.to_s
     Dir.chdir dir
 

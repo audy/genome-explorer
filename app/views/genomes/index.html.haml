@@ -28,7 +28,7 @@
             %td
               #{g[:id]}
             %td
-              = link_to g[:organism], genome_path(g)
+              = link_to g.organism, genome_path(g)
               - if g[:stats].nil? or g[:stats]['total_proteins'].to_i.zero?
                 %div.badge unannotated
             %td

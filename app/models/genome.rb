@@ -31,6 +31,10 @@ class Genome < ActiveRecord::Base
     self.annotated
   end
 
+  def organism
+    self[:ncbi_metadata]['organism'] rescue 'Unknown'
+  end
+
   def pull_metadata_from_ncbi
     self[:ncbi_metadata] = JSON.parse(`bionode-ncbi search assembly #{self[:assembly_id]}`)
   end
