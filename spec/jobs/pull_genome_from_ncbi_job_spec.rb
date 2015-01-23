@@ -4,7 +4,7 @@ describe PullGenomeFromNCBIJob do
 
   # Mycoplasma genitalium G37 (smallest bacterial genome)
 
-  it '#perform takes a genome ID and builds a genome' do
+  it '#perform takes a genome ID and builds a genome', requires_bionode: true do
     genome = Genome.create! assembly_id: 203758 
     expect{PullGenomeFromNCBIJob.new(genome.id).perform}.not_to raise_error
     expect(genome.features.count).not_to eq(0)
