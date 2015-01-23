@@ -7,15 +7,19 @@ class PullGenomeFromNCBIJob
   end
 
   def perform
-    @genome = Genome.find(@id)
-    Genome.transaction {
-      @genome.pull_metadata_from_ncbi
-      if @gff_path.nil? or @fna_path.nil?
-        @gff_path, @fna_path = self.download_from_ncbi.values_at(:gff_path,
-                                                                 :fna_path)
-      end
-      self.import_from_ncbi_data(@gff_path, @fna_path)
-    }
+    dir = Dir.mktmpdir @genome.assembly_id.to_s
+    # change dir in a BLOCK to return to previous working directory
+    Dir.chdir dir do
+      @genome = Genome.find(@id)
+      Genome.transaction {
+        @genome.pull_metadata_from_ncbi
+        if @gff_path.nil? or @fna_path.nil?
+          @gff_path, @fna_path = self.download_from_ncbi.values_at(:gff_path,
+                                                                  :fna_path)
+        end
+        self.import_from_ncbi_data(@gff_path, @fna_path)
+      }
+    end
   end
 
   def download_from_ncbi
@@ -25,8 +29,6 @@ class PullGenomeFromNCBIJob
     @genome.features.delete_all
     @genome.scaffolds.delete_all
 
-    dir = Dir.mktmpdir @genome.assembly_id.to_s
-    Dir.chdir dir
 
     fna = JSON.parse(`bionode-ncbi download assembly #{@genome.assembly_id}`.split("\n").last)
     gff = JSON.parse(`bionode-ncbi download gff #{@genome.assembly_id}`.split("\n").last)
