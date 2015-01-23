@@ -10,8 +10,8 @@ describe Graphs do
   before(:context) do
     # setup some genomes and features and feature relationships
 
-    g1 = Genome.create! assembly_id: 1234, organism: 'Rubybacter rspecium'
-    g2 = Genome.create! assembly_id: 4567, organism: 'Railsbacterum testii'
+    g1 = Genome.create! assembly_id: 1234
+    g2 = Genome.create! assembly_id: 4567
 
     5.times { Feature.create! genome: g1, feature_type: 'CDS' }
     5.times { Feature.create! genome: g2, feature_type: 'CDS' }
