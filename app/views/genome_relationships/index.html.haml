@@ -14,9 +14,32 @@
         %label Render links?
         %input#enable-links{ type: 'checkbox', checked: 'true'}
 
+      %hr
+
+      %h4 Force Parameters 
+
+      %div.form-group
+        %label Link Strength
+        %input#link-strength{ type: 'range', name: 'link-strength', min: 0, max: 100 }
+        %div#link-strength-value
+
+      %div.form-group
+        %label Gravity
+        %input#gravity{ type: 'range', name: 'gravity', min: 0, max: 10 }
+        %div#gravity-value
+
+      %div.form-group
+        %label Friction
+        %input#friction{ type: 'range', name: 'friction', min: 0, max: 100 }
+        %div#friction-value
+
 - path = "/genome_relationships.json?genome_id=#{params[:genome_id]}"
 
 :javascript
+
+  // declare force globally so I can mess with it in the developer console
+  var force;
+
   var width = $(window).width();
       height = $(window).height();
 
@@ -39,14 +62,8 @@
     var nodes = graph.nodes;
     var links = graph.links;
 
-    var force = d3.layout.force()
+    force = d3.layout.force()
         .nodes(nodes)
-        .charge(-20)
-        .theta(0.5)
-        .gravity(0.01)
-        .friction(.9)
-        .chargeDistance(20)
-        .linkStrength(0.2)
         .size([width, height])
         .links(links).linkDistance(20);
 
@@ -112,8 +129,37 @@
         .start();
     });
 
+    // enable links?
     d3.selectAll("#enable-links").on("change", function() {
       links_enabled = this.checked;
+    });
+
+    //
+    // FORCE PARAMETER SLIDERS
+    //
+
+    // TODO init slider text values
+
+    // link-strength [0, 1], default = 1
+    d3.selectAll("#link-strength").on("input", function() {
+      var val = this.value / 100.0;
+      $("#link-strength-value").text(val);
+      force.linkStrength(val).start();
+    });
+
+
+    // gravity  [0, inf (1)], default = 0.1
+    d3.selectAll("#gravity").on("input", function() {
+      var val = this.value / 10.0;
+      $("#gravity-value").text(val);
+      force.gravity(val).start();
+    });
+
+    // friction [0, 1], default = 0.9
+    d3.selectAll("#friction").on("input", function() {
+      var val = this.value / 100.0;
+      $("#friction-value").text(val);
+      force.friction(val).start();
     });
 
   });
