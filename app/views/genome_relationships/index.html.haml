@@ -10,6 +10,7 @@
       %div.form-group
         %label Minimum # of Shared Features
         %input#link-slider{ type: 'range', name: 'quantity', min: -10, max: 5000 }
+        %div#link-cutoff-value
       %div.form-group
         %label Render links?
         %input#enable-links{ type: 'checkbox', checked: 'true'}
@@ -124,6 +125,7 @@
     d3.selectAll("#link-slider").on("input", function() {
       cutoff = this.value;
       filtered_links = links.filter(function(d) { return d.value >= cutoff });
+      $("#link-cutoff-value").text(cutoff);
       force
         .links(filtered_links)
         .start();
