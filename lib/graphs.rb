@@ -28,7 +28,6 @@ module Graphs
         # find all genomes related to this genome
         related_to_seed = GenomeRelationship.
           where(genome: seed_genome).
-          where('related_features_count > ?', min_related).
           all
 
         # find relationships within genomes that are related to the seed genome
@@ -41,14 +40,16 @@ module Graphs
         related_relationships =
           GenomeRelationship.
           where(genome_id: related_ids).
-          where('related_features_count > ?', min_related).
-          all
+          first(3)
 
         # combine, use to build graph
         related_to_seed + related_relationships
       else
         GenomeRelationship.all
       end
+
+    # cull the genome relationships list so that for each genome, take only the
+    # nearest genome
 
     # get a list of all genomes included in the genome relationships
     # (this list is highly redundant so uniq it, also sometimes there are
