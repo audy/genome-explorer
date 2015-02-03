@@ -67,6 +67,16 @@ class Feature < ActiveRecord::Base
     self.info.match(/product=([^;]*);/)[1] rescue 'NA'
   end
 
+  def to_fasta kwargs = {}
+    seq =
+      if kwargs[:translate] == true
+        self.protein_sequence
+      else
+        self.sequence
+      end
+    ">#{self.id}\n#{seq}"
+  end
+
   private
 
   def sequence_from_scaffold
