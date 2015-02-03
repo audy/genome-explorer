@@ -8,8 +8,8 @@ end
 CODON_TABLE = {
       'ttt' => 'F', 'tct' => 'S', 'tat'	=> 'Y', 'tgt' => 'C',
       'ttc' => 'F', 'tcc' => 'S', 'tac'	=> 'Y', 'tgc' => 'C',
-      'tta' => 'L', 'tca' => 'S', 'taa'	=> '*', 'tga' => '*',
-      'ttg' => 'L', 'tcg' => 'S', 'tag'	=> '*', 'tgg' => 'W',
+      'tta' => 'L', 'tca' => 'S', 'taa'	=> '', 'tga' => '',
+      'ttg' => 'L', 'tcg' => 'S', 'tag'	=> '', 'tgg' => 'W',
       'ctt' => 'L', 'cct' => 'P', 'cat'	=> 'H', 'cgt' => 'R',
       'ctc' => 'L', 'ccc' => 'P', 'cac'	=> 'H', 'cgc' => 'R',
       'cta' => 'L', 'cca' => 'P', 'caa'	=> 'Q', 'cga' => 'R',
