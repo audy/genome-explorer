@@ -117,3 +117,30 @@ task :to_json do
 
   pbar.finish
 end
+
+namespace :dump do
+
+  desc 'dump genomes db to CSV'
+  task :genomes_table do
+    puts 'id,assembly_id,organism'
+    Genome.find_each do |g|
+      puts [g.id, g.assembly_id, g.organism].join(',')
+    end
+  end
+
+  desc 'dump features to CSV'
+  task :features_table do
+    puts 'id,genome_id,product,type,start,stop'
+    Feature.find_each do |f|
+      puts [f.id, f.genome_id, f.product, f.feature_type, f.start, f.stop].join(',')
+    end
+  end
+
+  desc 'dump proteins to FASTA'
+  task :proteins do
+    Feature.where(feature_type: 'CDS').find_each do |f|
+      puts f.to_fasta(translate: true)
+    end
+  end
+
+end
