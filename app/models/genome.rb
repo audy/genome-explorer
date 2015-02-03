@@ -39,6 +39,11 @@ class Genome < ActiveRecord::Base
     self[:ncbi_metadata] = JSON.parse(`bionode-ncbi search assembly #{self[:assembly_id]}`)
   end
 
+  def update_metadata!
+    self.pull_metadata_from_ncbi
+    self.save!
+  end
+
   def added_to_graph?
     self.in_graph
   end
