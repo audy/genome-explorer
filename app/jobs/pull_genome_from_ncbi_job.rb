@@ -4,6 +4,7 @@ class PullGenomeFromNCBIJob
     @id = id
     @gff_path = kwargs[:gff_path]
     @fna_path = kwargs[:fna_path]
+    @genome = Genome.find(@id)
   end
 
   def perform
