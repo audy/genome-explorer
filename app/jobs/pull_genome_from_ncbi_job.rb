@@ -19,6 +19,7 @@ class PullGenomeFromNCBIJob
                                                                   :fna_path)
         end
         self.import_from_ncbi_data(@gff_path, @fna_path)
+        @genome.save!
       }
     end
   end
