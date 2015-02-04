@@ -31,6 +31,8 @@ class Feature < ActiveRecord::Base
   has_many :protein_relationships, dependent: :destroy
   has_many :related_features, through: :protein_relationships
 
+  belongs_to :feature_cluster
+
   has_many :inverse_protein_relationships, class_name: 'ProteinRelationship',
     foreign_key: :related_feature_id
 
