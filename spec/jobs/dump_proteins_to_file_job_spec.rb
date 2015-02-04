@@ -35,8 +35,8 @@ describe DumpProteinsToFileJob do
     expect(File.exists?(job.filename)).to_not be(false)
   end
 
-  it 'creates a file with proteins that match' do
-    expect(records.first.sequence).to eq(feature.protein_sequence)
+  it 'creates a file with proteins that match (without asterisks)' do
+    expect(records.first.sequence).to eq(feature.protein_sequence.tr('*', ''))
   end
 
   it '#perform accepts a list of genomes (ids) to get proteins from' do
@@ -45,7 +45,7 @@ describe DumpProteinsToFileJob do
     g.save
 
     dumped = DumpProteinsToFileJob.new('test.fasta', Genome.last.id)
-    expect(records.first.sequence).to eq(feature.protein_sequence)
+    expect(records.first.sequence).to eq(feature.protein_sequence.tr('*', ''))
   end
 
 end
