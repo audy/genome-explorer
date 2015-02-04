@@ -70,7 +70,7 @@ class Feature < ActiveRecord::Base
   def to_fasta kwargs = {}
     seq =
       if kwargs[:translate] == true
-        self.protein_sequence
+        self.protein_sequence.tr('*', '')
       else
         self.sequence
       end
