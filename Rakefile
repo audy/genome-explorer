@@ -121,7 +121,7 @@ end
 namespace :dump do
 
   desc 'dump genomes db to CSV'
-  task :genomes_table do
+  task :genomes_table => :environment do
     puts 'id,assembly_id,organism'
     Genome.find_each do |g|
       puts [g.id, g.assembly_id, g.organism].join(',')
@@ -129,7 +129,7 @@ namespace :dump do
   end
 
   desc 'dump features to CSV'
-  task :features_table do
+  task :features_table => :environment do
     puts 'id,genome_id,product,type,start,stop'
     Feature.find_each do |f|
       puts [f.id, f.genome_id, f.product, f.feature_type, f.start, f.stop].join(',')
@@ -137,10 +137,8 @@ namespace :dump do
   end
 
   desc 'dump proteins to FASTA'
-  task :proteins do
-    Feature.where(feature_type: 'CDS').find_each do |f|
-      puts f.to_fasta(translate: true)
-    end
+  task :proteins => :environment do
+    DumpProteinsToFileJob.new('/dev/stdout').perform
   end
 
 end
