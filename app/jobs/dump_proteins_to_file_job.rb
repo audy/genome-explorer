@@ -24,7 +24,7 @@ DumpProteinsToFileJob = Struct.new(:filename, :genomes) do
       @scaffolds.find_each do |scaffold|
         scaffold.features.proteins.find_each do |feature|
           pbar.inc
-          out.puts ">#{feature.id}\n#{feature.protein_sequence}" unless feature.weird?
+          out.puts ">#{feature.id}\n#{feature.protein_sequence.tr('*', '')}" unless feature.weird?
           tot += 1
         end
       end
