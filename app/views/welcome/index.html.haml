@@ -1,23 +1,36 @@
+
 %h2.page-header Welcome
 
-%p
-  Genome Explorer mimics a social network where microbes become "friends" by
-  sharing genetic material.
+%div.row
+  %div.col-lg-6
 
-%p
-  The goal of Genome Explorer is to make comparative
-  bacterial genomics interactive, intuitive and enjoyable. 
+    %p
+      Genome Explorer mimics a social network where microbes become "friends" by
+      sharing genetic material.
 
-%p
-  This is an ongoing experiment by <a href="http://agdr.org">Austin G. Davis-Richardson</a>.
+    %p
+      The goal of Genome Explorer is to make comparative
+      bacterial genomics interactive, intuitive and enjoyable. 
 
-%p
-  This project is Open Source. Fork it on <a href="https://github.com/audy/genome-explorer">GitHub</a>.
+    %p
+      This is an ongoing experiment by <a href="http://agdr.org">Austin G. Davis-Richardson</a>.
 
-- last = Genome.order(created_at: :desc).first
-- unless last.nil?
-  %h3
-    Latest Genome
-  %em
-    = link_to "#{last.organism}", genome_path(last)
-  added #{time_ago_in_words(last.created_at)} ago.
+    %p
+      This project is Open Source. Fork it on <a href="https://github.com/audy/genome-explorer">GitHub</a>.
+
+  %div.col-lg-6
+
+    %h4 Start Exploring
+    %p
+      View a genome's #{ link_to 'profile page', Genome.first } or explore a #{ link_to 'social network', "/genome_relationships?genome_id=#{Genome.first.id}" }.
+
+    - last = Genome.order(created_at: :desc).first
+
+    %hr
+
+    - unless last.nil?
+      %h4
+        Recent Activity
+      %em
+        = link_to "#{last.organism}", genome_path(last)
+      added #{time_ago_in_words(last.created_at)} ago.
