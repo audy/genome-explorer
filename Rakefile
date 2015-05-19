@@ -5,35 +5,6 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
-desc 'clean up dead records and relations'
-task :clean_db => :environment do
-  ActiveRecord::Base.transaction do
-
-    # delete protein relationships when features don't exist
-    sql = 'DELETE FROM protein_relationships l WHERE NOT EXISTS (SELECT NULL FROM features r WHERE r.id = l.feature_id)'
-    p ActiveRecord::Base.connection.execute(sql)
-
-    # delete protein relationships when related feature doesn't exist
-    sql = 'DELETE FROM protein_relationships l WHERE NOT EXISTS (SELECT NULL FROM features r WHERE r.id = l.related_feature_id)'
-    p ActiveRecord::Base.connection.execute(sql)
-
-    # delete features when genome doesn't exist
-    sql = 'DELETE FROM features l WHERE NOT EXISTS (SELECT NULL FROM genomes r WHERE r.id = l.genome_id)'
-    p ActiveRecord::Base.connection.execute(sql)
-
-    # delete scaffolds where genome doesn't exist
-    sql = 'DELETE FROM scaffolds l WHERE NOT EXISTS (SELECT NULL FROM genomes r WHERE r.id = l.genome_id)'
-    p ActiveRecord::Base.connection.execute(sql)
-
-    # delete genome relationships where genome doesn't exist
-    sql = 'DELETE FROM genome_relationships l WHERE NOT EXISTS (SELECT NULL FROM genomes r WHERE r.id = l.genome_id)'
-    p ActiveRecord::Base.connection.execute(sql)
-    sql = 'DELETE FROM genome_relationships l WHERE NOT EXISTS (SELECT NULL FROM genomes r WHERE r.id = l.related_genome_id)'
-    p ActiveRecord::Base.connection.execute(sql)
-
-  end
-end
-
 namespace :enqeue do
 
   file 'proteins.fasta' => :dump_proteins
@@ -121,7 +92,7 @@ end
 namespace :dump do
 
   desc 'dump genomes db to CSV'
-  task :genomes_table do
+  task :genomes_table => :environment do
     puts 'id,assembly_id,organism'
     Genome.find_each do |g|
       puts [g.id, g.assembly_id, g.organism].join(',')
@@ -129,7 +100,7 @@ namespace :dump do
   end
 
   desc 'dump features to CSV'
-  task :features_table do
+  task :features_table => :environment do
     puts 'id,genome_id,product,type,start,stop'
     Feature.find_each do |f|
       puts [f.id, f.genome_id, f.product, f.feature_type, f.start, f.stop].join(',')
@@ -137,10 +108,8 @@ namespace :dump do
   end
 
   desc 'dump proteins to FASTA'
-  task :proteins do
-    Feature.where(feature_type: 'CDS').find_each do |f|
-      puts f.to_fasta(translate: true)
-    end
+  task :proteins => :environment do
+    DumpProteinsToFileJob.new('/dev/stdout').perform
   end
 
 end
