@@ -28,12 +28,10 @@ wish to _explore_ them.
 Using Ruby 2.1.2 and PostgreSQL 9.3
 
 ```sh
-createdb genome
-
 # with Ruby 2.1.2 and Bundler
 bundle install
 
-bundle exec rake db:migrate
+bundle exec rake db:setup
 bundle exec rackup
 ```
 
