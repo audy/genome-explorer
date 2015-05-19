@@ -3,13 +3,16 @@
 %p
   Welcome to Genome Explorer.
 
-:markdown
-  To get an idea what this website is about, check out a [genome](/genomes/14),
-  a [protein-coding gene](/genomes/14/features/33402), or maybe look at a
-  [graph](/genome_relationships?genome_id=14).
+%p
+  Genome Explorer mimics a social network where microbes become "friends" by
+  sharing genetic material. The goal of Genome Explorer is to make comparative
+  bacterial genomics interactive, intuitive and enjoyable. 
 
-  This site is an experiment being built by [Austin G.
-  Davis-Richardson](http://agdr.co).
+%p
+  This is an ongoing experiment by <a href="http://agdr.org">Austin G. Davis-Richardson</a>.
+
+%p
+  Genome Explorer is Open Source. Fork it on <a href="https://github.com/audy/genome-explorer">GitHub</a>.
 
 - last = Genome.order(created_at: :desc).first
 - unless last.nil?
