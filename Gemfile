@@ -11,6 +11,9 @@ gem 'pg'
 # webserver
 gem 'puma'
 
+# for delayed-job
+gem 'daemons'
+
 #
 # JavaScript Business
 #
