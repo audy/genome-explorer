@@ -1,9 +1,7 @@
-class PullGenomeFromNCBIJob
+class PullGenomeFromFilesJob
 
   def initialize id, kwargs = {}
     @id = id
-    @gff_path = kwargs[:gff_path]
-    @fna_path = kwargs[:fna_path]
     @genome = Genome.find(@id)
   end
 
@@ -13,31 +11,13 @@ class PullGenomeFromNCBIJob
     Dir.chdir dir do
       @genome = Genome.find(@id)
       Genome.transaction {
-        @genome.pull_metadata_from_ncbi
-        if @gff_path.nil? or @fna_path.nil?
-          @gff_path, @fna_path = self.download_from_ncbi.values_at(:gff_path,
-                                                                  :fna_path)
-        end
-        self.import_from_ncbi_data(@gff_path, @fna_path)
+        self.import_from_files(@genome.gff_file, @genome.fna_file)
         @genome.save!
       }
     end
   end
 
-  def download_from_ncbi
-    dat = @genome[:ncbi_metadata]
-
-    # remove features and scaffolds if there are any
-    @genome.features.delete_all
-    @genome.scaffolds.delete_all
-
-    fna = JSON.parse(`bionode-ncbi download assembly #{@genome.assembly_id}`.split("\n").last)
-    gff = JSON.parse(`bionode-ncbi download gff #{@genome.assembly_id}`.split("\n").last)
-
-    return { gff_path: gff['path'], fna_path: fna['path'] }
-  end
-
-  def import_from_ncbi_data gff_path, fna_path
+  def import_from_files gff_path, fna_path
     # has to be loaded before features so that features can reference a
     # scaffold
     read_scaffolds(fna_path).each_slice(10) do |scaffolds|
@@ -56,7 +36,7 @@ class PullGenomeFromNCBIJob
   # Return an array of (unsaved) Scaffolds with sequence and scaffold_names
   #
   def read_scaffolds path
-    Zlib::GzipReader.open(path) do |handle|
+    File.open(path) do |handle|
       Dna.new(handle, format: :fasta).map do |record|
         Scaffold.new(sequence: record.sequence, scaffold_name: record.name.split.first)
       end
@@ -69,7 +49,7 @@ class PullGenomeFromNCBIJob
   def read_features path
     # memoize scaffold lookup
     scaffolds = Hash.new { |h,k| h[k] = Scaffold.find_by_scaffold_name(k) }
-    Zlib::GzipReader.open(path) do |handle|
+    File.open(path) do |handle|
       handle.map do |line|
         next if line =~ /^#/
         dat = parse_gff(line)

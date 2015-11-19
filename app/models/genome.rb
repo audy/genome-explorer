@@ -32,16 +32,7 @@ class Genome < ActiveRecord::Base
   end
 
   def organism
-    self[:ncbi_metadata]['organism'] rescue 'Unknown'
-  end
-
-  def pull_metadata_from_ncbi
-    self[:ncbi_metadata] = JSON.parse(`bionode-ncbi search assembly #{self[:assembly_id]}`)
-  end
-
-  def update_metadata!
-    self.pull_metadata_from_ncbi
-    self.save!
+    File.basename(self.gff_file, '.gff') rescue 'Unknown'
   end
 
   def added_to_graph?
@@ -55,7 +46,7 @@ class Genome < ActiveRecord::Base
   def build kwargs = {}
     Genome.transaction {
       CreateGenomeAvatarJob.new(self.id).perform
-      PullGenomeFromNCBIJob.new(self.id, fna_path: kwargs[:fna_path],
+      PullGenomeFromFilesJob.new(self.id, fna_path: kwargs[:fna_path],
                                          gff_path: kwargs[:gff_path]).perform
       UpdateGenomeStatsJob.new(self.id).perform
       self.update! annotated: true
