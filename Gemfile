@@ -47,7 +47,6 @@ gem 'sass-rails', '~> 4.0.3'
 # Background-job stuff
 gem 'delayed_job'
 gem 'delayed_job_active_record'
-gem 'delayed_job_web'
 gem 'progressbar'
 
 # For speedily importing lots of records
