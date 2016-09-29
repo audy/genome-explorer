@@ -14,6 +14,7 @@ wish to _explore_ them.
 ## Requirements
 
 - Ruby 2.1.2
+- node.js
 - Postgres
 - The desire to explore the world of bacterial genomes
 - A computer
