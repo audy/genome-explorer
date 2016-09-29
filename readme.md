@@ -1,6 +1,8 @@
-# Genome Explorer [![Build Status](https://travis-ci.org/audy/genome-explorer.svg)](https://travis-ci.org/audy/genome-explorer) [![Code
-Climate](https://codeclimate.com/repos/545a939b695680762c0348ba/badges/485a8cdc04eec5267d1b/gpa.svg)](https://codeclimate.com/repos/545a939b695680762c0348ba/feed) [![Test
-Coverage](https://codeclimate.com/repos/545a939b695680762c0348ba/badges/485a8cdc04eec5267d1b/coverage.svg)](https://codeclimate.com/repos/545a939b695680762c0348ba/feed)
+# Genome Explorer
+
+[![Build Status](https://travis-ci.org/audy/genome-explorer.svg)](https://travis-ci.org/audy/genome-explorer)
+[![Code Climate](https://codeclimate.com/repos/545a939b695680762c0348ba/badges/485a8cdc04eec5267d1b/gpa.svg)](https://codeclimate.com/repos/545a939b695680762c0348ba/feed)
+[![Test Coverage](https://codeclimate.com/repos/545a939b695680762c0348ba/badges/485a8cdc04eec5267d1b/coverage.svg)](https://codeclimate.com/repos/545a939b695680762c0348ba/feed)
 
 (c, 2014) Austin G. Davis-Richardson
 
