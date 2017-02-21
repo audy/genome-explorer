@@ -27,11 +27,29 @@ bundle exec rake db:setup
 bundle exec rackup
 ```
 
-## Continuous Integration and Deployment
+## Deployment
 
-Any push to the `master` branch of this GitHub repository will first be tested
-using Travis-CI and then, if tests pass, deployed to genome.austinfanclub.com
-via dokku.
+Using docker-compose:
+
+```bash
+docker-compose up
+```
+
+### First time deployment
+
+If this is your first time exploring genomes, you'll need to migrate the
+database (after running `docker-compose up`):
+
+```bash
+docker-compose run --entrypoint rake web db:migrate
+```
+
+### Seeding
+
+Seeding in Docker is not currently supported due to the dependency on non-open
+source software (sorry about that). If you send me an email, I will send you a
+dump of the production postgres database.
+
 
 ## License
 
