@@ -56,7 +56,6 @@ ActiveRecord::Schema.define(version: 20150123192608) do
     t.integer "genome_id"
     t.integer "related_genome_id"
     t.integer "related_features_count"
-    t.integer "identity"
   end
 
   create_table "genomes", force: true do |t|
@@ -66,7 +65,6 @@ ActiveRecord::Schema.define(version: 20150123192608) do
     t.hstore   "stats"
     t.hstore   "ncbi_metadata"
     t.string   "avatar"
-    t.integer  "taxonomy_id"
     t.boolean  "in_graph",      default: false
     t.boolean  "annotated",     default: false
   end
@@ -93,11 +91,5 @@ ActiveRecord::Schema.define(version: 20150123192608) do
   end
 
   add_index "scaffolds", ["genome_id"], name: "index_scaffolds_on_genome_id", using: :btree
-
-  create_table "taxonomies", force: true do |t|
-    t.integer "parent_id"
-    t.string  "name"
-    t.string  "rank"
-  end
 
 end

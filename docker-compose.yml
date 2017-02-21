@@ -1,0 +1,35 @@
+version: "2"
+
+services:
+
+  db:
+    image: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRESS_PASSWORD: "genome-explorer1234"
+    networks:
+      - cybernet
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  web:
+    image: audy/genome-explorer
+    networks:
+      - cybernet
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgres://postgres:genome-explorer1234@db:5432/genomes"
+      RACK_ENV: "production"
+      SECRET_KEY_BASE: "6a0812e14259b1cc81874ede2241dedf2b8a4cf4b0a85cb09b5df96d1320b9f7f1d805ab18ea37b0ff865659dbc346e5e9694879af3e07315399992e58e64b3e"
+      ROLLBAR_ACCESS_TOKEN: "01489936981242bab32663003b921a78"
+    depends_on:
+      - db
+
+volumes:
+  postgres-data:
+
+networks:
+  cybernet:
