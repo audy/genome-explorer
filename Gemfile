@@ -31,7 +31,6 @@ gem 'carrierwave'
 
 # Procedurally-generated avatars for Genomes
 gem 'monsterid'
-gem 'color' # needed by monsterid
 
 # markdown rendering
 gem 'redcarpet'
