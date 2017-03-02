@@ -29,6 +29,12 @@ bundle exec rackup
 
 ## Deployment
 
+Just docker:
+
+```bash
+docker pull audy/genome-explorer
+```
+
 Using docker-compose:
 
 ```bash
