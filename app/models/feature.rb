@@ -25,17 +25,7 @@ CODON_TABLE = {
 }
 
 class Feature < ActiveRecord::Base
-  belongs_to :scaffold
   belongs_to :genome
-
-  has_many :protein_relationships, dependent: :destroy
-  has_many :related_features, through: :protein_relationships
-
-  has_many :inverse_protein_relationships, class_name: 'ProteinRelationship',
-    foreign_key: :related_feature_id
-
-  has_many :inverse_related_features, through: :inverse_protein_relationships,
-    source: :feature
 
   # for now I am only going to call AAs "weird" if they have gaps
   # xxx this needs to be better defined with some biological background
@@ -50,6 +40,7 @@ class Feature < ActiveRecord::Base
 
   # Used to get only protein-coding genes (useful b/c CDS definition may change
   # or be expanded)
+  # TODO: move to scope
   def self.proteins
     self.where(feature_type: 'CDS')
   end
@@ -64,35 +55,6 @@ class Feature < ActiveRecord::Base
   end
 
   def product
-    self.info.match(/product=([^;]*);/)[1] rescue 'NA'
+    info.match(/product=([^;]*);/)[1] rescue 'NA'
   end
-
-  def to_fasta kwargs = {}
-    seq =
-      if kwargs[:translate] == true
-        self.protein_sequence.tr('*', '')
-      else
-        self.sequence
-      end
-    ">#{self.id}\n#{seq}"
-  end
-
-  private
-
-  def sequence_from_scaffold
-    i =  -1 + self.start
-    j = -1 + self.stop
-    seq =  self.scaffold.sequence[i..j]
-    if strand == '-'
-      seq = seq.reverse.complement
-    end
-    seq
-  end
-
-  def protein_sequence_from_scaffold
-    self.sequence.downcase.chars.each_slice(3).map do |sl|
-      CODON_TABLE[sl.join]
-    end.join
-  end
-
 end

@@ -3,7 +3,6 @@ require 'tempfile'
 require 'zlib'
 
 class Genome < ActiveRecord::Base
-  has_many :scaffolds, dependent: :destroy
   has_many :features, dependent: :destroy
 
   mount_uploader :avatar, AvatarUploader

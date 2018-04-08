@@ -28,8 +28,13 @@ NCBI_METADATA = {
 
 describe BuildGenomeFeaturesJob, focus: true do
   let(:genome) { Genome.create! ncbi_metadata: NCBI_METADATA }
+  let(:job) { BuildGenomeFeaturesJob.new(genome) }
+
+  it '#genbank_url returns a valid HTTPS url' do
+    expect(job.genbank_url).to match(/^https:\/\//)
+  end
 
   it 'can be performed' do
-    expect { BuildGenomeFeaturesJob.new(genome).perform }.to_not raise_error
+    expect { job.perform }.to_not raise_error
   end
 end
