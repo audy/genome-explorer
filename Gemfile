@@ -1,17 +1,15 @@
 source 'https://rubygems.org'
 
-ruby '2.3.1'
+ruby '2.4.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.6'
+gem 'rails', '~> 4.1.0'
 
 # database driver
 gem 'pg'
 
 # webserver
 gem 'thin'
-
-
 
 #
 # JavaScript Business
@@ -36,7 +34,6 @@ gem 'monsterid'
 gem 'redcarpet'
 
 # Layout/Template Stuff
-
 gem 'bootstrap-sass'
 gem 'bootstrap_form'
 gem 'will_paginate', '~> 3.0'
@@ -67,32 +64,8 @@ gem 'bio'
 gem 'pry'
 gem 'pry-rails'
 
-# Spring speeds up development by keeping your application running in the
-# background. Read more: https://github.com/rails/spring but also fucks
-# everything up
-group :development do
-
-  # bundle exec foreman start to start the app and a worker
-  gem 'foreman'
-
-  # make loading app faster / breaks things
-  gem 'spring'
-
-  # for autoreloading and test running
-  gem 'guard'
-  gem 'guard-livereload', require: false
-  gem 'rack-livereload'
-
-  # bundle exec rake doc:rails generates the API under doc/api.
-  gem 'sdoc', '~> 0.4.0', group: :doc
-end
-
 group :test do
-
   gem 'cucumber-rails', require: false
-
-  # silly codeclimate test coverage bage
-  gem 'codeclimate-test-reporter', require: nil
 
   # cleans up databases
   gem 'database_cleaner'
@@ -100,14 +73,6 @@ group :test do
   # generates models
   gem 'factory_girl_rails'
 
-  # continuous integration
-  gem 'travis'
-
   # Austin's favorite test engine
   gem 'rspec-rails'
-
-end
-
-group :benchmark do
-  gem 'ruby-prof'
 end
