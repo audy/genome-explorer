@@ -40,7 +40,7 @@ GEM
     arel (6.0.4)
     autoprefixer-rails (8.2.0)
       execjs
-    bio (1.5.1)
+    awesome_print (1.8.0)
     bootstrap-sass (3.3.5)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.2.19)

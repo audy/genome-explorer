@@ -55,6 +55,8 @@ gem 'activerecord-import'
 gem 'chartkick'
 gem 'groupdate'
 
+gem 'awesome_print'
+
 # For debugging in production :D
 gem 'pry'
 gem 'pry-rails'
