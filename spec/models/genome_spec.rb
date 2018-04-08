@@ -59,19 +59,4 @@ describe Genome, requires_bionode: true do
     expect(GenomeRelationship.where(genome_id: g1.id)).to be_empty
     expect(GenomeRelationship.where(related_genome_id: g1.id)).to be_empty
   end
-
-  it '#annotated? returns false by default' do
-    expect(genome.annotated?).to be(false)
-  end
-
-  # this is a slow test which is why I'm combining multiple things into one
-  # maybe I should just use `before`.
-  it '#build pulls data from NCBI' do
-    expect(@genome.features).to_not be_empty
-    expect(@genome.scaffolds).to_not be_empty
-  end
-
-  it '#annotated? equals true after #build is called' do
-    expect(@genome.annotated?).to be(true)
-  end
 end
