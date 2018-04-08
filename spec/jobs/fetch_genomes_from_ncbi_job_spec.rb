@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe FetchGenomesFromNCBIJob, focus: true do
+describe FetchGenomesFromNCBIJob do
 
   # use a local, truncated assembly summaries file so 50k genomes are not
   # downloaded and created
