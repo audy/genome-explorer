@@ -4,7 +4,6 @@ RUN apt-get update \
   && apt-get install -y postgresql postgresql-server-dev-9.4 libpq-dev \
   && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 ADD Gemfile .
