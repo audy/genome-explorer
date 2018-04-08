@@ -12,10 +12,9 @@ describe Genome, requires_bionode: true do
     expect(genome).to_not be(nil)
   end
 
-  it '#destroy removes associated features and scaffolds' do
+  it '#destroy removes associated features' do
     genome_id = genome.id
     expect { genome.destroy! }.to_not raise_error
-    expect(Scaffold.where(genome_id: genome_id).count).to eq(0)
     expect(Feature.where(genome_id: genome_id).count).to eq(0)
   end
 end
