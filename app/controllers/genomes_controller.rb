@@ -4,7 +4,6 @@ class GenomesController < ApplicationController
     @genomes =
       Genome.
       search(params[:search]).
-      where("(stats -> 'total_proteins')::int > 0").
       order(id: :desc).
       paginate(page: params[:page], per_page: 10)
   end
