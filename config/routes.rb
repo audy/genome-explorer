@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
-  #resources :delayed_jobs do
-  #end
+  resources :delayed_jobs do
+  end
 
   resources :genomes do
     resources :scaffolds do
