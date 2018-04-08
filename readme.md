@@ -7,15 +7,12 @@ wish to _explore_ them.
 
 ## Requirements
 
-- Ruby 2.1.2
-- node.js
+- Ruby/Rails
 - Postgres
 - The desire to explore the world of bacterial genomes
 - A computer
 
 ## Quickstart
-
-Using Ruby 2.1.2 and PostgreSQL 9.3
 
 ```sh
 # with Ruby 2.1.2 and Bundler
@@ -54,11 +51,10 @@ Seeding in Docker is not currently supported due to the dependency on non-open
 source software (sorry about that). If you send me an email, I will send you a
 dump of the production postgres database.
 
-
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2016 Austin G. Davis-Richardson
+Copyright (c) 2014-2018 Austin G. Davis-Richardson
 
 See `LICENSE` for details.
