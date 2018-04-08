@@ -41,6 +41,12 @@ class Genome < ActiveRecord::Base
     }
   end
 
+  # in the progress of re-building graph features
+  # for now, genomes are just related
+  def in_graph?
+    false
+  end
+
   def self.search(search)
     if search
       where [ 'lower(organism) LIKE ?', "%#{search.downcase}%" ]
