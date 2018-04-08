@@ -34,29 +34,8 @@ describe Genome, requires_bionode: true do
 
   it '#destroy removes associated features and scaffolds' do
     genome_id = genome.id
-
-    # create a genome relationship
-    g2 = Genome.create assembly_id: 4567
-    genome.related_genomes << g2
-    related_ids = genome.related_genomes.map(&:id)
-    genome.save!
-
-    expect{genome.destroy!}.to_not raise_error
-
+    expect { genome.destroy! }.to_not raise_error
     expect(Scaffold.where(genome_id: genome_id).count).to eq(0)
     expect(Feature.where(genome_id: genome_id).count).to eq(0)
-    expect(GenomeRelationship.where(genome_id: genome_id).count).to eq(0)
-    expect(GenomeRelationship.where(related_genome_id: genome_id).count).to eq(0)
-  end
-
-  it '#destroy removes associated genome relationships' do
-    g1 = Genome.create assembly_id: 78910
-    g2 = Genome.create assembly_id: 91011
-    g1.related_genomes << g2
-    g1.save
-    g1.destroy
-    expect(g2.reload.related_genomes).to be_empty
-    expect(GenomeRelationship.where(genome_id: g1.id)).to be_empty
-    expect(GenomeRelationship.where(related_genome_id: g1.id)).to be_empty
   end
 end

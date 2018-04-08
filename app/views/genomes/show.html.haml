@@ -36,30 +36,6 @@
 
 %div.row
   %div.col-md-12
-    %h3 Similar Organisms
-  %div.col-md-12
-    %table.table.table-bordered.table-striped.table-condensed
-      %thead
-        %tr
-          %th #
-          %th Organism
-          %th Genes Shared
-      %tbody
-        - @genome_relationships.each do |genome_relationship|
-          %tr
-            %td= genome_relationship.id
-            %td
-              = link_to genome_relationship.related_genome.organism, genome_path(genome_relationship.related_genome)
-              - if genome_relationship.autophilic?
-                %span.label.label-info self
-            - n_shared = genome_relationship.related_features_count
-            %td #{'%0.2f' % (100 *n_shared / @genome[:stats]['total_proteins'].to_f)} %
-
-  %div.col-md-12
-    = will_paginate @genome_relationships, param_name: 'genomes_page'
-
-%div.row
-  %div.col-md-12
     %h3 Protein Coding Genes
     %table.table.table-bordered.table-striped.table-condensed
       %thead

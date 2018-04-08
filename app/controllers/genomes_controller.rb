@@ -1,9 +1,12 @@
 class GenomesController < ApplicationController
 
   def index
-    @genomes = Genome.search params[:search]
-    @genomes = @genomes.where("(stats -> 'total_proteins')::int > 0")
-    @genomes = @genomes.order(id: :desc).paginate(page: params[:page], per_page: 10)
+    @genomes =
+      Genome.
+      search(params[:search]).
+      where("(stats -> 'total_proteins')::int > 0").
+      order(id: :desc).
+      paginate(page: params[:page], per_page: 10)
   end
 
   def new
@@ -16,11 +19,6 @@ class GenomesController < ApplicationController
     @features = @genome.features.proteins.
       order(:start).
       paginate(page: params[:features_page], per_page: 10)
-
-    @genome_relationships = @genome.genome_relationships.
-      order(related_features_count: :desc).
-      paginate(page: params[:genomes_page], per_page: 10)
-
   end
 
   def create

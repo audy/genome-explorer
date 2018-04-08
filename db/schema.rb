@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150123192608) do
+ActiveRecord::Schema.define(version: 20180408202245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,15 +52,6 @@ ActiveRecord::Schema.define(version: 20150123192608) do
   add_index "features", ["genome_id"], name: "index_features_on_genome_id", using: :btree
   add_index "features", ["scaffold_id"], name: "index_features_on_scaffold_id", using: :btree
 
-  create_table "genome_relationships", force: :cascade do |t|
-    t.integer "genome_id"
-    t.integer "related_genome_id"
-    t.integer "related_features_count"
-  end
-
-  add_index "genome_relationships", ["genome_id"], name: "index_genome_relationships_on_genome_id", using: :btree
-  add_index "genome_relationships", ["related_genome_id"], name: "index_genome_relationships_on_related_genome_id", using: :btree
-
   create_table "genomes", force: :cascade do |t|
     t.integer  "assembly_id"
     t.datetime "created_at"
@@ -71,19 +62,6 @@ ActiveRecord::Schema.define(version: 20150123192608) do
     t.boolean  "in_graph",      default: false
     t.boolean  "annotated",     default: false
   end
-
-  create_table "protein_relationships", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "feature_id"
-    t.integer  "related_feature_id"
-    t.string   "source"
-    t.hstore   "info"
-    t.integer  "identity"
-  end
-
-  add_index "protein_relationships", ["feature_id"], name: "index_protein_relationships_on_feature_id", using: :btree
-  add_index "protein_relationships", ["related_feature_id"], name: "index_protein_relationships_on_related_feature_id", using: :btree
 
   create_table "scaffolds", force: :cascade do |t|
     t.text     "sequence"
