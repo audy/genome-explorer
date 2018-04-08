@@ -70,9 +70,6 @@ group :test do
   # cleans up databases
   gem 'database_cleaner'
 
-  # generates models
-  gem 'factory_girl_rails'
-
   # Austin's favorite test engine
   gem 'rspec-rails'
 end
