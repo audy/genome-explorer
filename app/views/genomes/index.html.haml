@@ -13,11 +13,11 @@
 
 %div.row
   %div.col-lg-12
-    %table.table.table-striped.table-bordered.table-condensed
+    %table.table.table-striped.table-bordered.table-condensed.table-hover
       %thead
         %tr
           %th
-            \#
+            ID
           %th
             Name
           %th
@@ -29,8 +29,6 @@
               #{g[:id]}
             %td
               = link_to g.organism, genome_path(g)
-              - if g[:stats].nil? or g[:stats]['total_proteins'].to_i.zero?
-                %div.badge unannotated
             %td
               = "#{time_ago_in_words(g.updated_at)} ago"
 

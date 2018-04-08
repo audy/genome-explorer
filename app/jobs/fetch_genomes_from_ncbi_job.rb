@@ -8,7 +8,8 @@ class FetchGenomesFromNCBIJob
 
   def perform
     assembly_summaries do |summary|
-      Genome.create! ncbi_metadata: summary
+      genome = Genome.create! ncbi_metadata: summary
+      ap genome
     end
   end
 

@@ -13,7 +13,7 @@ class Genome < ActiveRecord::Base
   end
 
   def organism
-    self[:ncbi_metadata]['organism'] rescue 'Unknown'
+    "#{ncbi_metadata['organism_name']} #{ncbi_metadata['intraspecific_name']}"
   end
 
   def create_avatar

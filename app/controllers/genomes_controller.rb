@@ -5,7 +5,7 @@ class GenomesController < ApplicationController
       Genome.
       search(params[:search]).
       order(id: :desc).
-      paginate(page: params[:page], per_page: 10)
+      paginate(page: params[:page], per_page: 25)
   end
 
   def new
