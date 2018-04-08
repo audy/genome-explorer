@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20150123192608) do
   enable_extension "plpgsql"
   enable_extension "hstore"
 
-  create_table "delayed_jobs", force: true do |t|
+  create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
     t.integer  "attempts",   default: 0, null: false
     t.text     "handler",                null: false
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20150123192608) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
-  create_table "features", force: true do |t|
+  create_table "features", force: :cascade do |t|
     t.integer  "start"
     t.integer  "stop"
     t.string   "strand"
@@ -52,13 +52,16 @@ ActiveRecord::Schema.define(version: 20150123192608) do
   add_index "features", ["genome_id"], name: "index_features_on_genome_id", using: :btree
   add_index "features", ["scaffold_id"], name: "index_features_on_scaffold_id", using: :btree
 
-  create_table "genome_relationships", force: true do |t|
+  create_table "genome_relationships", force: :cascade do |t|
     t.integer "genome_id"
     t.integer "related_genome_id"
     t.integer "related_features_count"
   end
 
-  create_table "genomes", force: true do |t|
+  add_index "genome_relationships", ["genome_id"], name: "index_genome_relationships_on_genome_id", using: :btree
+  add_index "genome_relationships", ["related_genome_id"], name: "index_genome_relationships_on_related_genome_id", using: :btree
+
+  create_table "genomes", force: :cascade do |t|
     t.integer  "assembly_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -69,7 +72,7 @@ ActiveRecord::Schema.define(version: 20150123192608) do
     t.boolean  "annotated",     default: false
   end
 
-  create_table "protein_relationships", force: true do |t|
+  create_table "protein_relationships", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "feature_id"
@@ -82,7 +85,7 @@ ActiveRecord::Schema.define(version: 20150123192608) do
   add_index "protein_relationships", ["feature_id"], name: "index_protein_relationships_on_feature_id", using: :btree
   add_index "protein_relationships", ["related_feature_id"], name: "index_protein_relationships_on_related_feature_id", using: :btree
 
-  create_table "scaffolds", force: true do |t|
+  create_table "scaffolds", force: :cascade do |t|
     t.text     "sequence"
     t.integer  "genome_id"
     t.datetime "created_at"
