@@ -55,10 +55,6 @@ gem 'activerecord-import'
 gem 'chartkick'
 gem 'groupdate'
 
-# bioinformatics-related gems
-gem 'dna'
-gem 'bio'
-
 # For debugging in production :D
 gem 'pry'
 gem 'pry-rails'
