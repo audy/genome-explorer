@@ -119,7 +119,7 @@ GEM
     multi_json (1.13.1)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
-    pg (1.0.0)
+    pg (0.21.0)
     progressbar (1.9.0)
     pry (0.11.3)
       coderay (~> 1.1.0)
@@ -234,7 +234,7 @@ DEPENDENCIES
   haml-rails
   jquery-rails
   monsterid
-  pg
+  pg (~> 0.21)
   progressbar
   pry
   pry-rails
