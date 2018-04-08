@@ -1,4 +1,4 @@
-FROM ruby:2.3.1
+FROM ruby:2.4.0
 
 RUN apt-get update \
   && apt-get install -y postgresql postgresql-server-dev-9.4 libpq-dev \
