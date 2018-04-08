@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Feature do
-
   let(:genome) { Genome.create }
   let(:scaffold) { Scaffold.create sequence: 'ATGGATCAATGA'  }
   let(:feature) { Feature.create genome: genome,
@@ -64,5 +63,4 @@ describe Feature do
     g.save
     expect(f.genome.id).to eq(genome.id)
   end
-
 end

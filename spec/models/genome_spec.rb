@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Genome, requires_bionode: true do
-
   # build a genome using data from NCBI
   before :all do
     # mycobacterium smegmatis str. MC2 155

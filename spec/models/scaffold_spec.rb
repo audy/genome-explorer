@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Scaffold do
-
   let(:genome) { Genome.create }
   let(:scaffold) { Scaffold.create sequence: 'ATGGATCAATGA', genome: genome  }
   let(:feature) { Feature.create genome: genome,
@@ -24,5 +23,4 @@ describe Scaffold do
   it 'has a genome' do
     expect(scaffold.genome).to_not eq(nil)
   end
-
 end

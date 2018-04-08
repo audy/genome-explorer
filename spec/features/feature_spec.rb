@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'feature page', type: :feature do
- 
+
   let (:genome) { Genome.create }
   let (:feature) { Feature.create genome: genome }
 
@@ -18,5 +18,4 @@ describe 'feature page', type: :feature do
     expect(genome).to_not be(nil)
     visit "genomes/#{genome.id}/features/#{feature.id}"
   end
-
 end
