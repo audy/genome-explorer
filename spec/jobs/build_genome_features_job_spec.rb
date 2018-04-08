@@ -26,7 +26,7 @@ NCBI_METADATA = {
 }
 
 
-describe BuildGenomeFeaturesJob, focus: true do
+describe BuildGenomeFeaturesJob do
   let(:genome) { Genome.create! ncbi_metadata: NCBI_METADATA }
   let(:job) { BuildGenomeFeaturesJob.new(genome) }
 
