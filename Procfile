@@ -1,2 +1,2 @@
 web: rails server -p $PORT
-#worker: bin/delayed_job --queues=default,local --prefix=local start
+worker: bin/delayed_job --queues=default start
