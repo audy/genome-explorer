@@ -1,6 +1,7 @@
 # Genome Explorer
 
 [![Build Status](https://travis-ci.org/audy/genome-explorer.svg)](https://travis-ci.org/audy/genome-explorer)
+![Docker Pulls](https://img.shields.io/docker/pulls/audy/genome-explorer.svg)
 
 There are those who wish to view genomes (bo-RING!) and then there are those who
 wish to _explore_ them.
