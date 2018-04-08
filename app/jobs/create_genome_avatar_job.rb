@@ -7,8 +7,8 @@ CreateGenomeAvatarJob = Struct.new(:genome_id) do
     file.unlink
     return file.path
   end
-  
+
   def queue_name
-    'local' # must run were app has access to data/
+    'default'
   end
 end

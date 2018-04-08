@@ -6,11 +6,6 @@ class Genome < ActiveRecord::Base
   has_many :scaffolds, dependent: :destroy
   has_many :features, dependent: :destroy
 
-  validates :assembly_id,
-    numericality: { only_integer: true },
-    presence: true,
-    uniqueness: true
-
   mount_uploader :avatar, AvatarUploader
 
   after_create do
