@@ -13,16 +13,6 @@ class Genome < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
-  # genome friends
-  has_many :genome_relationships, dependent: :destroy
-
-  has_many :related_genomes, through: :genome_relationships
-
-  has_many :inverse_genome_relationships, class_name: 'GenomeRelationship',
-    foreign_key: :related_genome_id
-  has_many :inverse_related_genomes, through: :inverse_genome_relationships,
-    source: :genome
-
   after_create do
     self.delay(queue: 'local').build
   end
