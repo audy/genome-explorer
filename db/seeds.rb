@@ -25,10 +25,3 @@
   genome.build
   puts "new genome: #{genome}"
 end
-
-# This will only create the genomes It will not download their annotations or
-# build any graphs. This part should be part of the seed as I want this to be
-# able to generate a minimum working web app.
-
-# construct social graph
-UpdateGenomeRelationshipsPipelineJob.new.perform
